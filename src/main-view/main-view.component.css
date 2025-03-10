@@ -1,0 +1,13 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #1C243C;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+

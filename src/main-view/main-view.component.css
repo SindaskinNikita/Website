@@ -1,9 +1,11 @@
+/* Базовые стили для html */
 html {
     margin: 0;
     padding: 0;
     height: 100%;
 }
 
+/* Основные стили для body */
 body {
     background-color: #1C243C;
     width: 100%;
@@ -14,6 +16,7 @@ body {
     overflow-x: hidden;
 }
 
+/* Стили для названия компании */
 .company-name {
     position: relative;
     margin-top: 40px;
@@ -27,17 +30,20 @@ body {
     z-index: 1000;
 }
 
+/* Стили для подзаголовка компании */
 .company-subtitle {
     position: relative;
-    margin-top: 0px;
-    margin-left: 60px;
-    color: #4F5567;
+    margin-top: -5px;
+    margin-left: 50px;
+    color: #a0a0a0;
     font-size: 16px;
     font-family: 'Arial', sans-serif;
     opacity: 0.8;
     z-index: 1000;
+    display: block;
 }
 
+/* Контейнер для контактной информации */
 .contact-info {
     position: absolute;
     top: 40px;
@@ -49,6 +55,7 @@ body {
     gap: 30px;
 }
 
+/* Стили для текста контактов */
 .contact-text {
     display: flex;
     flex-direction: column;
@@ -57,6 +64,7 @@ body {
     position: relative;
 }
 
+/* Разделительная линия после контактного текста */
 .contact-text::after {
     content: '';
     position: absolute;
@@ -68,6 +76,7 @@ body {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Кнопка обратной связи */
 .feedback-button {
     background-color: #FF2B72;
     color: white;
@@ -81,16 +90,19 @@ body {
     order: 2;
 }
 
+/* Эффект наведения на кнопку обратной связи */
 .feedback-button:hover {
     background-color: #ff4785;
 }
 
+/* Стили для часов работы */
 .working-hours {
     color: #ffffff;
     font-size: 16px;
     font-family: 'Arial', sans-serif;
 }
 
+/* Стили для номера телефона */
 .phone-number {
     color: #FF2B72;
     font-size: 18px;
@@ -99,6 +111,7 @@ body {
     text-decoration: none;
 }
 
+/* Стили для навигационного меню */
 .nav-menu {
     position: relative;
     margin-top: 20px;
@@ -111,6 +124,7 @@ body {
     width: calc(100% - 80px);
 }
 
+/* Разделительная линия перед навигационным меню */
 .nav-menu::before {
     content: '';
     position: absolute;
@@ -121,6 +135,7 @@ body {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Стили для элементов навигации */
 .nav-item {
     color: #ffffff;
     text-decoration: none;
@@ -130,16 +145,19 @@ body {
     transition: color 0.3s ease;
 }
 
+/* Эффект наведения на элементы навигации */
 .nav-item:hover {
     color: #FF2B72;
 }
 
+/* Основной контент */
 .main-content {
     margin-top: 50px;
     position: relative;
     z-index: 1;
 }
 
+/* Контейнер для закругленного изображения */
 .rounded-image-container {
     position: relative;
     margin-top: 50px;
@@ -153,16 +171,65 @@ body {
     z-index: 900;
 }
 
+/* Стили для изображения */
 .rounded-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
-    filter: brightness(0.9) contrast(1.1);
+    filter: brightness(0.9) contrast(1.1) opacity(0.5);
 }
 
-.rounded-image:hover {
-    transform: scale(1.01);
-    filter: brightness(1) contrast(1.1);
+/* Текст поверх изображения */
+.image-overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50px;
+    transform: translateY(-50%);
+    color: white;
+    z-index: 901;
 }
 
+/* Заголовок поверх изображения */
+.image-overlay-title {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Подзаголовок поверх изображения */
+.image-overlay-subtitle {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    font-family: 'Arial', sans-serif;
+    color: #FF2B72;
+}
+
+/* Описание поверх изображения */
+.image-overlay-description {
+    font-size: 16px;
+    max-width: 600px;
+    line-height: 1.4;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 30px;
+}
+
+/* Кнопка запроса */
+.request-button {
+    background-color: #FF2B72;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 40px;
+    font-size: 18px;
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Эффект наведения на кнопку запроса */
+.request-button:hover {
+    background-color: #FF2B72;
+    transform: translateY(2px);
+}

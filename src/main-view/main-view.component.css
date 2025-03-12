@@ -1,0 +1,235 @@
+/* Базовые стили для html */
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* Основные стили для body */
+body {
+    background-color: #1C243C;
+    width: 100%;
+    height: 7000px;
+    margin: 0;
+    padding: 0;
+    min-height: 7000px;
+    overflow-x: hidden;
+}
+
+/* Стили для названия компании */
+.company-name {
+    position: relative;
+    margin-top: 40px;
+    margin-left: 40px;
+    color: #FF2B72;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    padding: 10px;
+    padding-bottom: 5px;
+    z-index: 1000;
+}
+
+/* Стили для подзаголовка компании */
+.company-subtitle {
+    position: relative;
+    margin-top: -5px;
+    margin-left: 50px;
+    color: #a0a0a0;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    opacity: 0.8;
+    z-index: 1000;
+    display: block;
+}
+
+/* Контейнер для контактной информации */
+.contact-info {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    text-align: right;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+/* Стили для текста контактов */
+.contact-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    position: relative;
+}
+
+/* Разделительная линия после контактного текста */
+.contact-text::after {
+    content: '';
+    position: absolute;
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 40px;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Кнопка обратной связи */
+.feedback-button {
+    background-color: #FF2B72;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    order: 2;
+}
+
+/* Эффект наведения на кнопку обратной связи */
+.feedback-button:hover {
+    background-color: #ff4785;
+}
+
+/* Стили для часов работы */
+.working-hours {
+    color: #ffffff;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Стили для номера телефона */
+.phone-number {
+    color: #FF2B72;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    text-decoration: none;
+}
+
+/* Стили для навигационного меню */
+.nav-menu {
+    position: relative;
+    margin-top: 20px;
+    margin-left: 40px;
+    display: flex;
+    gap: 30px;
+    padding: 20px;
+    background-color: #1C243C;
+    z-index: 1000;
+    width: calc(100% - 80px);
+}
+
+/* Разделительная линия перед навигационным меню */
+.nav-menu::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(100vw - 80px);
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Стили для элементов навигации */
+.nav-item {
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    padding: 10px;
+    transition: color 0.3s ease;
+}
+
+/* Эффект наведения на элементы навигации */
+.nav-item:hover {
+    color: #FF2B72;
+}
+
+/* Основной контент */
+.main-content {
+    margin-top: 50px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Контейнер для закругленного изображения */
+.rounded-image-container {
+    position: relative;
+    margin-top: 50px;
+    margin-left: 50px;
+    width: 1350px;
+    height: 400px;
+    border-radius: 55px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transform: none;
+    z-index: 900;
+}
+
+/* Стили для изображения */
+.rounded-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.9) contrast(1.1) opacity(0.5);
+}
+
+/* Текст поверх изображения */
+.image-overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50px;
+    transform: translateY(-50%);
+    color: white;
+    z-index: 901;
+}
+
+/* Заголовок поверх изображения */
+.image-overlay-title {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Подзаголовок поверх изображения */
+.image-overlay-subtitle {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    font-family: 'Arial', sans-serif;
+    color: #FF2B72;
+}
+
+/* Описание поверх изображения */
+.image-overlay-description {
+    font-size: 16px;
+    max-width: 600px;
+    line-height: 1.4;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 30px;
+}
+
+/* Кнопка запроса */
+.request-button {
+    background-color: #FF2B72;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 40px;
+    font-size: 18px;
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Эффект наведения на кнопку запроса */
+.request-button:hover {
+    background-color: #FF2B72;
+    transform: translateY(2px);
+}

@@ -22,7 +22,96 @@
         </div>
         
         <div class="main-content">
-            <!-- Здесь будет основной контент -->
+            <div class="dashboard-grid">
+                <!-- Статистика -->
+                <div class="stats-container">
+                    <h3>Общая статистика</h3>
+                    <div class="stat-card">
+                        <div class="stat-item">
+                            <span class="number">157</span>
+                            <span class="trend">Сотрудников</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="number">23</span>
+                            <span class="trend">Объектов</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="number">89%</span>
+                            <span class="trend">Загруженность</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Таблица сотрудников -->
+                <div class="data-table">
+                    <h3>Сотрудники</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ФИО</th>
+                                <th>Должность</th>
+                                <th>Объект</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Иванов И.И.</td>
+                                <td>Старший менеджер</td>
+                                <td>ТЦ "Центральный"</td>
+                                <td><span class="status active">Активен</span></td>
+                            </tr>
+                            <tr>
+                                <td>Петрова А.С.</td>
+                                <td>Специалист</td>
+                                <td>БЦ "Горизонт"</td>
+                                <td><span class="status active">Активен</span></td>
+                            </tr>
+                            <tr>
+                                <td>Сидоров П.В.</td>
+                                <td>Менеджер</td>
+                                <td>ЖК "Солнечный"</td>
+                                <td><span class="status inactive">В отпуске</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Таблица объектов -->
+                <div class="data-table">
+                    <h3>Объекты</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Название</th>
+                                <th>Адрес</th>
+                                <th>Персонал</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ТЦ "Центральный"</td>
+                                <td>ул. Ленина, 45</td>
+                                <td>42 чел.</td>
+                                <td><span class="status active">Работает</span></td>
+                            </tr>
+                            <tr>
+                                <td>БЦ "Горизонт"</td>
+                                <td>пр. Мира, 78</td>
+                                <td>35 чел.</td>
+                                <td><span class="status active">Работает</span></td>
+                            </tr>
+                            <tr>
+                                <td>ЖК "Солнечный"</td>
+                                <td>ул. Светлая, 12</td>
+                                <td>28 чел.</td>
+                                <td><span class="status warning">Ремонт</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

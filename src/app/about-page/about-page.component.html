@@ -21,14 +21,42 @@
         </nav>
     </header>
 
+
+    
     <main class="main-content">
         <div class="rounded-image-container">
             <img src="assets/images/camera.jpg" alt="Камера видеонаблюдения" class="rounded-image">
-            <div class="image-overlay-text">
-               
-            </div>
+            
         </div>
         
         <!-- Здесь может быть дополнительный контент для прокрутки -->
     </main>
+    <div class="image-overlay-text">
+        <div class="image-overlay-subtitle">Отзывы о нас</div>
+        <button class="leave-review-button" onclick="document.getElementById('reviewModal').style.display='block'">Оставить отзыв</button>
+    </div>
+
+    <!-- Модальное окно для отзыва -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="document.getElementById('reviewModal').style.display='none'">&times;</span>
+            <h2>Оставить отзыв</h2>
+            <form class="review-form">
+                <div class="form-group">
+                    <label for="name">Ваше имя:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="review">Ваш отзыв:</label>
+                    <textarea id="review" name="review" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="submit-review-button">Отправить</button>
+            </form>
+        </div>
+    </div>
 </body>
+

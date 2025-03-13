@@ -9,7 +9,7 @@ html {
 body {
     background-color: #1C243C;
     width: 100%;
-    height: 7000px;
+    height: 700px;
     margin: 0;
     padding: 0;
     min-height: 1000px;
@@ -183,12 +183,16 @@ body {
 
 /* Текст поверх изображения */
 .image-overlay-text {
-    position: fixed;
+    position: relative;
     top: 50%;
-    left: 50px;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: white;
     z-index: 901;
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    padding-top: 50px;
 }
 
 /* Заголовок поверх изображения */
@@ -201,19 +205,134 @@ body {
 
 /* Подзаголовок поверх изображения */
 .image-overlay-subtitle {
-    font-size: 36px;
-    font-weight: bold;
+    font-size: 60px;
+    margin-top: -320px;
     margin-bottom: 20px;
+    font-family: 'Arial';
+    color: #ffffff;
+}
+
+/* Кнопка оставить отзыв */
+.leave-review-button {
+    background-color: #FF2B72;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 15px 35px;
+    font-size: 16px;
     font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 500px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* Эффект наведения на кнопку оставить отзыв */
+.leave-review-button:hover {
+    background-color: #ff4785;
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+}
+
+/* Содержимое модального окна */
+.modal-content {
+    position: relative;
+    background-color: #1C243C;
+    margin: 5% auto;
+    padding: 40px;
+    width: 50%;
+    max-width: 600px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Кнопка закрытия */
+.close-button {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover {
     color: #FF2B72;
 }
 
-/* Описание поверх изображения */
-.image-overlay-description {
-    font-size: 16px;
-    max-width: 600px;
-    line-height: 1.4;
-    font-family: 'Arial', sans-serif;
+/* Заголовок формы */
+.modal-content h2 {
+    color: #ffffff;
+    font-size: 24px;
     margin-bottom: 30px;
-    color: rgba(255, 255, 255, 0.8);
+    font-family: 'Arial', sans-serif;
 }
+
+/* Стили для формы */
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group label {
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #FF2B72;
+}
+
+/* Кнопка отправки формы */
+.submit-review-button {
+    background-color: #FF2B72;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 15px 35px;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.submit-review-button:hover {
+    background-color: #ff4785;
+}
+
+

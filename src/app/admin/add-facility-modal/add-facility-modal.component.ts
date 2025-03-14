@@ -1,38 +1,38 @@
 import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { EmployeeService, Employee } from '../../services/employee.service';
+import { FacilityService, Facility } from '../../services/facility.service';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
-    selector: 'app-add-employee-modal',
+    selector: 'app-add-facility-modal',
     standalone: true,
     imports: [CommonModule, FormsModule, HttpClientModule],
-    providers: [EmployeeService],
+    providers: [FacilityService],
     template: `
         <div class="modal-overlay" (click)="onClose()">
             <div class="modal-content" (click)="$event.stopPropagation()">
                 <div class="modal-header">
-                    <h3>{{isEditing ? 'Редактировать сотрудника' : 'Добавить сотрудника'}}</h3>
+                    <h3>{{isEditing ? 'Редактировать объект' : 'Добавить объект'}}</h3>
                     <button class="close-btn" (click)="onClose()">×</button>
                 </div>
                 <div class="modal-body">
                     <form (ngSubmit)="onSubmit()">
                         <div class="form-group">
-                            <label for="name">ФИО</label>
-                            <input type="text" id="name" [(ngModel)]="employee.name" name="name" required>
+                            <label for="name">Название объекта</label>
+                            <input type="text" id="name" [(ngModel)]="facility.name" name="name" required>
                         </div>
                         <div class="form-group">
-                            <label for="position">Должность</label>
-                            <input type="text" id="position" [(ngModel)]="employee.position" name="position" required>
+                            <label for="address">Адрес</label>
+                            <input type="text" id="address" [(ngModel)]="facility.address" name="address" required>
                         </div>
                         <div class="form-group">
-                            <label for="location">Объект</label>
-                            <input type="text" id="location" [(ngModel)]="employee.location" name="location" required>
+                            <label for="type">Тип объекта</label>
+                            <input type="text" id="type" [(ngModel)]="facility.type" name="type" required>
                         </div>
                         <div class="form-group">
                             <label for="status">Статус</label>
-                            <select id="status" [(ngModel)]="employee.status" name="status" required>
+                            <select id="status" [(ngModel)]="facility.status" name="status" required>
                                 <option value="active">Активен</option>
                                 <option value="inactive">Неактивен</option>
                             </select>
@@ -188,31 +188,31 @@ import { HttpClientModule } from '@angular/common/http';
         }
     `]
 })
-export class AddEmployeeModalComponent implements OnInit {
-    @Input() employeeToEdit: Employee | null = null;
+export class AddFacilityModalComponent implements OnInit {
+    @Input() facilityToEdit: Facility | null = null;
     @Output() close = new EventEmitter<void>();
-    @Output() employeeAdded = new EventEmitter<Employee>();
-    @Output() employeeUpdated = new EventEmitter<Employee>();
+    @Output() facilityAdded = new EventEmitter<Facility>();
+    @Output() facilityUpdated = new EventEmitter<Facility>();
 
-    employee: Omit<Employee, 'id'> = {
+    facility: Omit<Facility, 'id'> = {
         name: '',
-        position: '',
-        location: '',
+        address: '',
+        type: '',
         status: 'active'
     };
 
     isEditing: boolean = false;
 
-    constructor(private employeeService: EmployeeService) {}
+    constructor(private facilityService: FacilityService) {}
 
     ngOnInit(): void {
-        if (this.employeeToEdit) {
+        if (this.facilityToEdit) {
             this.isEditing = true;
-            this.employee = {
-                name: this.employeeToEdit.name,
-                position: this.employeeToEdit.position,
-                location: this.employeeToEdit.location,
-                status: this.employeeToEdit.status
+            this.facility = {
+                name: this.facilityToEdit.name,
+                address: this.facilityToEdit.address,
+                type: this.facilityToEdit.type,
+                status: this.facilityToEdit.status
             };
         }
     }
@@ -222,24 +222,24 @@ export class AddEmployeeModalComponent implements OnInit {
     }
 
     onSubmit(): void {
-        if (this.isEditing && this.employeeToEdit) {
-            this.employeeService.updateEmployee(this.employeeToEdit.id, this.employee).subscribe(
-                (updatedEmployee: Employee) => {
-                    this.employeeUpdated.emit(updatedEmployee);
+        if (this.isEditing && this.facilityToEdit) {
+            this.facilityService.updateFacility(this.facilityToEdit.id, this.facility).subscribe(
+                (updatedFacility: Facility) => {
+                    this.facilityUpdated.emit(updatedFacility);
                     this.onClose();
                 },
                 (error: Error) => {
-                    console.error('Ошибка при обновлении сотрудника:', error);
+                    console.error('Ошибка при обновлении объекта:', error);
                 }
             );
         } else {
-            this.employeeService.addEmployee(this.employee).subscribe(
-                (newEmployee: Employee) => {
-                    this.employeeAdded.emit(newEmployee);
+            this.facilityService.addFacility(this.facility).subscribe(
+                (newFacility: Facility) => {
+                    this.facilityAdded.emit(newFacility);
                     this.onClose();
                 },
                 (error: Error) => {
-                    console.error('Ошибка при добавлении сотрудника:', error);
+                    console.error('Ошибка при добавлении объекта:', error);
                 }
             );
         }

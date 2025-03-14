@@ -15,7 +15,7 @@ export interface Facility {
   providedIn: 'root'
 })
 export class FacilityService {
-  private apiUrl = 'http://localhost:3000/api/facilities';
+  private apiUrl = `${environment.apiUrl}/facilities`;
 
   constructor(private http: HttpClient) { }
 
@@ -23,7 +23,15 @@ export class FacilityService {
     return this.http.get<Facility[]>(this.apiUrl);
   }
 
-  addFacility(facility: Facility): Observable<Facility> {
+  addFacility(facility: Omit<Facility, 'id'>): Observable<Facility> {
     return this.http.post<Facility>(this.apiUrl, facility);
+  }
+
+  updateFacility(id: number, facility: Partial<Facility>): Observable<Facility> {
+    return this.http.put<Facility>(`${this.apiUrl}/${id}`, facility);
+  }
+
+  deleteFacility(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 } 

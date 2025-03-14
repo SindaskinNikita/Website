@@ -1,117 +1,315 @@
-<div class="admin-container">
-    <div class="sidemenu">
-        <nav>
-            <ul>
-                <li><img src="assets/user.svg" width="48" height="48" alt="logo"> <span>Администратор</span></li>
-                <li><a href="#dashboard">Главная</a></li>
-                <li><a href="#users">Пользователи</a></li>
-                <li><a href="#products">Товары</a></li>
-                <li><a href="#orders">Заказы</a></li>
-                <li><a href="#settings">Настройки</a></li>
-            </ul>
-        </nav>
-    </div>
-    
-    <div class="content">
-        <div class="header">
-            <h2>Панель управления</h2>
-            <div class="user-info">
-                <span>Администратор</span>
-                <button class="logout-btn">Выйти</button>
+<div class="admin-container" [class.dark-theme]="isDarkTheme">
+    <!-- Боковое меню -->
+    <aside class="sidemenu">
+        <div class="logo-section">
+            <i class="fas fa-building"></i>
+            <div class="logo-text">
+                <span class="logo-title">Админ<span class="accent">Панель</span></span>
+                <span class="logo-subtitle">Система управления</span>
             </div>
         </div>
         
-        <div class="main-content">
-            <div class="dashboard-grid">
-                <!-- Статистика -->
-                <div class="stats-container">
-                    <h3>Общая статистика</h3>
-                    <div class="stat-card">
-                        <div class="stat-item">
-                            <span class="number">157</span>
-                            <span class="trend">Сотрудников</span>
+        <nav>
+            <ul>
+                <li [class.active]="currentSection === 'dashboard'">
+                    <a routerLink="/admin" routerLinkActive="active">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Дашборд</span>
+                    </a>
+                </li>
+                <li [class.active]="currentSection === 'employees'">
+                    <a routerLink="/admin/employees" routerLinkActive="active">
+                        <i class="fas fa-users"></i>
+                        <span>Сотрудники</span>
+                    </a>
+                </li>
+                <li [class.active]="currentSection === 'facilities'">
+                    <a routerLink="/admin/facilities" routerLinkActive="active">
+                        <i class="fas fa-building"></i>
+                        <span>Объекты</span>
+                    </a>
+                </li>
+                <li [class.active]="currentSection === 'equipment'">
+                    <a routerLink="/admin/equipment" routerLinkActive="active">
+                        <i class="fas fa-tools"></i>
+                        <span>Оборудование</span>
+                    </a>
+                </li>
+                <li [class.active]="currentSection === 'reports'">
+                    <a routerLink="/admin/reports" routerLinkActive="active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Отчеты</span>
+                    </a>
+                </li>
+                <li [class.active]="currentSection === 'settings'">
+                    <a routerLink="/admin/settings" routerLinkActive="active">
+                        <i class="fas fa-cog"></i>
+                        <span>Настройки</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="user-section">
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <div class="user-details">
+                    <span class="user-name">Администратор</span>
+                    <span class="user-role">Системный администратор</span>
+                </div>
+            </div>
+            <button class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Выйти</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Основной контент -->
+    <main class="content">
+        <header class="header">
+            <h2>{{pageTitle}}</h2>
+            <div class="header-actions">
+                <button class="notification-btn" title="Уведомления">
+                    <i class="fas fa-bell"></i>
+                    <div class="notification-badge">3</div>
+                </button>
+                <button class="theme-toggle" (click)="toggleTheme()" title="Сменить тему">
+                    <i class="fas" [class.fa-moon]="!isDarkTheme" [class.fa-sun]="isDarkTheme"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Дашборд (по умолчанию) -->
+        <div *ngIf="currentSection === 'dashboard'">
+            <!-- Статистика -->
+            <section class="stats-container">
+                <h3>Общая статистика</h3>
+                <div class="stat-card">
+                    <div class="stat-item">
+                        <div class="stat-icon employees">
+                            <i class="fas fa-users"></i>
                         </div>
-                        <div class="stat-item">
-                            <span class="number">23</span>
-                            <span class="trend">Объектов</span>
+                        <div class="stat-info">
+                            <span class="number">{{totalEmployees}}</span>
+                            <span class="trend">Всего сотрудников</span>
                         </div>
-                        <div class="stat-item">
-                            <span class="number">89%</span>
-                            <span class="trend">Загруженность</span>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon facilities">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="number">{{totalFacilities}}</span>
+                            <span class="trend">Всего объектов</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon workload">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="number">{{averageWorkload}}%</span>
+                            <span class="trend">Средняя загрузка</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon equipment">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="number">{{equipments.length}}</span>
+                            <span class="trend">Всего оборудования</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- Таблица сотрудников -->
-                <div class="data-table">
-                    <h3>Сотрудники</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ФИО</th>
-                                <th>Должность</th>
-                                <th>Объект</th>
-                                <th>Статус</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Иванов И.И.</td>
-                                <td>Старший менеджер</td>
-                                <td>ТЦ "Центральный"</td>
-                                <td><span class="status active">Активен</span></td>
-                            </tr>
-                            <tr>
-                                <td>Петрова А.С.</td>
-                                <td>Специалист</td>
-                                <td>БЦ "Горизонт"</td>
-                                <td><span class="status active">Активен</span></td>
-                            </tr>
-                            <tr>
-                                <td>Сидоров П.В.</td>
-                                <td>Менеджер</td>
-                                <td>ЖК "Солнечный"</td>
-                                <td><span class="status inactive">В отпуске</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Таблица объектов -->
-                <div class="data-table">
-                    <h3>Объекты</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Название</th>
-                                <th>Адрес</th>
-                                <th>Персонал</th>
-                                <th>Статус</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>ТЦ "Центральный"</td>
-                                <td>ул. Ленина, 45</td>
-                                <td>42 чел.</td>
-                                <td><span class="status active">Работает</span></td>
-                            </tr>
-                            <tr>
-                                <td>БЦ "Горизонт"</td>
-                                <td>пр. Мира, 78</td>
-                                <td>35 чел.</td>
-                                <td><span class="status active">Работает</span></td>
-                            </tr>
-                            <tr>
-                                <td>ЖК "Солнечный"</td>
-                                <td>ул. Светлая, 12</td>
-                                <td>28 чел.</td>
-                                <td><span class="status warning">Ремонт</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            </section>
         </div>
-    </div>
+
+        <!-- Раздел сотрудников -->
+        <div *ngIf="currentSection === 'employees'">
+            <section class="data-table">
+                <div class="table-header">
+                    <h3>Сотрудники</h3>
+                    <button class="add-btn" (click)="onAddEmployee()">
+                        <i class="fas fa-plus"></i>
+                        <span>Добавить сотрудника</span>
+                    </button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Сотрудник</th>
+                            <th>Должность</th>
+                            <th>Объект</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let employee of employees">
+                            <td>
+                                <div class="employee-info">
+                                    <i class="fas fa-user"></i>
+                                    <span>{{employee.name}}</span>
+                                </div>
+                            </td>
+                            <td>{{employee.position}}</td>
+                            <td>{{employee.location}}</td>
+                            <td>
+                                <span class="status" [class.active]="employee.status === 'active'">
+                                    {{employee.status === 'active' ? 'Активен' : 'Неактивен'}}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn edit" (click)="onEditEmployee(employee)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn delete" (click)="onDeleteEmployee(employee)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <!-- Раздел объектов -->
+        <div *ngIf="currentSection === 'facilities'">
+            <section class="data-table">
+                <div class="table-header">
+                    <h3>Объекты</h3>
+                    <button class="add-btn" (click)="onAddFacility()">
+                        <i class="fas fa-plus"></i>
+                        <span>Добавить объект</span>
+                    </button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Объект</th>
+                            <th>Адрес</th>
+                            <th>Тип</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let facility of facilities">
+                            <td>
+                                <div class="facility-info">
+                                    <i class="fas fa-building"></i>
+                                    <span>{{facility.name}}</span>
+                                </div>
+                            </td>
+                            <td>{{facility.address}}</td>
+                            <td>{{facility.type}}</td>
+                            <td>
+                                <span class="status" [class.active]="facility.status === 'active'">
+                                    {{facility.status === 'active' ? 'Активен' : 'Неактивен'}}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn edit" (click)="onEditFacility(facility)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn delete" (click)="onDeleteFacility(facility)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <!-- Раздел оборудования -->
+        <div *ngIf="currentSection === 'equipment'">
+            <section class="data-table">
+                <div class="table-header">
+                    <h3>Оборудование</h3>
+                    <button class="add-btn" (click)="onAddEquipment()">
+                        <i class="fas fa-plus"></i>
+                        <span>Добавить оборудование</span>
+                    </button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Оборудование</th>
+                            <th>Тип</th>
+                            <th>Объект</th>
+                            <th>Состояние</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let equipment of equipments">
+                            <td>
+                                <div class="equipment-info">
+                                    <i class="fas fa-tools"></i>
+                                    <span>{{equipment.name}}</span>
+                                </div>
+                            </td>
+                            <td>{{equipment.type}}</td>
+                            <td>{{equipment.facility}}</td>
+                            <td>
+                                <span class="status" [class.active]="equipment.status === 'active'">
+                                    {{equipment.status === 'active' ? 'Исправно' : 'Требует ремонта'}}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn edit" (click)="onEditEquipment(equipment)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn delete" (click)="onDeleteEquipment(equipment)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <!-- Раздел отчетов -->
+        <div *ngIf="currentSection === 'reports'">
+            <section class="data-table">
+                <h3>Отчеты</h3>
+                <p>Раздел отчетов находится в разработке</p>
+            </section>
+        </div>
+
+        <!-- Раздел настроек -->
+        <div *ngIf="currentSection === 'settings'">
+            <section class="data-table">
+                <h3>Настройки</h3>
+                <p>Раздел настроек находится в разработке</p>
+            </section>
+        </div>
+
+        <app-add-employee-modal
+            *ngIf="showAddEmployeeModal"
+            [employeeToEdit]="selectedEmployee"
+            (close)="onCloseAddEmployeeModal()"
+            (employeeAdded)="onEmployeeAdded($event)"
+            (employeeUpdated)="onEmployeeUpdated($event)">
+        </app-add-employee-modal>
+
+        <!-- Модальное окно добавления/редактирования объекта -->
+        <app-add-facility-modal 
+            *ngIf="showAddFacilityModal" 
+            [facilityToEdit]="selectedFacility"
+            (close)="onCloseAddFacilityModal()"
+            (facilityAdded)="onFacilityAdded($event)"
+            (facilityUpdated)="onFacilityUpdated($event)">
+        </app-add-facility-modal>
+    </main>
 </div>

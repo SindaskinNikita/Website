@@ -62,6 +62,8 @@ body {
     align-items: flex-end;
     gap: 5px;
     position: relative;
+    position: relative;
+    z-index: 1500;
 }
 
 /* Разделительная линия после контактного текста */
@@ -88,6 +90,8 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease;
     order: 2;
+    position: relative;
+    z-index: 1500;
 }
 
 /* Эффект наведения на кнопку обратной связи */
@@ -119,7 +123,6 @@ body {
     display: flex;
     gap: 30px;
     padding: 20px;
-    background-color: #1C243C;
     z-index: 1000;
     width: calc(100% - 80px);
 }
@@ -152,7 +155,7 @@ body {
 
 /* Основной контент */
 .main-content {
-    margin-top: 50px;
+    margin-top: 0;
     position: relative;
     z-index: 1;
 }
@@ -160,25 +163,15 @@ body {
 /* Контейнер для закругленного изображения */
 .rounded-image-container {
     position: relative;
-    margin-top: 50px;
-    margin-left: 50px;
-    width: 1350px;
-    height: 400px;
+    margin-top: -250px;
+    margin-left: 0px;
+    width: 1460px;
+    height: 300px;
     border-radius: 55px;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     transform: none;
     z-index: 900;
-}
-
-.rounded-image-container::after {
-    content: '';
-    position: absolute;
-    left: -10;
-    bottom: 0px;
-    width: calc(100vw - 80px);
-    height: 10px;
-    background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Стили для изображения */
@@ -191,7 +184,7 @@ body {
 
 /* Текст поверх изображения */
 .image-overlay-text {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50px;
     transform: translateY(-50%);
@@ -222,24 +215,5 @@ body {
     max-width: 600px;
     line-height: 1.4;
     font-family: 'Arial', sans-serif;
-    margin-bottom: 110px;
-}
-
-/* Кнопка запроса */
-.request-button {
-    background-color: #FF2B72;
-    color: white; 
-    border: none;
-    border-radius: 30px;
-    padding: 15px 40px;
-    font-size: 18px;
-    font-family: 'Arial', sans-serif;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-/* Эффект наведения на кнопку запроса */
-.request-button:hover {
-    background-color: #FF2B72;
-    transform: translateY(2px);
+    margin-bottom: 30px;
 }

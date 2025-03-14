@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "start:server": "ts-node -P tsconfig.server.json src/server/server.ts",
+    "seed": "ts-node -P tsconfig.server.json src/server/database/seed.ts"
   },
   "private": true,
   "dependencies": {
@@ -17,8 +19,17 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
+    "@types/express": "^5.0.0",
+    "angular": "^1.8.3",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "mongoose": "^8.12.1",
+    "reflect-metadata": "^0.2.2",
     "rxjs": "~7.8.0",
+    "sqlite3": "^5.1.7",
     "tslib": "^2.3.0",
+    "typeorm": "^0.3.21",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
@@ -32,6 +43,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "ts-node": "^10.9.2",
     "typescript": "~5.7.2"
   }
 }

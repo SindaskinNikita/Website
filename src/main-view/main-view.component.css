@@ -1,19 +1,34 @@
 /* Базовые стили для html */
 html {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: 'Roboto', 'Open Sans', 'Segoe UI', Arial, sans-serif;
     height: 100%;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
 }
 
 /* Основные стили для body */
 body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', 'Open Sans', 'Segoe UI', Arial, sans-serif;
+    color: #fff;
+    line-height: 1.6;
+    font-weight: 400;
     background-color: #1C243C;
     width: 100%;
     height: 7000px;
-    margin: 0;
-    padding: 0;
     min-height: 1000px;
     overflow-x: hidden;
+}
+
+/* Сброс стилей для всех заголовков, параграфов и других текстовых элементов */
+h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
+    font-family: 'Roboto', 'Open Sans', 'Segoe UI', Arial, sans-serif;
 }
 
 /* Стили для названия компании */
@@ -161,14 +176,17 @@ body {
 .rounded-image-container {
     position: relative;
     margin-top: 50px;
-    margin-left: 50px;
-    width: 1350px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%; /* Увеличиваем базовую ширину */
+    max-width: 1350px;
     height: 400px;
     border-radius: 55px;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     transform: none;
     z-index: 900;
+    transition: all 0.3s ease;
 }
 
 .rounded-image-container::after {
@@ -186,7 +204,10 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transform-origin: center center;
+    object-position: center center;
     filter: brightness(0.9) contrast(1.1) opacity(0.5);
+    transition: all 0.5s ease-in-out;
 }
 
 /* Текст поверх изображения */
@@ -243,3 +264,2071 @@ body {
     background-color: #FF2B72;
     transform: translateY(2px);
 }
+
+/* Медиа-запросы для адаптивности */
+
+/* Медиа-запрос для устройств с очень маленькими экранами (складные устройства) */
+@media screen and (max-width: 280px) {
+    /* Galaxy Fold */
+    .company-name {
+        font-size: 18px;
+        margin-left: 10px;
+        text-align: center;
+    }
+
+    .company-subtitle {
+        font-size: 12px;
+        margin-left: 15px;
+        text-align: center;
+    }
+
+    .contact-info {
+        position: relative;
+        top: 10px;
+        right: 0;
+        padding: 5px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .contact-text::after {
+        display: none;
+    }
+
+    .working-hours {
+        font-size: 12px;
+    }
+
+    .phone-number {
+        font-size: 14px;
+    }
+
+    .feedback-button {
+        padding: 6px 15px;
+        font-size: 10px;
+    }
+
+    .nav-menu {
+        margin: 5px;
+        padding: 5px;
+        justify-content: center;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+
+    .nav-item {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    .rounded-image-container {
+        margin: 20px auto;
+        width: 90%;
+        height: 150px;
+        border-radius: 15px;
+    }
+
+    .image-overlay-text {
+        left: 15px;
+    }
+
+    .image-overlay-title {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 18px;
+    }
+
+    .image-overlay-description {
+        font-size: 10px;
+        max-width: 220px;
+        margin-bottom: 40px;
+    }
+
+    .request-button {
+        padding: 8px 15px;
+        font-size: 11px;
+    }
+
+    .rounded-image {
+        object-position: center center;
+        transform: scale(1.05);
+    }
+}
+
+/* Медиа-запрос для устройств с маленькими экранами (мобильные телефоны) */
+@media screen and (min-width: 281px) and (max-width: 320px) {
+    /* iPhone 5/SE, обычные маленькие телефоны */
+    .company-name {
+        font-size: 18px;
+        margin-left: 15px;
+        text-align: center;
+    }
+
+    .company-subtitle {
+        font-size: 12px;
+        margin-left: 20px;
+        text-align: center;
+    }
+
+    .contact-info {
+        position: relative;
+        top: 10px;
+        right: 0;
+        padding: 5px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .contact-text::after {
+        display: none;
+    }
+
+    .working-hours {
+        font-size: 13px;
+    }
+
+    .phone-number {
+        font-size: 15px;
+    }
+
+    .feedback-button {
+        padding: 8px 18px;
+        font-size: 11px;
+    }
+
+    .nav-menu {
+        margin: 5px;
+        padding: 8px;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .nav-item {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    .rounded-image-container {
+        margin: 20px auto;
+        width: 90%;
+        height: 170px;
+        border-radius: 20px;
+    }
+
+    .image-overlay-text {
+        left: 20px;
+    }
+
+    .image-overlay-title {
+        font-size: 22px;
+        margin-bottom: 8px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 20px;
+    }
+
+    .image-overlay-description {
+        font-size: 11px;
+        max-width: 240px;
+        margin-bottom: 50px;
+    }
+
+    .request-button {
+        padding: 10px 20px;
+        font-size: 12px;
+    }
+
+    .rounded-image {
+        object-position: center center;
+        transform: scale(1.05);
+    }
+}
+
+/* Медиа-запрос для устройств с маленькими экранами (iPhone и подобные) */
+@media screen and (min-width: 321px) and (max-width: 375px) {
+    /* iPhone X/11/12/13 */
+    .company-name {
+        font-size: 19px;
+        margin-left: 15px;
+        text-align: center;
+    }
+
+    .company-subtitle {
+        font-size: 13px;
+        margin-left: 20px;
+        text-align: center;
+    }
+
+    .contact-info {
+        position: relative;
+        top: 10px;
+        right: 0;
+        padding: 8px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 12px;
+    }
+
+    .contact-text::after {
+        display: none;
+    }
+
+    .working-hours {
+        font-size: 14px;
+    }
+
+    .phone-number {
+        font-size: 16px;
+    }
+
+    .feedback-button {
+        padding: 8px 20px;
+        font-size: 12px;
+    }
+
+    .nav-menu {
+        margin: 8px;
+        padding: 10px;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .nav-item {
+        font-size: 13px;
+        padding: 6px;
+    }
+
+    .rounded-image-container {
+        margin: 25px auto;
+        width: 90%;
+        height: 180px;
+        border-radius: 25px;
+    }
+
+    .image-overlay-text {
+        left: 20px;
+    }
+
+    .image-overlay-title {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 22px;
+    }
+
+    .image-overlay-description {
+        font-size: 12px;
+        max-width: 280px;
+        margin-bottom: 55px;
+    }
+
+    .request-button {
+        padding: 10px 22px;
+        font-size: 13px;
+    }
+
+    .rounded-image {
+        object-position: center center;
+        transform: scale(1.05);
+    }
+}
+
+/* Медиа-запрос для средних телефонов */
+@media screen and (min-width: 376px) and (max-width: 414px) {
+    /* iPhone 6/7/8 Plus, iPhone 12/13 Pro */
+    .company-name {
+        font-size: 20px;
+        margin-left: 20px;
+        text-align: center;
+    }
+
+    .company-subtitle {
+        font-size: 14px;
+        margin-left: 25px;
+        text-align: center;
+    }
+
+    .contact-info {
+        position: relative;
+        top: 10px;
+        right: 0;
+        padding: 10px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .contact-text::after {
+        display: none;
+    }
+
+    .working-hours {
+        font-size: 14px;
+    }
+
+    .phone-number {
+        font-size: 16px;
+    }
+
+    .feedback-button {
+        padding: 8px 20px;
+        font-size: 12px;
+    }
+
+    .nav-menu {
+        margin: 10px;
+        padding: 10px;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .nav-item {
+        font-size: 14px;
+        padding: 6px;
+    }
+
+    .rounded-image-container {
+        margin: 30px auto;
+        width: 92%;
+        height: 200px;
+        border-radius: 30px;
+    }
+
+    .image-overlay-text {
+        left: 25px;
+    }
+
+    .image-overlay-title {
+        font-size: 26px;
+        margin-bottom: 10px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 24px;
+    }
+
+    .image-overlay-description {
+        font-size: 13px;
+        max-width: 300px;
+        margin-bottom: 60px;
+    }
+
+    .request-button {
+        padding: 12px 25px;
+        font-size: 14px;
+    }
+
+    .rounded-image {
+        object-position: center center;
+        transform: scale(1.05);
+    }
+}
+
+/* Медиа-запрос для больших телефонов */
+@media screen and (min-width: 415px) and (max-width: 480px) {
+    /* Pixel 3a, Galaxy A51/71 */
+    .company-name {
+        font-size: 20px;
+        margin-left: 20px;
+    }
+
+    .company-subtitle {
+        font-size: 14px;
+        margin-left: 25px;
+    }
+
+    .contact-info {
+        position: relative;
+        top: 10px;
+        right: 0;
+        padding: 10px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .contact-text::after {
+        display: none;
+    }
+
+    .nav-menu {
+        margin: 10px;
+        padding: 10px;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-item {
+        font-size: 14px;
+    }
+
+    .rounded-image-container {
+        margin: 30px auto;
+        width: 92%;
+        height: 220px;
+        border-radius: 35px;
+    }
+
+    .image-overlay-text {
+        left: 25px;
+    }
+
+    .image-overlay-title {
+        font-size: 28px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 24px;
+    }
+
+    .image-overlay-description {
+        font-size: 13px;
+        max-width: 320px;
+        margin-bottom: 70px;
+    }
+
+    .request-button {
+        padding: 12px 28px;
+        font-size: 14px;
+    }
+
+    .rounded-image {
+        object-position: center center;
+        transform: scale(1.05);
+    }
+}
+
+/* Медиа-запрос для очень больших телефонов */
+@media screen and (min-width: 481px) and (max-width: 567px) {
+    /* iPhone 12/13 Pro Max, большие смартфоны */
+    .company-name {
+        font-size: 21px;
+        margin-left: 25px;
+    }
+
+    .company-subtitle {
+        font-size: 15px;
+        margin-left: 30px;
+    }
+
+    .contact-info {
+        position: relative;
+        top: 15px;
+        right: 0;
+        padding: 10px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-menu {
+        margin: 15px;
+        padding: 15px;
+        justify-content: center;
+        gap: 18px;
+        flex-wrap: wrap;
+    }
+
+    .rounded-image-container {
+        margin: 35px auto;
+        width: 92%;
+        height: 240px;
+        border-radius: 40px;
+    }
+
+    .image-overlay-text {
+        left: 30px;
+    }
+
+    .image-overlay-title {
+        font-size: 30px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 26px;
+    }
+
+    .image-overlay-description {
+        font-size: 14px;
+        max-width: 350px;
+        margin-bottom: 80px;
+    }
+
+    .request-button {
+        padding: 12px 30px;
+        font-size: 15px;
+    }
+
+    .rounded-image {
+        object-position: center center;
+        transform: scale(1.05);
+    }
+}
+
+/* Медиа-запрос для маленьких планшетов и ландшафтной ориентации телефонов */
+@media screen and (min-width: 568px) and (max-width: 767px) {
+    /* Маленькие планшеты, телефоны в ландшафтной ориентации */
+    .company-name {
+        font-size: 22px;
+        margin-left: 30px;
+    }
+
+    .company-subtitle {
+        font-size: 16px;
+        margin-left: 35px;
+    }
+
+    .nav-menu {
+        margin: 20px;
+        padding: 15px;
+        gap: 20px;
+    }
+
+    .rounded-image-container {
+        margin: 40px auto;
+        width: 94%;
+        height: 270px;
+        border-radius: 45px;
+    }
+
+    .image-overlay-text {
+        left: 35px;
+    }
+
+    .image-overlay-title {
+        font-size: 34px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 28px;
+    }
+
+    .image-overlay-description {
+        font-size: 15px;
+        max-width: 400px;
+        margin-bottom: 90px;
+    }
+
+    .request-button {
+        padding: 14px 32px;
+        font-size: 16px;
+    }
+
+    .rounded-image {
+        object-position: center center;
+    }
+}
+
+/* Медиа-запрос для планшетов */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    /* iPad Mini/Air, стандартные планшеты */
+    .nav-menu {
+        gap: 25px;
+    }
+
+    .rounded-image-container {
+        margin: 45px auto;
+        width: 94%;
+        height: 300px;
+        border-radius: 50px;
+    }
+
+    .image-overlay-text {
+        left: 40px;
+    }
+
+    .image-overlay-title {
+        font-size: 38px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 32px;
+    }
+
+    .image-overlay-description {
+        font-size: 16px;
+        max-width: 500px;
+        margin-bottom: 95px;
+    }
+
+    .request-button {
+        padding: 14px 35px;
+        font-size: 16px;
+    }
+
+    .rounded-image {
+        object-position: center center;
+    }
+}
+
+/* Медиа-запрос для больших планшетов и малых ноутбуков */
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+    /* iPad Pro, маленькие ноутбуки */
+    .rounded-image-container {
+        margin: 45px auto;
+        width: 94%;
+        height: 350px;
+    }
+
+    .image-overlay-text {
+        left: 45px;
+    }
+
+    .image-overlay-title {
+        font-size: 42px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 34px;
+    }
+
+    .image-overlay-description {
+        max-width: 550px;
+        margin-bottom: 100px;
+    }
+
+    .request-button {
+        padding: 15px 38px;
+        font-size: 17px;
+    }
+
+    .rounded-image {
+        object-position: center center;
+    }
+}
+
+/* Медиа-запрос для небольших настольных мониторов и ноутбуков */
+@media screen and (min-width: 1200px) and (max-width: 1399px) {
+    /* Стандартные ноутбуки и небольшие мониторы */
+    .rounded-image-container {
+        margin: 45px auto;
+        width: 97%; /* Увеличиваем ширину */
+        max-width: 1200px;
+        height: 420px; /* Увеличиваем высоту */
+    }
+
+    .rounded-image {
+        object-position: center center;
+    }
+}
+
+/* Медиа-запрос для средних настольных мониторов */
+@media screen and (min-width: 1400px) and (max-width: 1599px) {
+    .rounded-image-container {
+        width: 95%;
+        max-width: 1500px;
+        height: 440px;
+    }
+}
+
+@media screen and (min-width: 1600px) and (max-width: 1799px) {
+    .rounded-image-container {
+        width: 95%;
+        max-width: 1650px;
+        height: 460px;
+    }
+}
+
+@media screen and (min-width: 1800px) and (max-width: 1919px) {
+    .rounded-image-container {
+        width: 95%;
+        max-width: 1750px;
+        height: 480px;
+    }
+}
+
+/* Прогрессивное увеличение изображения для широких экранов */
+@media screen and (min-width: 1400px) {
+    .rounded-image {
+        transform: scale(1.03);
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    .rounded-image {
+        transform: scale(1.05);
+    }
+}
+
+@media screen and (min-width: 1800px) {
+    .rounded-image {
+        transform: scale(1.08);
+    }
+}
+
+/* Обновляем медиа-запросы для больших настольных мониторов (Full HD+) */
+@media screen and (min-width: 1920px) and (max-width: 2559px) {
+    /* Full HD и выше мониторы */
+    .company-name {
+        font-size: 28px;
+        margin-left: 60px;
+    }
+
+    .company-subtitle {
+        font-size: 18px;
+        margin-left: 70px;
+    }
+
+    .contact-info {
+        right: 60px;
+    }
+
+    .working-hours {
+        font-size: 18px;
+    }
+
+    .phone-number {
+        font-size: 22px;
+    }
+
+    .feedback-button {
+        padding: 12px 30px;
+        font-size: 16px;
+    }
+
+    .nav-menu {
+        margin-left: 60px;
+        gap: 40px;
+    }
+
+    .nav-item {
+        font-size: 18px;
+    }
+
+    .rounded-image-container {
+        margin: 50px auto;
+        width: 95%;
+        max-width: 1800px;
+        height: 500px; /* Увеличиваем высоту */
+    }
+
+    .image-overlay-text {
+        left: 60px;
+    }
+
+    .image-overlay-title {
+        font-size: 54px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 42px;
+    }
+
+    .image-overlay-description {
+        font-size: 18px;
+        max-width: 700px;
+        margin-bottom: 120px;
+    }
+
+    .request-button {
+        padding: 18px 45px;
+        font-size: 20px;
+    }
+
+    .rounded-image {
+        object-position: center center;
+        transform: scale(1.1); /* Увеличиваем масштаб */
+    }
+}
+
+/* Медиа-запрос для 2K мониторов */
+@media screen and (min-width: 2560px) and (max-width: 3839px) {
+    /* 2K мониторы */
+    .company-name {
+        font-size: 32px;
+        margin-left: 80px;
+    }
+
+    .company-subtitle {
+        font-size: 22px;
+        margin-left: 90px;
+    }
+
+    .contact-info {
+        right: 80px;
+    }
+
+    .working-hours {
+        font-size: 20px;
+    }
+
+    .phone-number {
+        font-size: 24px;
+    }
+
+    .feedback-button {
+        padding: 15px 35px;
+        font-size: 18px;
+    }
+
+    .nav-menu {
+        margin-left: 80px;
+        gap: 50px;
+    }
+
+    .nav-item {
+        font-size: 20px;
+    }
+
+    .rounded-image-container {
+        margin: 60px auto;
+        width: 95%;
+        max-width: 2400px; /* Увеличиваем максимальную ширину */
+        height: 600px; /* Увеличиваем высоту */
+    }
+
+    .image-overlay-text {
+        left: 80px;
+    }
+
+    .image-overlay-title {
+        font-size: 60px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 48px;
+    }
+
+    .image-overlay-description {
+        font-size: 22px;
+        max-width: 900px;
+        margin-bottom: 140px;
+    }
+
+    .request-button {
+        padding: 20px 50px;
+        font-size: 22px;
+    }
+
+    .rounded-image {
+        object-position: center center;
+        transform: scale(1.15); /* Увеличиваем масштаб */
+    }
+}
+
+/* Медиа-запрос для 4K мониторов и телевизоров */
+@media screen and (min-width: 3840px) {
+    /* 4K мониторы и телевизоры */
+    .company-name {
+        font-size: 40px;
+        margin-left: 100px;
+    }
+
+    .company-subtitle {
+        font-size: 26px;
+        margin-left: 110px;
+    }
+
+    .contact-info {
+        right: 100px;
+    }
+
+    .working-hours {
+        font-size: 24px;
+    }
+
+    .phone-number {
+        font-size: 28px;
+    }
+
+    .feedback-button {
+        padding: 18px 40px;
+        font-size: 22px;
+    }
+
+    .nav-menu {
+        margin-left: 100px;
+        gap: 60px;
+        padding: 30px;
+    }
+
+    .nav-item {
+        font-size: 24px;
+    }
+
+    .rounded-image-container {
+        margin: 80px auto;
+        width: 95%;
+        max-width: 3600px; /* Увеличиваем максимальную ширину */
+        height: 800px; /* Увеличиваем высоту */
+    }
+
+    .image-overlay-text {
+        left: 100px;
+    }
+
+    .image-overlay-title {
+        font-size: 72px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 56px;
+    }
+
+    .image-overlay-description {
+        font-size: 26px;
+        max-width: 1200px;
+        margin-bottom: 160px;
+    }
+
+    .request-button {
+        padding: 25px 60px;
+        font-size: 26px;
+    }
+
+    .rounded-image {
+        object-position: center center;
+        transform: scale(1.2); /* Еще больше увеличиваем масштаб */
+    }
+}
+
+/* Добавляем эффект при наведении для более интересного взаимодействия */
+.rounded-image-container:hover .rounded-image {
+    transform: scale(1.08); /* Увеличиваем масштаб при наведении */
+    filter: brightness(1) contrast(1.2) opacity(0.7);
+    object-position: center center;
+}
+
+@media (orientation: portrait) {
+    /* Специальное масштабирование для портретной ориентации */
+    .rounded-image-container {
+        width: 90%;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+    /* Специальное масштабирование для альбомной ориентации с низкой высотой (телефоны) */
+    .rounded-image-container {
+        height: 200px;
+        margin-top: 30px;
+    }
+
+    .image-overlay-text {
+        top: 45%;
+    }
+}
+
+/* Обеспечиваем высокую плотность пикселей для устройств с retina-дисплеями */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .rounded-image {
+        image-rendering: -webkit-optimize-contrast; /* Улучшает четкость изображений */
+    }
+}
+
+/* Стили для страниц с уменьшенной шириной (при масштабировании в браузере) */
+@media (max-width: 100%) {
+    .rounded-image-container {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 0;
+    }
+}
+
+/* Дополнительные улучшения для позиционирования изображения */
+.rounded-image-container {
+    overflow: hidden; /* Гарантирует отсутствие прокрутки при масштабировании */
+    position: relative;
+    z-index: 1;
+}
+
+/* Оптимизация загрузки изображения */
+@media screen and (max-width: 768px) {
+    .rounded-image-container {
+        will-change: transform; /* Оптимизирует производительность анимаций на мобильных устройствах */
+    }
+    
+    .rounded-image {
+        will-change: transform, opacity; /* Оптимизирует производительность анимаций на мобильных устройствах */
+    }
+}
+
+/* Адаптивные настройки для наиболее распространенных устройств */
+@media screen and (width: 320px) and (height: 568px) {
+    /* iPhone 5/SE exact */
+    .rounded-image {
+        object-position: center center;
+    }
+}
+
+@media screen and (width: 375px) and (height: 667px) {
+    /* iPhone 6/7/8 exact */
+    .rounded-image {
+        object-position: center center;
+    }
+}
+
+@media screen and (width: 414px) and (height: 896px) {
+    /* iPhone XR/11 exact */
+    .rounded-image {
+        object-position: center center;
+    }
+}
+
+@media screen and (width: 768px) and (height: 1024px) {
+    /* iPad exact */
+    .rounded-image {
+        object-position: center center;
+        transform: scale(1.03);
+    }
+}
+
+/* Улучшаем центрирование контейнера для мобильных устройств */
+@media screen and (max-width: 767px) {
+    .rounded-image-container {
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+    }
+}
+
+/* Добавляем центрирование текста и элементов в портретной ориентации */
+@media (orientation: portrait) and (max-width: 768px) {
+    .company-name, .company-subtitle {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .nav-menu {
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .image-overlay-text {
+        left: 0;
+        width: 100%;
+        text-align: center;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+    
+    .request-button {
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+/* Добавляем специальные настройки для Ultra-Wide мониторов */
+@media screen and (min-width: 3440px) and (max-width: 3839px) {
+    .rounded-image-container {
+        max-width: 80%;
+    }
+}
+
+/* Добавляем поддержку для браузеров Safari */
+@media not all and (min-resolution:.001dpcm) { 
+    @supports (-webkit-appearance:none) {
+        .rounded-image {
+            transform: translateZ(0); /* Улучшает рендеринг в Safari */
+        }
+    }
+}
+
+/* Специальные настройки для сверхшироких мониторов */
+@media screen and (min-width: 3440px) {
+    .rounded-image-container {
+        max-width: 90%;
+        height: 750px;
+    }
+}
+
+/* Настройка для мониторов с соотношением сторон 21:9 */
+@media screen and (min-aspect-ratio: 21/9) {
+    .rounded-image-container {
+        width: 90%;
+        height: 600px;
+    }
+    
+    .rounded-image {
+        transform: scale(1.12);
+    }
+}
+
+/* Улучшенное масштабирование по ширине - добавляем новые медиа-запросы */
+@media screen and (min-width: 1100px) {
+    .rounded-image-container {
+        width: 96%;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .rounded-image-container {
+        width: 97%;
+        height: 420px;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    .rounded-image-container {
+        width: 98%;
+        height: 430px;
+    }
+}
+
+/* Добавляем плавный переход между разрешениями */
+@media screen and (min-width: 1400px) and (max-width: 1599px) {
+    .rounded-image-container {
+        width: 95%;
+        max-width: 1500px;
+        height: 440px;
+    }
+}
+
+@media screen and (min-width: 1600px) and (max-width: 1799px) {
+    .rounded-image-container {
+        width: 95%;
+        max-width: 1650px;
+        height: 460px;
+    }
+}
+
+@media screen and (min-width: 1800px) and (max-width: 1919px) {
+    .rounded-image-container {
+        width: 95%;
+        max-width: 1750px;
+        height: 480px;
+    }
+}
+
+/* Добавляем специальный стиль для устройств с высоким DPI */
+@media 
+(-webkit-min-device-pixel-ratio: 2), 
+(min-resolution: 192dpi) {
+    .rounded-image {
+        image-rendering: -webkit-optimize-contrast;
+        transform: scale(1.02); /* Слегка увеличиваем для устройств с высоким DPI */
+    }
+}
+
+/* Улучшенное управление соотношением сторон */
+@media screen and (min-aspect-ratio: 16/9) {
+    .rounded-image-container {
+        margin-top: 60px;
+        height: 430px;
+    }
+}
+
+@media screen and (min-aspect-ratio: 21/9) {
+    .rounded-image-container {
+        width: 90%;
+        height: 600px;
+    }
+    
+    .rounded-image {
+        transform: scale(1.12);
+        object-position: center 45%; /* Немного смещаем для сверхшироких мониторов */
+    }
+}
+
+/* Для сверхбольших экранов - дополнительное увеличение */
+@media screen and (min-width: 5000px) {
+    .rounded-image-container {
+        max-width: 4000px;
+        height: 1000px;
+    }
+    
+    .rounded-image {
+        transform: scale(1.25);
+    }
+}
+
+/* Улучшенные стили для блока преимуществ компании */
+.advantages-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto 50px;
+    padding: 30px 0;
+    width: 95%;
+    max-width: 1800px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 950;
+    gap: 30px;
+}
+
+.advantage-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0 20px;
+    transition: transform 0.3s ease;
+}
+
+.advantage-item:hover {
+    transform: translateY(-5px);
+}
+
+.advantage-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FF2B72;
+    transition: all 0.3s ease;
+}
+
+.advantage-item:hover .advantage-icon {
+    transform: scale(1.1);
+    color: #ff4785;
+}
+
+.advantage-icon svg,
+.advantage-icon img {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+    filter: drop-shadow(0 0 5px rgba(255, 43, 114, 0.5));
+}
+
+.advantage-icon-circle {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.advantage-icon-circle::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 43, 114, 0.3);
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.advantage-item:hover .advantage-icon-circle::before {
+    transform: scale(1.1);
+    border-color: #FF2B72;
+}
+
+/* Стили для разделителей между элементами */
+.advantage-divider {
+    width: 1px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media screen and (max-width: 1200px) {
+    .advantages-container {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        padding: 20px 0;
+    }
+    
+    .advantage-item {
+        width: 45%;
+        margin-bottom: 20px;
+    }
+}
+
+/* Улучшенные стили для цифровых показателей */
+.stats-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-item {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+    padding: 20px;
+}
+
+.stat-item::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.stat-item:last-child::after {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .stat-item::after {
+        display: none;
+    }
+}
+
+/* Анимации для статистики */
+@keyframes count-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.stat-number {
+    animation: count-up 1s ease-out forwards;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Дополнительные улучшения для раздела "О КОМПАНИИ" */
+.about-company-section {
+    margin: 80px auto;
+    width: 95%;
+    max-width: 1800px;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+    z-index: 950;
+    padding: 40px 0;
+}
+
+.about-company-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 5%;
+    width: 90%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 43, 114, 0.3), transparent);
+}
+
+.about-company-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.about-company-text {
+    flex: 1;
+    min-width: 300px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: white;
+    opacity: 0.9;
+    margin-right: 20px;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.about-company-text p {
+    margin-bottom: 15px;
+}
+
+.about-company-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 50px;
+    gap: 30px;
+    width: 100%;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-10px);
+}
+
+.stat-number {
+    font-size: 72px;
+    font-weight: bold;
+    color: #FF2B72;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+    animation: count-up 1s ease-out forwards;
+    font-family: 'Arial', sans-serif;
+}
+
+.stat-item:hover .stat-number {
+    color: #ff4785;
+}
+
+.stat-text {
+    font-size: 16px;
+    color: white;
+    max-width: 200px;
+    line-height: 1.3;
+}
+
+/* Дополнительные адаптивные стили для блоков */
+@media screen and (min-width: 1920px) {
+    .advantages-container {
+        max-width: 2200px;
+    }
+    
+    .about-company-section {
+        max-width: 2200px;
+    }
+    
+    .about-company-text {
+        font-size: 18px;
+    }
+    
+    .stat-number {
+        font-size: 84px;
+    }
+    
+    .stat-text {
+        font-size: 18px;
+        max-width: 250px;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .stat-number {
+        font-size: 60px;
+    }
+    
+    .about-company-header {
+        font-size: 42px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .advantages-container {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        padding: 20px 0;
+    }
+    
+    .advantage-item {
+        width: 45%;
+        margin-bottom: 20px;
+    }
+    
+    .about-company-stats {
+        justify-content: center;
+    }
+    
+    .stat-number {
+        font-size: 54px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .advantages-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .advantage-item {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .about-company-header {
+        font-size: 36px;
+        text-align: center;
+    }
+    
+    .about-company-header::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .about-company-text {
+        text-align: center;
+        margin-right: 0;
+    }
+    
+    .stat-number {
+        font-size: 48px;
+    }
+    
+    .stat-text {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .advantages-container {
+        padding: 15px 0;
+    }
+    
+    .advantage-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .about-company-stats {
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+    }
+    
+    .stat-item {
+        width: 100%;
+    }
+    
+    .about-company-header {
+        font-size: 30px;
+    }
+}
+
+/* Стили для текста преимуществ */
+.advantage-text {
+    font-size: 16px;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+/* Стили для заголовка "О КОМПАНИИ" */
+.about-company-header {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 50px;
+    color: white;
+    position: relative;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Удаление подчеркивания
+.about-company-header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -15px;
+    width: 60px;
+    height: 3px;
+    background-color: #FF2B72;
+}
+*/
+
+/* Обертка для статистики */
+.stats-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Стили для разделителей между статистикой */
+.stat-item::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.stat-item:last-child::after {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .stat-item::after {
+        display: none;
+    }
+    
+    .about-company-header {
+        font-size: 36px;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .about-company-header {
+        font-size: 30px;
+    }
+    
+    .stats-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Адаптивные корректировки для больших экранов */
+@media screen and (min-width: 1920px) {
+    .about-company-header {
+        font-size: 54px;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .about-company-header {
+        font-size: 42px;
+    }
+}
+
+/* Добавляем классы для центральных элементов */
+.advantage-center-item {
+    margin: 0 auto;
+    justify-content: center;
+}
+
+/* Стили для раздела "Проектируем и устанавливаем" */
+.services-section {
+    width: 95%;
+    max-width: 1800px;
+    margin: 80px auto;
+    position: relative;
+    z-index: 950;
+    padding: 20px 0 60px;
+}
+
+.services-header {
+    font-size: 36px;
+    font-weight: bold;
+    color: #FF2B72;
+    text-align: center;
+    margin-bottom: 60px;
+    text-transform: uppercase;
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 1px;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    width: 100%;
+}
+
+.service-card {
+    background-color: rgba(36, 44, 72, 0.6);
+    border-radius: 20px;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 280px;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(255, 43, 114, 0.05) 0%, transparent 70%);
+    z-index: -1;
+}
+
+.service-icon-circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: rgba(36, 44, 72, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.service-icon-circle::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 43, 114, 0.3);
+    box-sizing: border-box;
+}
+
+.service-card:hover .service-icon-circle {
+    background-color: rgba(255, 43, 114, 0.1);
+}
+
+.service-icon-circle svg {
+    width: 50px;
+    height: 50px;
+    fill: #FF2B72;
+    filter: drop-shadow(0 0 5px rgba(255, 43, 114, 0.5));
+    transition: all 0.3s ease;
+}
+
+.service-card:hover .service-icon-circle svg {
+    transform: scale(1.1);
+    fill: #ff4785;
+}
+
+.service-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 25px;
+    font-family: 'Arial', sans-serif;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.service-button {
+    background-color: #FF2B72;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 25px;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: auto;
+}
+
+.service-button:hover {
+    background-color: #ff4785;
+    transform: translateY(-2px);
+}
+
+/* Адаптивные стили для раздела сервисов */
+@media screen and (max-width: 1200px) {
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .services-header {
+        font-size: 28px;
+        margin-bottom: 40px;
+    }
+    
+    .service-card {
+        min-height: 250px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .services-section {
+        width: 90%;
+        padding: 10px 0 40px;
+    }
+    
+    .services-header {
+        font-size: 24px;
+        margin-bottom: 30px;
+    }
+    
+    .service-icon-circle {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .service-icon-circle svg {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .service-title {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+    
+    .service-button {
+        padding: 10px 20px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .services-section {
+        max-width: 2200px;
+    }
+    
+    .services-header {
+        font-size: 42px;
+        margin-bottom: 70px;
+    }
+    
+    .service-card {
+        min-height: 320px;
+        padding: 40px 30px;
+    }
+    
+    .service-icon-circle {
+        width: 110px;
+        height: 110px;
+    }
+    
+    .service-icon-circle svg {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .service-title {
+        font-size: 22px;
+    }
+    
+    .service-button {
+        padding: 15px 30px;
+        font-size: 16px;
+    }
+}
+
+/* Раздел "Как мы работаем" */
+.work-process-section {
+    background-color: #1d2640;
+    color: #fff;
+    padding: 60px 0;
+    margin-top: 60px;
+    width: 100%;
+}
+
+.work-process-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 0 20px;
+}
+
+.work-process-info {
+    flex: 1;
+    max-width: 600px;
+}
+
+.work-process-header, .work-scheme-header {
+    color: #FF2B72;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+.work-process-text {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.work-process-text p {
+    margin-bottom: 20px;
+}
+
+.work-scheme {
+    flex: 1;
+    max-width: 500px;
+}
+
+.work-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Убираем отступ между первыми двумя шагами */
+.work-step.first-step {
+    margin-bottom: -2px; /* Отрицательный margin для сжатия промежутка */
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.work-step.second-step {
+    margin-top: -2px; /* Отрицательный margin для сжатия промежутка */
+    padding-top: 0;
+    border-top: none;
+}
+
+.work-step {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+}
+
+.step-icon {
+    background-color: #FF2B72;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.step-icon::after {
+    content: '';
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 70%;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.step-icon svg {
+    width: 30px;
+    height: 30px;
+    fill: white;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.step-description {
+    color: #ccc;
+    font-size: 14px;
+}
+
+/* Форма заказа */
+.order-form-container {
+    max-width: 1200px;
+    margin: 60px auto 0;
+    background-color: #1a2238;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.order-form-header {
+    color: #FF2B72;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.order-form {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.form-input {
+    flex: 1;
+    min-width: 220px;
+    padding: 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 16px;
+}
+
+.form-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.order-button {
+    background-color: #FF2B72;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    min-width: 180px;
+}
+
+.order-button:hover {
+    background-color: #e61e63;
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 992px) {
+    .work-process-container {
+        flex-direction: column;
+    }
+    
+    .work-process-info, .work-scheme {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .order-form {
+        flex-direction: column;
+    }
+    
+    .form-input, .order-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .work-process-header, .work-scheme-header {
+        font-size: 24px;
+    }
+    
+    .step-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .step-icon svg {
+        width: 25px;
+        height: 25px;
+    }
+}
+

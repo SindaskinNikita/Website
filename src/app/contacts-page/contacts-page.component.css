@@ -217,3 +217,269 @@ body {
     font-family: 'Arial', sans-serif;
     margin-bottom: 30px;
 }
+
+/* Медиа-запросы для адаптивности */
+@media screen and (max-width: 1460px) {
+    .rounded-image-container {
+        width: 100%;
+        margin-top: -200px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .nav-menu {
+        gap: 15px;
+    }
+    
+    .contact-info {
+        right: 20px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .company-name {
+        font-size: 20px;
+        margin-left: 20px;
+    }
+
+    .company-subtitle {
+        font-size: 14px;
+        margin-left: 30px;
+    }
+
+    .nav-menu {
+        margin-left: 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .nav-item {
+        font-size: 14px;
+    }
+
+    .contact-info {
+        position: relative;
+        top: 0;
+        right: 0;
+        justify-content: flex-end;
+        padding: 10px 20px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 32px;
+    }
+
+    .image-overlay-description {
+        font-size: 14px;
+        max-width: 500px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        min-height: 800px;
+    }
+
+    .contact-info {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-end;
+    }
+
+    .contact-text::after {
+        display: none;
+    }
+
+    .nav-menu {
+        justify-content: center;
+    }
+
+    .rounded-image-container {
+        margin-top: -150px;
+        height: 250px;
+    }
+
+    .image-overlay-text {
+        left: 30px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 28px;
+    }
+
+    .image-overlay-description {
+        font-size: 13px;
+        max-width: 400px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .company-name {
+        text-align: center;
+        margin: 20px 10px 0;
+    }
+
+    .company-subtitle {
+        text-align: center;
+        margin: 5px 10px;
+    }
+
+    .contact-info {
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .nav-menu {
+        margin: 10px;
+        padding: 10px;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .nav-item {
+        padding: 5px;
+    }
+
+    .rounded-image-container {
+        margin-top: -100px;
+        height: 200px;
+        border-radius: 30px;
+    }
+
+    .image-overlay-text {
+        left: 20px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 24px;
+    }
+
+    .image-overlay-description {
+        font-size: 12px;
+        max-width: 300px;
+    }
+}
+
+/* Медиа-запросы для складных устройств */
+@media screen and (max-width: 280px) {
+    /* Galaxy Fold */
+    .rounded-image-container {
+        height: 150px;
+        margin-top: -60px;
+        border-radius: 12px;
+    }
+
+    .image-overlay-text {
+        left: 15px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 20px;
+    }
+
+    .image-overlay-description {
+        font-size: 11px;
+        max-width: 250px;
+    }
+}
+
+/* Медиа-запросы для средних телефонов */
+@media screen and (min-width: 415px) and (max-width: 480px) {
+    /* Pixel 3a, Galaxy A51/71 */
+    .rounded-image-container {
+        height: 210px;
+        margin-top: -95px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 26px;
+    }
+
+    .image-overlay-description {
+        max-width: 350px;
+    }
+}
+
+/* Медиа-запросы для больших телефонов */
+@media screen and (min-width: 481px) and (max-width: 567px) {
+    /* iPhone 12/13 Pro Max */
+    .rounded-image-container {
+        height: 230px;
+        margin-top: -110px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 28px;
+    }
+}
+
+/* Медиа-запросы для маленьких планшетов */
+@media screen and (min-width: 600px) and (max-width: 767px) {
+    /* Surface Duo */
+    .rounded-image-container {
+        height: 260px;
+        margin-top: -140px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 30px;
+    }
+
+    .image-overlay-description {
+        max-width: 450px;
+    }
+}
+
+/* Медиа-запросы для больших планшетов */
+@media screen and (min-width: 1025px) and (max-width: 1280px) {
+    /* Surface Pro */
+    .rounded-image-container {
+        height: 340px;
+        margin-top: -240px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 34px;
+    }
+
+    .image-overlay-description {
+        max-width: 550px;
+    }
+}
+
+/* Медиа-запросы для мониторов 2K */
+@media screen and (min-width: 2048px) and (max-width: 2559px) {
+    /* 2K мониторы */
+    .rounded-image-container {
+        height: 450px;
+        margin-top: -320px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 42px;
+    }
+
+    .image-overlay-description {
+        font-size: 18px;
+        max-width: 800px;
+    }
+}
+
+/* Медиа-запросы для мониторов 4K */
+@media screen and (min-width: 3840px) {
+    /* 4K мониторы */
+    .rounded-image-container {
+        height: 600px;
+        margin-top: -400px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 52px;
+    }
+
+    .image-overlay-description {
+        font-size: 22px;
+        max-width: 1000px;
+    }
+}

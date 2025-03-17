@@ -2206,6 +2206,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
     align-items: center;
     gap: 15px;
     position: relative;
+    margin: -10px  ;
 }
 
 .step-icon {

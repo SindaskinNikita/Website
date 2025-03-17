@@ -14,6 +14,10 @@ body {
     padding: 0;
     min-height: 1000px;
     overflow-x: hidden;
+    font-family: 'Roboto', Arial, sans-serif;
+    line-height: 1.6;
+    font-weight: 300;
+    color: #fff;
 }
 
 /* Стили для названия компании */
@@ -87,15 +91,24 @@ body {
     font-size: 14px;
     font-family: 'Arial', sans-serif;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     order: 2;
     position: relative;
     z-index: 1500;
+    overflow: hidden;
 }
 
-/* Эффект наведения на кнопку обратной связи */
+/* Улучшенный эффект наведения на кнопку обратной связи */
 .feedback-button:hover {
     background-color: #ff4785;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 43, 114, 0.4);
+}
+
+/* Анимация нажатия на кнопку обратной связи */
+.feedback-button:active {
+    transform: scale(0.95) translateY(0);
+    box-shadow: 0 2px 8px rgba(255, 43, 114, 0.3);
 }
 
 /* Стили для часов работы */
@@ -162,8 +175,8 @@ body {
 /* Контейнер для закругленного изображения */
 .rounded-image-container {
     position: relative;
-    margin-top: -250px;
-    margin-left: 0px;
+    margin-top: -270px;
+    margin-left: 0;
     width: 100%;
     height: 300px;
     border-radius: 55px;
@@ -184,15 +197,16 @@ body {
 /* Текст поверх изображения */
 .image-overlay-text {
     position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: auto;
+    left: auto;
+    transform: none;
     color: white;
     z-index: 901;
     text-align: center;
     width: 100%;
-    max-width: 800px;
-    padding-top: 50px;
+    max-width: 100%;
+    padding: 30px 0;
+    margin-top: 30px;
 }
 
 /* Заголовок поверх изображения */
@@ -205,11 +219,18 @@ body {
 
 /* Подзаголовок поверх изображения */
 .image-overlay-subtitle {
-    font-size: 60px;
-    margin-top: -320px;
-    margin-bottom: 20px;
+    font-size: 50px;
+    margin: 0;
+    padding: 20px 0;
     font-family: 'Arial';
     color: #ffffff;
+}
+
+/* Контейнер для кнопки оставить отзыв */
+.leave-review-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
 }
 
 /* Кнопка оставить отзыв */
@@ -223,7 +244,6 @@ body {
     font-family: 'Arial', sans-serif;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 500px;
     text-transform: uppercase;
     font-weight: bold;
 }
@@ -243,6 +263,11 @@ body {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 2000;
+}
+
+/* Видимость модального окна */
+.modal.visible {
+    display: block;
 }
 
 /* Содержимое модального окна */
@@ -335,6 +360,94 @@ body {
     background-color: #ff4785;
 }
 
+/* Стили для формы обратной связи */
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Кнопка отправки формы обратной связи */
+.submit-feedback-button {
+    background-color: #FF2B72;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 15px 35px;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* Эффект наведения на кнопку отправки формы */
+.submit-feedback-button:hover {
+    background-color: #ff4785;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 43, 114, 0.4);
+}
+
+/* Эффект нажатия на кнопку отправки формы */
+.submit-feedback-button:active {
+    transform: scale(0.95) translateY(0);
+    box-shadow: 0 2px 8px rgba(255, 43, 114, 0.3);
+}
+
+/* Секция отзывов */
+.reviews-section {
+    padding: 40px 20px;
+    margin-top: 15px;
+}
+
+.reviews-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.review-card {
+    width: 100%;
+    max-width: 350px;
+    background-color: #273050;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.reviewer-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin-right: 15px;
+}
+
+.reviewer-name {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.review-text {
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+}
+
 /* Медиа-запросы для адаптивности */
 @media screen and (max-width: 1460px) {
     .rounded-image-container {
@@ -376,10 +489,13 @@ body {
 
     .contact-info {
         position: relative;
-        top: 0;
-        right: 0;
+        top: auto;
+        right: auto;
         justify-content: flex-end;
         padding: 10px 20px;
+        float: right;
+        margin-right: 20px;
+        margin-top: 0;
     }
 
     .modal-content {
@@ -401,6 +517,8 @@ body {
         flex-direction: column;
         gap: 15px;
         align-items: flex-end;
+        position: relative;
+        float: right;
     }
 
     .contact-text::after {
@@ -422,7 +540,6 @@ body {
     }
 
     .leave-review-button {
-        margin-top: 400px;
         padding: 12px 25px;
         font-size: 14px;
     }
@@ -430,6 +547,15 @@ body {
     .modal-content {
         width: 90%;
         padding: 30px;
+    }
+    
+    .reviews-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .review-card {
+        max-width: 100%;
     }
 }
 
@@ -448,6 +574,8 @@ body {
         align-items: center;
         text-align: center;
         width: 100%;
+        float: none;
+        margin-right: 0;
     }
 
     .nav-menu {
@@ -473,7 +601,6 @@ body {
     }
 
     .leave-review-button {
-        margin-top: 300px;
         padding: 10px 20px;
         font-size: 12px;
     }
@@ -502,535 +629,29 @@ body {
     }
 }
 
-/* Медиа-запросы для больших экранов */
-@media screen and (min-width: 1921px) {
-    body {
-        min-height: 1200px;
-    }
-
-    .rounded-image-container {
-        width: 90%;
-        max-width: 2000px;
-        height: 400px;
-        margin-top: -300px;
-    }
-
-    .company-name {
-        font-size: 32px;
-        margin-left: 60px;
-    }
-
-    .company-subtitle {
-        font-size: 20px;
-        margin-left: 70px;
-    }
-
-    .nav-menu {
-        margin-left: 60px;
-        gap: 40px;
-    }
-
-    .nav-item {
-        font-size: 18px;
-    }
-
+@media screen and (max-width: 480px) {
     .contact-info {
-        right: 60px;
-    }
-
-    .phone-number {
-        font-size: 22px;
-    }
-
-    .working-hours {
-        font-size: 18px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 72px;
-        margin-top: -380px;
-    }
-
-    .leave-review-button {
-        margin-top: 600px;
-        padding: 20px 45px;
-        font-size: 18px;
-    }
-
-    .modal-content {
-        max-width: 800px;
-        padding: 50px;
-    }
-
-    .modal-content h2 {
-        font-size: 32px;
-    }
-
-    .form-group label {
-        font-size: 18px;
-    }
-
-    .form-group input,
-    .form-group textarea {
-        padding: 15px;
-        font-size: 16px;
-    }
-
-    .submit-review-button {
-        padding: 18px 40px;
-        font-size: 18px;
-    }
-}
-
-/* Медиа-запросы для очень маленьких экранов */
-@media screen and (max-width: 375px) {
-    body {
-        min-height: 600px;
-    }
-
-    .company-name {
-        font-size: 18px;
-        margin: 15px 5px 0;
-    }
-
-    .company-subtitle {
-        font-size: 12px;
-        margin: 3px 5px;
-    }
-
-    .contact-info {
-        padding: 5px 10px;
-    }
-
-    .working-hours {
-        font-size: 14px;
-    }
-
-    .phone-number {
-        font-size: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        float: none;
+        margin-right: 0;
     }
 
     .feedback-button {
-        padding: 8px 20px;
-        font-size: 12px;
-    }
-
-    .nav-menu {
-        margin: 5px;
-        padding: 5px;
-        gap: 3px;
-    }
-
-    .nav-item {
-        font-size: 12px;
-        padding: 3px;
-    }
-
-    .rounded-image-container {
-        margin-top: -80px;
-        height: 180px;
-        border-radius: 20px;
+        margin-top: 10px;
     }
 
     .image-overlay-subtitle {
-        font-size: 24px;
-        margin-top: -130px;
+        font-size: 20px;
     }
 
     .leave-review-button {
-        margin-top: 250px;
         padding: 8px 16px;
-        font-size: 11px;
-    }
-
-    .modal-content {
-        padding: 15px;
-        width: 95%;
-    }
-
-    .modal-content h2 {
-        font-size: 18px;
-        margin-bottom: 15px;
-    }
-
-    .form-group {
-        gap: 5px;
-    }
-
-    .form-group label {
-        font-size: 12px;
-    }
-
-    .form-group input,
-    .form-group textarea {
-        padding: 6px;
         font-size: 12px;
     }
 
     .submit-review-button {
         padding: 10px 20px;
-        font-size: 12px;
-        margin-top: 15px;
-    }
-
-    .close-button {
-        font-size: 24px;
-        right: 15px;
-        top: 5px;
-    }
-}
-
-/* Медиа-запросы для экстремально больших экранов */
-@media screen and (min-width: 2560px) {
-    body {
-        min-height: 1400px;
-    }
-
-    .rounded-image-container {
-        width: 85%;
-        max-width: 2400px;
-        height: 500px;
-        margin-top: -350px;
-    }
-
-    .company-name {
-        font-size: 38px;
-        margin-left: 80px;
-    }
-
-    .company-subtitle {
-        font-size: 24px;
-        margin-left: 90px;
-    }
-
-    .nav-menu {
-        margin-left: 80px;
-        gap: 50px;
-    }
-
-    .nav-item {
-        font-size: 22px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 86px;
-        margin-top: -450px;
-    }
-
-    .leave-review-button {
-        margin-top: 700px;
-        padding: 25px 55px;
-        font-size: 22px;
-    }
-
-    .modal-content {
-        max-width: 1000px;
-        padding: 60px;
-    }
-
-    .modal-content h2 {
-        font-size: 38px;
-    }
-
-    .form-group label {
-        font-size: 22px;
-    }
-
-    .form-group input,
-    .form-group textarea {
-        padding: 18px;
-        font-size: 20px;
-    }
-
-    .submit-review-button {
-        padding: 22px 48px;
-        font-size: 22px;
-    }
-}
-
-/* Медиа-запросы для мобильных устройств */
-@media screen and (max-width: 320px) {
-    /* iPhone 5/SE */
-    .rounded-image-container {
-        height: 160px;
-        margin-top: -70px;
-        border-radius: 15px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 22px;
-        margin-top: -120px;
-    }
-
-    .leave-review-button {
-        margin-top: 220px;
-        padding: 8px 16px;
-        font-size: 10px;
-    }
-}
-
-@media screen and (min-width: 375px) and (max-width: 390px) {
-    /* iPhone X/11/12/13 */
-    .rounded-image-container {
-        height: 180px;
-        margin-top: -80px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 24px;
-        margin-top: -130px;
-    }
-
-    .leave-review-button {
-        margin-top: 250px;
-    }
-}
-
-@media screen and (min-width: 391px) and (max-width: 414px) {
-    /* iPhone 6/7/8 Plus */
-    .rounded-image-container {
-        height: 190px;
-        margin-top: -90px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 26px;
-        margin-top: -140px;
-    }
-
-    .leave-review-button {
-        margin-top: 270px;
-    }
-}
-
-/* Медиа-запросы для планшетов */
-@media screen and (min-width: 768px) and (max-width: 834px) {
-    /* iPad Mini/Air */
-    .rounded-image-container {
-        height: 280px;
-        margin-top: -180px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 42px;
-        margin-top: -230px;
-    }
-
-    .leave-review-button {
-        margin-top: 450px;
-    }
-}
-
-@media screen and (min-width: 835px) and (max-width: 1024px) {
-    /* iPad Pro */
-    .rounded-image-container {
-        height: 320px;
-        margin-top: -220px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 46px;
-        margin-top: -270px;
-    }
-
-    .leave-review-button {
-        margin-top: 500px;
-    }
-}
-
-/* Медиа-запросы для ноутбуков */
-@media screen and (min-width: 1366px) and (max-width: 1440px) {
-    /* Стандартные ноутбуки */
-    .rounded-image-container {
-        height: 350px;
-        margin-top: -250px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 54px;
-        margin-top: -300px;
-    }
-
-    .leave-review-button {
-        margin-top: 550px;
-    }
-}
-
-@media screen and (min-width: 1441px) and (max-width: 1920px) {
-    /* Большие ноутбуки и настольные мониторы */
-    .rounded-image-container {
-        height: 380px;
-        margin-top: -280px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 58px;
-        margin-top: -330px;
-    }
-
-    .leave-review-button {
-        margin-top: 580px;
-    }
-}
-
-/* Медиа-запросы для складных устройств */
-@media screen and (max-width: 280px) {
-    /* Galaxy Fold */
-    .rounded-image-container {
-        height: 150px;
-        margin-top: -60px;
-        border-radius: 12px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 20px;
-        margin-top: -110px;
-    }
-
-    .leave-review-button {
-        margin-top: 200px;
-        padding: 6px 14px;
-        font-size: 9px;
-    }
-}
-
-/* Медиа-запросы для средних телефонов */
-@media screen and (min-width: 415px) and (max-width: 480px) {
-    /* Pixel 3a, Galaxy A51/71 */
-    .rounded-image-container {
-        height: 210px;
-        margin-top: -95px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 28px;
-        margin-top: -160px;
-    }
-
-    .leave-review-button {
-        margin-top: 290px;
-        font-size: 13px;
-    }
-}
-
-/* Медиа-запросы для больших телефонов */
-@media screen and (min-width: 481px) and (max-width: 567px) {
-    /* iPhone 12/13 Pro Max */
-    .rounded-image-container {
-        height: 230px;
-        margin-top: -110px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 32px;
-        margin-top: -180px;
-    }
-
-    .leave-review-button {
-        margin-top: 320px;
-        font-size: 14px;
-    }
-}
-
-/* Медиа-запросы для маленьких планшетов */
-@media screen and (min-width: 600px) and (max-width: 767px) {
-    /* Surface Duo */
-    .rounded-image-container {
-        height: 260px;
-        margin-top: -140px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 38px;
-        margin-top: -210px;
-    }
-
-    .leave-review-button {
-        margin-top: 380px;
-        font-size: 15px;
-    }
-}
-
-/* Медиа-запросы для больших планшетов */
-@media screen and (min-width: 1025px) and (max-width: 1280px) {
-    /* Surface Pro */
-    .rounded-image-container {
-        height: 340px;
-        margin-top: -240px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 50px;
-        margin-top: -290px;
-    }
-
-    .leave-review-button {
-        margin-top: 520px;
-        font-size: 16px;
-    }
-}
-
-/* Медиа-запросы для мониторов 2K */
-@media screen and (min-width: 2048px) and (max-width: 2559px) {
-    /* 2K мониторы */
-    .rounded-image-container {
-        height: 450px;
-        margin-top: -320px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 80px;
-        margin-top: -420px;
-    }
-
-    .leave-review-button {
-        margin-top: 650px;
-        padding: 22px 50px;
-        font-size: 20px;
-    }
-}
-
-/* Медиа-запросы для мониторов 4K */
-@media screen and (min-width: 3840px) {
-    /* 4K мониторы */
-    .rounded-image-container {
-        height: 600px;
-        margin-top: -400px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 100px;
-        margin-top: -500px;
-    }
-
-    .leave-review-button {
-        margin-top: 800px;
-        padding: 30px 60px;
-        font-size: 26px;
-    }
-
-    .modal-content {
-        max-width: 1200px;
-        padding: 80px;
-    }
-
-    .modal-content h2 {
-        font-size: 46px;
-    }
-
-    .form-group label {
-        font-size: 28px;
-    }
-
-    .form-group input,
-    .form-group textarea {
-        padding: 24px;
-        font-size: 24px;
-    }
-
-    .submit-review-button {
-        padding: 28px 56px;
-        font-size: 26px;
     }
 }
 

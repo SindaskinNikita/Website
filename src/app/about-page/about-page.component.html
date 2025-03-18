@@ -24,13 +24,11 @@
     <main class="main-content">
         <div class="rounded-image-container">
             <img src="assets/images/camera.jpg" alt="Камера видеонаблюдения" class="rounded-image">
+            <div class="image-overlay-text">
+                <div class="image-overlay-subtitle">Отзывы о нас</div>
+            </div>
         </div>
         
-        <!-- Заголовок "Отзывы о нас" под фотографией -->
-        <div class="image-overlay-text">
-            <div class="image-overlay-subtitle">Отзывы о нас</div>
-        </div>
-
         <!-- Секция отзывов -->
         <section class="reviews-section">
             <div class="reviews-container">
@@ -73,8 +71,8 @@
             </form>
         </div>
     </div>
-
-    <!-- Добавляем модальное окно для связи с администратором -->
+    
+    <!-- Модальное окно для связи с администратором -->
     <div class="modal feedback-modal" [class.visible]="feedbackModalVisible">
         <div class="modal-content">
             <span class="close-button" (click)="closeFeedbackModal()">&times;</span>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-main-view',
@@ -6,7 +6,22 @@ import { Component } from '@angular/core';
   templateUrl: './main-view.component.html',
   styleUrl: './main-view.component.css'
 })
-export class MainViewComponent {
+export class MainViewComponent implements OnInit {
+
+  showScrollButton = false;
+
+  ngOnInit(): void {
+    // ... existing code ...
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    if (window.scrollY > 300) {
+      this.showScrollButton = true;
+    } else {
+      this.showScrollButton = false;
+    }
+  }
 
   // Метод для прокрутки к форме заказа
   scrollToOrderForm() {
@@ -14,5 +29,10 @@ export class MainViewComponent {
     if (orderFormElement) {
       orderFormElement.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+
+  // Метод для прокрутки наверх страницы
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

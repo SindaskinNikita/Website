@@ -45,7 +45,8 @@ export class AboutPageComponent {
     name: '',
     email: '',
     phone: '',
-    message: ''
+    message: '',
+    privacyAccepted: false
   };
 
   openModal(): void {
@@ -77,7 +78,8 @@ export class AboutPageComponent {
       name: '',
       email: '',
       phone: '',
-      message: ''
+      message: '',
+      privacyAccepted: false
     };
     
     this.closeFeedbackModal();

@@ -94,9 +94,15 @@
                     <label for="feedbackMessage">Ваше сообщение:</label>
                     <textarea id="feedbackMessage" name="feedbackMessage" rows="5" [(ngModel)]="feedbackData.message" required></textarea>
                 </div>
-                <button type="submit" class="submit-feedback-button">Отправить</button>
+                <div class="form-group checkbox-group">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="privacyPolicy" name="privacyPolicy" [(ngModel)]="feedbackData.privacyAccepted" required>
+                        <label for="privacyPolicy">Я принимаю условия обработки моих персональных данных</label>
+                    </div>
+                </div>
+                <button type="submit" class="submit-feedback-button" [disabled]="!feedbackData.privacyAccepted">Отправить</button>
             </form>
         </div>
     </div>
-</body>
+</body>ы
 

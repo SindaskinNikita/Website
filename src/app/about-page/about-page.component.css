@@ -176,7 +176,7 @@ body {
 .rounded-image-container {
     position: relative;
     margin-top: -270px;
-    margin-left: 0;
+    margin-left: 0px;
     width: 100%;
     height: 300px;
     border-radius: 55px;
@@ -275,11 +275,12 @@ body {
     position: relative;
     background-color: #1C243C;
     margin: 5% auto;
-    padding: 40px;
+    padding: 35px 40px;
     width: 50%;
     max-width: 600px;
     border-radius: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    font-size: 0.95em;
 }
 
 /* Кнопка закрытия */
@@ -300,22 +301,22 @@ body {
 /* Заголовок формы */
 .modal-content h2 {
     color: #ffffff;
-    font-size: 24px;
-    margin-bottom: 30px;
+    font-size: 22px;
+    margin-bottom: 20px;
     font-family: 'Arial', sans-serif;
 }
 
 /* Стили для формы */
-.review-form {
+.review-form, .feedback-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .form-group label {
@@ -499,7 +500,9 @@ body {
     }
 
     .modal-content {
-        width: 70%;
+        width: 65%;
+        max-width: 500px;
+        padding: 25px;
     }
 
     .image-overlay-subtitle {
@@ -545,10 +548,22 @@ body {
     }
 
     .modal-content {
-        width: 90%;
-        padding: 30px;
+        width: 80%;
+        max-width: 450px;
+        padding: 22px;
+        margin: 8% auto;
+        font-size: 0.9em;
     }
     
+    .modal-content h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .form-group {
+        gap: 8px;
+    }
+
     .reviews-container {
         flex-direction: column;
         align-items: center;
@@ -606,12 +621,16 @@ body {
     }
 
     .modal-content {
-        padding: 20px;
+        width: 85%;
+        max-width: 400px;
+        padding: 18px;
+        margin: 12% auto 5% auto;
+        font-size: 0.85em;
     }
 
     .modal-content h2 {
-        font-size: 20px;
-        margin-bottom: 20px;
+        font-size: 18px;
+        margin-bottom: 18px;
     }
 
     .form-group label {
@@ -620,12 +639,17 @@ body {
 
     .form-group input,
     .form-group textarea {
-        padding: 8px;
+        padding: 10px;
     }
 
-    .submit-review-button {
+    .submit-review-button,
+    .submit-feedback-button {
         padding: 12px 25px;
         font-size: 14px;
+    }
+    
+    .checkbox-container label {
+        font-size: 13px;
     }
 }
 
@@ -653,6 +677,76 @@ body {
     .submit-review-button {
         padding: 10px 20px;
     }
+
+    .modal-content {
+        width: 90%;
+        max-width: 350px;
+        padding: 15px;
+        margin: 15% auto 5% auto;
+        font-size: 0.8em;
+    }
+    
+    .close-button {
+        right: 10px;
+        top: 5px;
+    }
+
+    .modal-content h2 {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    
+    .form-group {
+        gap: 6px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .submit-review-button,
+    .submit-feedback-button {
+        padding: 10px 20px;
+        font-size: 13px;
+        margin-top: 15px;
+    }
+    
+    .checkbox-container {
+        gap: 6px;
+    }
+    
+    .checkbox-container label {
+        font-size: 12px;
+        line-height: 1.3;
+    }
+}
+
+/* Стили для чекбокса и его контейнера */
+.checkbox-group {
+    margin-top: 20px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-top: 3px;
+    cursor: pointer;
+}
+
+.checkbox-container label {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #ffffff;
 }
 
 

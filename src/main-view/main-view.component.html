@@ -28,7 +28,7 @@
                 <div class="image-overlay-subtitle">Установка и обслуживание</div>
                 <div class="image-overlay-title">Безопасность вашего дома</div>
                 <div class="image-overlay-description">Проектирование, установка и техническое обслуживание систем безопасности и видеонаблюдения. У нас Вы не только сможете купить оборудование, но и заказать проектирование и установку.</div>
-                <button class="request-button">Оставить заявку</button>
+                <button class="request-button" (click)="scrollToOrderForm()">Оставить заявку</button>
             </div>
         </div>
         
@@ -253,8 +253,8 @@
             </div>
             
             <!-- Форма заказа -->
-            <div class="order-form-container">
-                <h3 class="order-form-header">Оформите заказ онлайн!</h3>
+            <div id="orderForm" class="order-form-container">
+                <h3 class="order-form-header">Оформите заявку онлайн!</h3>
                 
                 <div class="order-form">
                     <input type="text" placeholder="*Ваше имя:" class="form-input">

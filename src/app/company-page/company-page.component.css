@@ -9,11 +9,15 @@ html {
 body {
     background-color: #1C243C;
     width: 100%;
-    height: 7000px;
+    height: 700px;
     margin: 0;
     padding: 0;
     min-height: 1000px;
     overflow-x: hidden;
+    font-family: 'Roboto', Arial, sans-serif;
+    line-height: 1.6;
+    font-weight: 300;
+    color: #fff;
 }
 
 /* Стили для названия компании */
@@ -53,6 +57,7 @@ body {
     display: flex;
     align-items: center;
     gap: 30px;
+    z-index: 1500;
 }
 
 /* Стили для текста контактов */
@@ -62,7 +67,7 @@ body {
     align-items: flex-end;
     gap: 5px;
     position: relative;
-    z-index: 1500;
+    z-index: 1000;
 }
 
 /* Разделительная линия после контактного текста */
@@ -87,15 +92,16 @@ body {
     font-size: 14px;
     font-family: 'Arial', sans-serif;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    order: 2;
+    transition: all 0.3s ease;
     position: relative;
-    z-index: 1500;
+    z-index: 1000;
 }
 
 /* Эффект наведения на кнопку обратной связи */
 .feedback-button:hover {
     background-color: #ff4785;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 43, 114, 0.4);
 }
 
 /* Стили для часов работы */
@@ -103,6 +109,8 @@ body {
     color: #ffffff;
     font-size: 16px;
     font-family: 'Arial', sans-serif;
+    position: relative;
+    z-index: 1000;
 }
 
 /* Стили для номера телефона */
@@ -112,6 +120,8 @@ body {
     font-weight: bold;
     font-family: 'Arial', sans-serif;
     text-decoration: none;
+    position: relative;
+    z-index: 1000;
 }
 
 /* Стили для навигационного меню */
@@ -162,9 +172,9 @@ body {
 /* Контейнер для закругленного изображения */
 .rounded-image-container {
     position: relative;
-    margin-top: -250px;
-    margin-left: 0px;
-    width: 1460px;
+    margin-top: -270px;
+    margin-left: 0;
+    width: 100%;
     height: 300px;
     border-radius: 55px;
     overflow: hidden;
@@ -481,511 +491,5 @@ body {
     .image-overlay-description {
         font-size: 22px;
         max-width: 1000px;
-    }
-}
-
-/* Дополнительные адаптивные стили для всех размеров экранов */
-
-/* Медиа-запрос для устройств с очень маленькими экранами (складные устройства) */
-@media screen and (max-width: 280px) {
-    /* Galaxy Fold */
-    .company-name {
-        font-size: 18px;
-        margin-left: 10px;
-        text-align: center;
-    }
-
-    .company-subtitle {
-        font-size: 12px;
-        margin-left: 15px;
-        text-align: center;
-    }
-
-    .contact-info {
-        position: relative;
-        top: 10px;
-        right: 0;
-        padding: 5px;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        gap: 10px;
-    }
-
-    .contact-text::after {
-        display: none;
-    }
-
-    .working-hours {
-        font-size: 12px;
-    }
-
-    .phone-number {
-        font-size: 14px;
-    }
-
-    .feedback-button {
-        padding: 6px 15px;
-        font-size: 10px;
-    }
-
-    .nav-menu {
-        margin: 5px;
-        padding: 5px;
-        justify-content: center;
-        gap: 5px;
-        flex-wrap: wrap;
-    }
-
-    .nav-item {
-        font-size: 12px;
-        padding: 5px;
-    }
-
-    .rounded-image-container {
-        height: 150px;
-        margin-top: -60px;
-        border-radius: 12px;
-    }
-
-    .image-overlay-text {
-        left: 15px;
-    }
-
-    .image-overlay-title {
-        font-size: 20px;
-        margin-bottom: 5px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 18px;
-    }
-
-    .image-overlay-description {
-        font-size: 10px;
-        max-width: 220px;
-    }
-}
-
-/* Медиа-запрос для устройств с маленькими экранами (мобильные телефоны) */
-@media screen and (min-width: 281px) and (max-width: 320px) {
-    /* iPhone 5/SE, обычные маленькие телефоны */
-    .company-name {
-        font-size: 18px;
-        margin-left: 15px;
-        text-align: center;
-    }
-
-    .company-subtitle {
-        font-size: 12px;
-        margin-left: 20px;
-        text-align: center;
-    }
-
-    .contact-info {
-        position: relative;
-        top: 10px;
-        right: 0;
-        padding: 5px;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        gap: 10px;
-    }
-
-    .contact-text::after {
-        display: none;
-    }
-
-    .working-hours {
-        font-size: 13px;
-    }
-
-    .phone-number {
-        font-size: 15px;
-    }
-
-    .feedback-button {
-        padding: 8px 18px;
-        font-size: 11px;
-    }
-
-    .nav-menu {
-        margin: 5px;
-        padding: 8px;
-        justify-content: center;
-        gap: 8px;
-        flex-wrap: wrap;
-    }
-
-    .nav-item {
-        font-size: 12px;
-        padding: 5px;
-    }
-
-    .rounded-image-container {
-        height: 160px;
-        margin-top: -70px;
-        border-radius: 15px;
-    }
-
-    .image-overlay-text {
-        left: 20px;
-    }
-
-    .image-overlay-title {
-        font-size: 22px;
-        margin-bottom: 8px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 20px;
-    }
-
-    .image-overlay-description {
-        font-size: 11px;
-        max-width: 240px;
-    }
-}
-
-/* Медиа-запрос для устройств с маленькими экранами (iPhone и подобные) */
-@media screen and (min-width: 321px) and (max-width: 375px) {
-    /* iPhone X/11/12/13 */
-    .company-name {
-        font-size: 19px;
-        margin-left: 15px;
-        text-align: center;
-    }
-
-    .company-subtitle {
-        font-size: 13px;
-        margin-left: 20px;
-        text-align: center;
-    }
-
-    .contact-info {
-        position: relative;
-        top: 10px;
-        right: 0;
-        padding: 8px;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        gap: 12px;
-    }
-
-    .contact-text::after {
-        display: none;
-    }
-
-    .working-hours {
-        font-size: 14px;
-    }
-
-    .phone-number {
-        font-size: 16px;
-    }
-
-    .feedback-button {
-        padding: 8px 20px;
-        font-size: 12px;
-    }
-
-    .nav-menu {
-        margin: 8px;
-        padding: 10px;
-        justify-content: center;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-
-    .nav-item {
-        font-size: 13px;
-        padding: 6px;
-    }
-
-    .rounded-image-container {
-        height: 180px;
-        margin-top: -80px;
-        border-radius: 20px;
-    }
-
-    .image-overlay-text {
-        left: 20px;
-    }
-
-    .image-overlay-title {
-        font-size: 24px;
-        margin-bottom: 10px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 22px;
-    }
-
-    .image-overlay-description {
-        font-size: 12px;
-        max-width: 260px;
-    }
-}
-
-/* Медиа-запрос для средних телефонов */
-@media screen and (min-width: 376px) and (max-width: 414px) {
-    /* iPhone 6/7/8 Plus, iPhone 12/13 Pro */
-    .company-name {
-        font-size: 20px;
-        margin-left: 20px;
-        text-align: center;
-    }
-
-    .company-subtitle {
-        font-size: 14px;
-        margin-left: 25px;
-        text-align: center;
-    }
-
-    .contact-info {
-        position: relative;
-        top: 10px;
-        right: 0;
-        padding: 10px;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-    }
-
-    .contact-text::after {
-        display: none;
-    }
-
-    .working-hours {
-        font-size: 14px;
-    }
-
-    .phone-number {
-        font-size: 16px;
-    }
-
-    .feedback-button {
-        padding: 8px 20px;
-        font-size: 12px;
-    }
-
-    .nav-menu {
-        margin: 10px;
-        padding: 10px;
-        justify-content: center;
-        gap: 12px;
-        flex-wrap: wrap;
-    }
-
-    .nav-item {
-        font-size: 14px;
-        padding: 6px;
-    }
-
-    .rounded-image-container {
-        height: 190px;
-        margin-top: -90px;
-        border-radius: 25px;
-    }
-
-    .image-overlay-text {
-        left: 25px;
-    }
-
-    .image-overlay-title {
-        font-size: 26px;
-        margin-bottom: 10px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 24px;
-    }
-
-    .image-overlay-description {
-        font-size: 13px;
-        max-width: 300px;
-    }
-}
-
-/* Медиа-запрос для маленьких планшетов и ландшафтной ориентации телефонов */
-@media screen and (min-width: 568px) and (max-width: 599px) {
-    /* Телефоны в ландшафтной ориентации */
-    .company-name {
-        font-size: 22px;
-        margin-left: 30px;
-    }
-
-    .company-subtitle {
-        font-size: 16px;
-        margin-left: 35px;
-    }
-
-    .nav-menu {
-        margin: 20px;
-        padding: 15px;
-        gap: 20px;
-    }
-
-    .rounded-image-container {
-        height: 240px;
-        margin-top: -120px;
-        border-radius: 35px;
-    }
-
-    .image-overlay-text {
-        left: 35px;
-    }
-
-    .image-overlay-title {
-        font-size: 32px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 28px;
-    }
-
-    .image-overlay-description {
-        font-size: 14px;
-        max-width: 380px;
-    }
-}
-
-/* Медиа-запрос для планшетов средних размеров */
-@media screen and (min-width: 835px) and (max-width: 1024px) {
-    /* iPad Pro */
-    .rounded-image-container {
-        height: 320px;
-        margin-top: -220px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 40px;
-        margin-top: -270px;
-    }
-
-    .image-overlay-description {
-        font-size: 17px;
-        max-width: 520px;
-    }
-}
-
-/* Медиа-запрос для стандартных ноутбуков */
-@media screen and (min-width: 1366px) and (max-width: 1440px) {
-    /* Стандартные ноутбуки */
-    .rounded-image-container {
-        height: 330px;
-        margin-top: -240px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 46px;
-        margin-top: -290px;
-    }
-
-    .image-overlay-description {
-        font-size: 18px;
-        max-width: 620px;
-    }
-}
-
-/* Медиа-запрос для больших ноутбуков и мониторов */
-@media screen and (min-width: 1441px) and (max-width: 1920px) {
-    /* Большие ноутбуки и настольные мониторы */
-    .rounded-image-container {
-        height: 360px;
-        margin-top: -280px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 48px;
-        margin-top: -330px;
-    }
-
-    .image-overlay-description {
-        font-size: 19px;
-        max-width: 700px;
-    }
-}
-
-/* Медиа-запрос для очень больших мониторов (21:9) */
-@media screen and (min-width: 3440px) and (max-width: 3839px) {
-    /* Ультраширокие мониторы */
-    .rounded-image-container {
-        height: 550px;
-        margin-top: -350px;
-        max-width: 90%;
-    }
-
-    .company-name {
-        font-size: 36px;
-        margin-left: 70px;
-    }
-
-    .company-subtitle {
-        font-size: 22px;
-        margin-left: 80px;
-    }
-
-    .nav-menu {
-        margin-left: 70px;
-        gap: 45px;
-    }
-
-    .nav-item {
-        font-size: 20px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 48px;
-        margin-top: -400px;
-    }
-
-    .image-overlay-description {
-        font-size: 20px;
-        max-width: 900px;
-    }
-}
-
-/* Медиа-запрос для портретной ориентации планшетов */
-@media screen and (min-width: 768px) and (max-width: 834px) and (orientation: portrait) {
-    /* iPad Air/Mini в портретной ориентации */
-    .rounded-image-container {
-        height: 300px;
-        margin-top: -200px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 38px;
-        margin-top: -250px;
-    }
-
-    .image-overlay-description {
-        font-size: 16px;
-        max-width: 450px;
-    }
-}
-
-/* Медиа-запрос для ландшафтной ориентации планшетов */
-@media screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
-    /* iPad Pro в ландшафтной ориентации */
-    .rounded-image-container {
-        height: 320px;
-        margin-top: -230px;
-    }
-
-    .image-overlay-subtitle {
-        font-size: 42px;
-        margin-top: -280px;
-    }
-
-    .image-overlay-description {
-        font-size: 17px;
-        max-width: 580px;
     }
 }

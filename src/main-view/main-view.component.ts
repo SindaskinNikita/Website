@@ -8,4 +8,11 @@ import { Component } from '@angular/core';
 })
 export class MainViewComponent {
 
+  // Метод для прокрутки к форме заказа
+  scrollToOrderForm() {
+    const orderFormElement = document.getElementById('orderForm');
+    if (orderFormElement) {
+      orderFormElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 }

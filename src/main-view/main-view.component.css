@@ -2351,8 +2351,8 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #FF2B72;
-  color: #ffffff;
+  background-color: #FF2B72; /* Синий цвет для круга */
+  color: #ffffff; /* Розовый цвет для стрелки */
   border: none;
   border-radius: 50%;
   width: 45px;
@@ -2362,15 +2362,8 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
   align-items: center;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 10000;
-  opacity: 0;
-  visibility: hidden;
-}
-
-.scroll-to-top-button.visible {
-  opacity: 1;
-  visibility: visible;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  z-index: 10000; /* Поверх всех элементов */
 }
 
 .scroll-to-top-button:hover {

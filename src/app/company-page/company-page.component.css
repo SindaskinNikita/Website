@@ -7,17 +7,17 @@ html {
 
 /* Основные стили для body */
 body {
-    background-color: #1C243C;
-    width: 100%;
-    height: 700px;
     margin: 0;
     padding: 0;
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+    line-height: 1.6;
+    font-weight: 400;
+    background-color: #1C243C;
+    width: 100%;
+    height: 4700px;
     min-height: 1000px;
     overflow-x: hidden;
-    font-family: 'Roboto', Arial, sans-serif;
-    line-height: 1.6;
-    font-weight: 300;
-    color: #fff;
 }
 
 /* Стили для названия компании */
@@ -57,7 +57,6 @@ body {
     display: flex;
     align-items: center;
     gap: 30px;
-    z-index: 1500;
 }
 
 /* Стили для текста контактов */
@@ -67,7 +66,7 @@ body {
     align-items: flex-end;
     gap: 5px;
     position: relative;
-    z-index: 1000;
+    
 }
 
 /* Разделительная линия после контактного текста */
@@ -492,4 +491,725 @@ body {
         font-size: 22px;
         max-width: 1000px;
     }
+}
+
+/* Секция с информацией о компании */
+.company-info-section {
+    padding: 40px 0;
+    width: 90%;
+    max-width: 1200px;
+    margin: 50px auto;
+}
+
+.company-info-container {
+    background-color: rgba(39, 48, 80, 0.5);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.company-info-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #FF2B72;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.company-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #ffffff;
+    margin-bottom: 40px;
+}
+
+.company-description p {
+    margin-bottom: 20px;
+}
+
+/* Стили для преимуществ */
+.company-advantages {
+    margin-bottom: 50px;
+}
+
+.advantages-title, .achievements-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF2B72;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+}
+
+.advantages-title:after, .achievements-title:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: #FF2B72;
+}
+
+.advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.advantage-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    background-color: rgba(39, 48, 80, 0.7);
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.advantage-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.advantage-icon {
+    min-width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(255, 43, 114, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FF2B72;
+}
+
+.advantage-content h4 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #FF2B72;
+    margin-bottom: 10px;
+}
+
+.advantage-content p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.4;
+}
+
+/* Стили для достижений */
+.company-achievements {
+    margin-bottom: 50px;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.achievement-item {
+    text-align: center;
+    padding: 30px 15px;
+    background-color: rgba(39, 48, 80, 0.7);
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.achievement-item:hover {
+    transform: translateY(-5px);
+}
+
+.achievement-number {
+    font-size: 48px;
+    font-weight: bold;
+    color: #FF2B72;
+    margin-bottom: 15px;
+}
+
+.achievement-text {
+    font-size: 16px;
+    color: #ffffff;
+}
+
+/* Стили для призыва к действию */
+.company-cta {
+    text-align: center;
+    padding: 30px;
+    background-color: rgba(39, 48, 80, 0.7);
+    border-radius: 15px;
+}
+
+.company-cta p {
+    font-size: 18px;
+    color: #ffffff;
+    margin-bottom: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-button {
+    background-color: #FF2B72;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 40px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #ff4785;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 43, 114, 0.4);
+}
+
+/* Кнопка прокрутки наверх */
+.scroll-to-top-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #1C243C; /* Синий цвет для круга */
+    color: #FF2B72; /* Розовый цвет для стрелки */
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    z-index: 10000; /* Поверх всех элементов */
+}
+
+.scroll-to-top-button:hover {
+    background-color: #273050;
+    transform: scale(1.1);
+}
+
+/* Адаптивные стили */
+@media screen and (max-width: 992px) {
+    .advantages-grid, .achievements-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .company-info-title {
+        font-size: 28px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .company-info-container {
+        padding: 30px;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .achievement-number {
+        font-size: 40px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .advantages-grid, .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .company-info-title {
+        font-size: 24px;
+    }
+    
+    .company-info-container {
+        padding: 20px;
+    }
+    
+    .cta-button {
+        padding: 12px 30px;
+        font-size: 16px;
+    }
+}
+
+/* Стили для кодов статистики */
+.company-codes {
+    margin-bottom: 50px;
+    background-color: rgba(39, 48, 80, 0.7);
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.codes-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF2B72;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+}
+
+.codes-title:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: #FF2B72;
+}
+
+.codes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.code-item {
+    background-color: rgba(28, 36, 60, 0.7);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.code-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.code-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #FF2B72;
+    margin-bottom: 10px;
+}
+
+.code-value {
+    font-size: 18px;
+    color: #ffffff;
+    font-family: monospace;
+    letter-spacing: 1px;
+}
+
+/* Адаптивные стили для кодов */
+@media screen and (max-width: 992px) {
+    .codes-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .codes-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .code-item {
+        padding: 12px;
+    }
+    
+    .code-name {
+        font-size: 14px;
+    }
+    
+    .code-value {
+        font-size: 16px;
+    }
+}
+
+/* Стили для информации о регистрации ФНС */
+.company-fns {
+    margin-bottom: 50px;
+    background-color: rgba(39, 48, 80, 0.7);
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.fns-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF2B72;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+}
+
+.fns-title:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: #FF2B72;
+}
+
+.fns-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.fns-item {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(28, 36, 60, 0.7);
+    border-radius: 10px;
+    padding: 15px;
+    transition: transform 0.3s ease;
+}
+
+.fns-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.fns-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #FF2B72;
+    margin-bottom: 10px;
+}
+
+.fns-value {
+    font-size: 16px;
+    color: #ffffff;
+    line-height: 1.4;
+}
+
+/* Адаптивные стили для информации ФНС */
+@media screen and (max-width: 768px) {
+    .company-fns {
+        padding: 25px;
+    }
+    
+    .fns-title {
+        font-size: 22px;
+    }
+    
+    .fns-item {
+        padding: 12px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .company-fns {
+        padding: 20px;
+    }
+    
+    .fns-title {
+        font-size: 20px;
+    }
+    
+    .fns-label {
+        font-size: 14px;
+    }
+    
+    .fns-value {
+        font-size: 14px;
+    }
+}
+
+/* Стили для блока видов деятельности */
+.company-activities {
+    margin-bottom: 50px;
+    background-color: rgba(39, 48, 80, 0.7);
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.activities-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF2B72;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+}
+
+.activities-title:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: #FF2B72;
+}
+
+.main-activity {
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 20px;
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.activity-header h4 {
+    font-size: 20px;
+    color: #FF2B72;
+    margin: 0;
+}
+
+.toggle-button {
+    background-color: rgba(255, 43, 114, 0.2);
+    border: 1px solid #FF2B72;
+    color: #ffffff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.toggle-button:hover {
+    background-color: rgba(255, 43, 114, 0.4);
+}
+
+.toggle-icon {
+    display: inline-block;
+    margin-right: 5px;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
+
+.activity-item {
+    display: flex;
+    background-color: rgba(28, 36, 60, 0.7);
+    border-radius: 10px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.activity-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.activity-code {
+    min-width: 70px;
+    font-weight: bold;
+    color: #FF2B72;
+    margin-right: 15px;
+}
+
+.activity-name {
+    color: #ffffff;
+}
+
+.activities-list {
+    transition: max-height 0.5s ease;
+    overflow: hidden;
+}
+
+.activities-list.collapsed {
+    max-height: 400px;
+}
+
+.activities-list.expanded {
+    max-height: 20000px;
+}
+
+.activities-note {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+}
+
+/* Адаптивные стили для видов деятельности */
+@media screen and (max-width: 768px) {
+    .company-activities {
+        padding: 25px;
+    }
+    
+    .activities-title {
+        font-size: 22px;
+    }
+    
+    .activity-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .toggle-button {
+        margin-top: 10px;
+    }
+    
+    .activity-item {
+        flex-direction: column;
+    }
+    
+    .activity-code {
+        margin-bottom: 5px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .company-activities {
+        padding: 20px;
+    }
+    
+    .activities-title {
+        font-size: 20px;
+    }
+}
+
+/* Стили для блока с описанием компании */
+.company-details {
+    margin-bottom: 50px;
+    background-color: rgba(39, 48, 80, 0.7);
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.details-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF2B72;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+}
+
+.details-title:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: #FF2B72;
+}
+
+.details-content {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #ffffff;
+}
+
+.details-content p {
+    margin-bottom: 20px;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 15px;
+    margin: 25px 0;
+    background-color: rgba(28, 36, 60, 0.7);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.details-item {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.details-item:last-child {
+    border-bottom: none;
+}
+
+.details-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #FF2B72;
+    margin-bottom: 5px;
+}
+
+.details-value {
+    font-size: 16px;
+    color: #ffffff;
+}
+
+/* Адаптивные стили для блока с описанием */
+@media screen and (max-width: 768px) {
+    .company-details {
+        padding: 25px;
+    }
+    
+    .details-title {
+        font-size: 22px;
+    }
+    
+    .details-content {
+        font-size: 15px;
+    }
+    
+    .details-grid {
+        padding: 15px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .company-details {
+        padding: 20px;
+    }
+    
+    .details-title {
+        font-size: 20px;
+    }
+    
+    .details-content {
+        font-size: 14px;
+    }
+    
+    .details-label, .details-value {
+        font-size: 14px;
+    }
+    
+    .details-grid {
+        padding: 10px;
+    }
+}
+
+.company-info-title, 
+.advantages-title, 
+.achievements-title,
+.codes-title,
+.fns-title,
+.activities-title,
+.details-title,
+.advantage-content h4,
+.activity-header h4,
+.details-label,
+.details-value,
+.code-name,
+.code-value,
+.fns-label,
+.fns-value,
+.activity-code,
+.activity-name,
+.achievement-number,
+.achievement-text,
+.activities-note,
+.company-cta p,
+.company-description p,
+.details-content p,
+.cta-button {
+    font-family: 'Arial', sans-serif;
 }

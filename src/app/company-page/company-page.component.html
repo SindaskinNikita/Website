@@ -8,7 +8,7 @@
                 <div class="working-hours">Круглосуточно</div>
                 <a href="tel:+7994444451" class="phone-number">+7 (922) 128-62-22</a>
             </div>
-            <button class="feedback-button">Обратная связь</button>
+            <button class="feedback-button" (click)="openFeedbackModal()">Обратная связь</button>
         </div>
 
 
@@ -240,7 +240,7 @@
                         <div class="activity-header">
                             <h4>Дополнительные</h4>
                             <button class="toggle-button" (click)="toggleActivities()">
-                                <span class="toggle-icon">+</span> Развернуть все
+                                <span class="toggle-icon"></span> Развернуть
                             </button>
                         </div>
                         
@@ -736,12 +736,8 @@
                         <div class="activities-note">Показано 100+ видов деятельности. Нажмите "Развернуть все" для просмотра полного списка.</div>
                     </div>
                 </div>
-                
-                <!-- Призыв к действию -->
-                <div class="company-cta">
-                    <p>Доверьте безопасность вашего дома или бизнеса профессионалам! Свяжитесь с нами сегодня, чтобы получить бесплатную консультацию и индивидуальное предложение.</p>
-                    <button class="cta-button">Получить консультацию</button>
-                </div>
+
+               
             </div>
         </section>
     </main>
@@ -752,4 +748,27 @@
             <path d="M18 15l-6-6-6 6"></path>
         </svg>
     </button>
+
+    <!-- Модальное окно обратной связи -->
+    <div class="modal-overlay" *ngIf="isFeedbackModalOpen" (click)="closeFeedbackModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <button class="close-button" (click)="closeFeedbackModal()">×</button>
+            <h3>Обратная связь</h3>
+            <form (ngSubmit)="submitFeedback()">
+                <div class="form-group">
+                    <label for="name">Ваше имя</label>
+                    <input type="text" id="name" [(ngModel)]="feedbackForm.name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Телефон</label>
+                    <input type="tel" id="phone" [(ngModel)]="feedbackForm.phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Сообщение</label>
+                    <textarea id="message" [(ngModel)]="feedbackForm.message" name="message" required></textarea>
+                </div>
+                <button type="submit" class="submit-button">Отправить</button>
+            </form>
+        </div>
+    </div>
 </body>

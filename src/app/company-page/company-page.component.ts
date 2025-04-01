@@ -1,12 +1,21 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-company-page',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './company-page.component.html',
-  styleUrl: './company-page.component.css'
+  styleUrls: ['./company-page.component.css']
 })
 export class CompanyPageComponent implements OnInit {
+  isFeedbackModalOpen = false;
+  feedbackForm = {
+    name: '',
+    phone: '',
+    message: ''
+  };
 
   constructor() { }
 
@@ -33,7 +42,7 @@ export class CompanyPageComponent implements OnInit {
         activitiesList.classList.remove('collapsed');
         activitiesList.classList.add('expanded');
         toggleIcon.textContent = '−';
-        toggleButton.innerHTML = '<span class="toggle-icon">−</span> Свернуть';
+        toggleButton.innerHTML = '<span class="toggle-icon"></span> Свернуть';
         activitiesNote.textContent = 'Показаны все виды деятельности. Нажмите "Свернуть" для скрытия.';
         
         // Плавная прокрутка к нижней части списка (опционально)
@@ -45,7 +54,7 @@ export class CompanyPageComponent implements OnInit {
         activitiesList.classList.remove('expanded');
         activitiesList.classList.add('collapsed');
         toggleIcon.textContent = '+';
-        toggleButton.innerHTML = '<span class="toggle-icon">+</span> Развернуть все';
+        toggleButton.innerHTML = '<span class="toggle-icon"></span> Развернуть';
         activitiesNote.textContent = 'Показано 100+ видов деятельности. Нажмите "Развернуть все" для просмотра полного списка.';
         
         // Прокрутка к началу списка (опционально)
@@ -59,4 +68,26 @@ export class CompanyPageComponent implements OnInit {
     }
   }
 
+  openFeedbackModal() {
+    this.isFeedbackModalOpen = true;
+  }
+
+  closeFeedbackModal() {
+    this.isFeedbackModalOpen = false;
+    this.resetForm();
+  }
+
+  resetForm() {
+    this.feedbackForm = {
+      name: '',
+      phone: '',
+      message: ''
+    };
+  }
+
+  submitFeedback() {
+    // Здесь будет логика отправки формы
+    console.log('Отправка формы:', this.feedbackForm);
+    this.closeFeedbackModal();
+  }
 }

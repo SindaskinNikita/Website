@@ -8,7 +8,7 @@
                 <div class="working-hours">Круглосуточно</div>
                 <a href="tel:+7994444451" class="phone-number">+7 (922) 128-62-22</a>
             </div>
-            <button class="feedback-button">Обратная связь</button>
+            <button class="feedback-button" (click)="openFeedbackModal()">Обратная связь</button>
         </div>
 
         <nav class="nav-menu">
@@ -24,10 +24,89 @@
     <main class="main-content">
         <div class="rounded-image-container">
             <img src="assets/images/camera.jpg" alt="Камера видеонаблюдения" class="rounded-image">
-            <div class="image-overlay-text">
-                <div class="image-overlay-subtitle"> Контакты</div>
-              
-            </div>
         </div>
+
+        <section class="contacts-section">
+            <h1 class="contacts-title">КОНТАКТЫ</h1>
+
+            <div class="contacts-grid">
+                <!-- Контактная информация -->
+                <div class="contact-details">
+                    <div class="contact-block">
+                        <h3>Телефон</h3>
+                        <p>+7 (922) 128-62-22</p>
+                    </div>
+
+                    <div class="contact-block">
+                        <h3>График работы</h3>
+                        <p>Пн—Пт с 8:00 до 20:00</p>
+                        <p>Сб—Вс Выходной</p>
+                    </div>
+
+                    <div class="contact-block">
+                        <h3>Адрес</h3>
+                        <p>Свердловская область, город. Сухой Лог, ул. Фучика, д. 4</p>
+                    </div>
+
+                    <div class="contact-block">
+                        <h3>Email</h3>
+                        <a href="mailto:mail@company.ru" class="email-link">murzin.ru</a>
+                    </div>
+
+                    <div class="contact-block">
+                        <h3>Реквизиты</h3>
+                        <p>ИНН 6633022450</p>
+                        <p>ОГРН 1146633000997</p>
+                    </div>
+
+                    <div class="messenger-links">
+                        <h3>Написать в мессенджер</h3>
+                        <div class="messenger-icons">
+                            <a href="https://wa.me/79221286222" target="_blank" class="messenger-icon whatsapp">
+                                <img src="assets/icons/whatsapp.svg" alt="WhatsApp">
+                            </a>
+                            <a href="https://t.me/79221286222" target="_blank" class="messenger-icon telegram">
+                                <img src="assets/icons/telegram.svg" alt="Telegram">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карта -->
+                <div class="map-container">
+                    <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A1a2b3c4d5e6f7g8h9i0j&amp;source=constructor&amp;ll=62.033333%2C56.916667&amp;z=17&amp;lang=ru_RU&amp;pt=62.033333%2C56.916667&amp;mode=search&amp;text=Свердловская%20область%2C%20город%20Сухой%20Лог%2C%20ул.%20Фучика%2C%20д.%204" width="100%" height="100%" frameborder="0" allowfullscreen="true" style="position:relative;"></iframe>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <!-- Кнопка для прокрутки наверх -->
+    <button class="scroll-to-top-button" (click)="scrollToTop()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 15l-6-6-6 6"></path>
+        </svg>
+    </button>
+
+    <!-- Модальное окно обратной связи -->
+    <div class="modal-overlay" *ngIf="isFeedbackModalOpen" (click)="closeFeedbackModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <button class="close-button" (click)="closeFeedbackModal()">×</button>
+            <h3>Обратная связь</h3>
+            <form (ngSubmit)="submitFeedback()">
+                <div class="form-group">
+                    <label for="name">Ваше имя</label>
+                    <input type="text" id="name" [(ngModel)]="feedbackForm.name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Телефон</label>
+                    <input type="tel" id="phone" [(ngModel)]="feedbackForm.phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Сообщение</label>
+                    <textarea id="message" [(ngModel)]="feedbackForm.message" name="message" required></textarea>
+                </div>
+                <button type="submit" class="submit-button">Отправить</button>
+            </form>
+        </div>
+    </div>
 </body>

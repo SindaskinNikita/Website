@@ -7,17 +7,19 @@ html {
 
 /* Основные стили для body */
 body {
-    margin: 0;
-    padding: 0;
+  
     font-family: 'Arial', sans-serif;
     color: #fff;
     line-height: 1.6;
     font-weight: 400;
     background-color: #1C243C;
+    margin: 0;
+    padding: 0;
     width: 100%;
-    height: 4700px;
-    min-height: 1000px;
     overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+    
 }
 
 /* Стили для названия компании */
@@ -66,7 +68,7 @@ body {
     align-items: flex-end;
     gap: 5px;
     position: relative;
-    
+    z-index: 1000;
 }
 
 /* Разделительная линия после контактного текста */
@@ -180,6 +182,7 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     transform: none;
     z-index: 900;
+    background-color: #1C243C;
 }
 
 /* Стили для изображения */
@@ -642,40 +645,13 @@ body {
     border-radius: 15px;
 }
 
-.company-cta p {
-    font-size: 18px;
-    color: #ffffff;
-    margin-bottom: 20px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.cta-button {
-    background-color: #FF2B72;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    padding: 15px 40px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.cta-button:hover {
-    background-color: #ff4785;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(255, 43, 114, 0.4);
-}
-
 /* Кнопка прокрутки наверх */
 .scroll-to-top-button {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #1C243C; /* Синий цвет для круга */
-    color: #FF2B72; /* Розовый цвет для стрелки */
+    background-color: #FF2B72; /* Розовый цвет для круга */
+    color: #1C243C; /* Синий цвет для стрелки */
     border: none;
     border-radius: 50%;
     width: 50px;
@@ -690,7 +666,7 @@ body {
 }
 
 .scroll-to-top-button:hover {
-    background-color: #273050;
+    background-color: #ff4785;
     transform: scale(1.1);
 }
 
@@ -1026,7 +1002,10 @@ body {
 }
 
 .activities-list.expanded {
-    max-height: 20000px;
+    max-height: none;
+    overflow: visible;
+    width: auto;
+    max-width: 100%;
 }
 
 .activities-note {
@@ -1212,4 +1191,122 @@ body {
 .details-content p,
 .cta-button {
     font-family: 'Arial', sans-serif;
+}
+
+/* Стили для модального окна */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.modal-content {
+    background-color: #1C243C;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #FF2B72;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+.close-button:hover {
+    color: #ff4785;
+}
+
+.modal-content h3 {
+    color: #FF2B72;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: #ffffff;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background-color: rgba(39, 48, 80, 0.7);
+    color: #ffffff;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #FF2B72;
+}
+
+.form-group textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+.submit-button {
+    background-color: #FF2B72;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.submit-button:hover {
+    background-color: #ff4785;
+    transform: translateY(-2px);
+}
+
+/* Адаптивные стили для модального окна */
+@media screen and (max-width: 576px) {
+    .modal-content {
+        padding: 20px;
+        width: 95%;
+    }
+    
+    .modal-content h3 {
+        font-size: 20px;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        padding: 10px;
+        font-size: 14px;
+    }
 }

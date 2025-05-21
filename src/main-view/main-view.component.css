@@ -269,7 +269,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
 
 /* Медиа-запрос для устройств с очень маленькими экранами (складные устройства) */
 @media screen and (max-width: 280px) {
-    /* Galaxy Fold */
+
     .company-name {
         font-size: 18px;
         margin-left: 10px;

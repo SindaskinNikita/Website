@@ -1,34 +1,175 @@
 <body>
     <header class="header">
-        <div class="company-name">ООО "НоваДом"</div>
-        <div class="company-subtitle">Система безопасности, видеонаблюдение, охранная сигнализация</div>
-        
-        <div class="contact-info">
-            <div class="contact-text">
-                <div class="working-hours">Круглосуточно</div>
-                <a href="tel:+7994444451" class="phone-number">+7 (922) 128-62-22</a>
+        <div class="header-content">
+            <div class="company-info">
+                <h1>ООО "СБ-МОНТАЖ"</h1>
+                <p>Системы безопасности и видеонаблюдения</p>
             </div>
-            <button class="feedback-button">Обратная связь</button>
+            <div class="contact-info">
+                <p>Телефон: +7 (922) 128-62-22</p>
+                <p>Email: infosb-montage.ru</p>
+            </div>
         </div>
-
-        <nav class="nav-menu">
-            <a href="main-view" class="nav-item">Главная</a>
-            <a href="company-page" class="nav-item">О компании</a>
-            <a href="services-page" class="nav-item">Услуги</a>
-            <a href="contacts-page" class="nav-item">Контакты</a>
-            <a href="equipment-page" class="nav-item">Оборудование</a>
-            <a href="about-page" class="nav-item">Отзывы</a>
+        <nav class="navigation">
+            <a routerLink="/" class="nav-link">Главная</a>
+            <a routerLink="/company" class="nav-link">О компании</a>
+            <a routerLink="/services" class="nav-link active">Услуги</a>
+            <a routerLink="/contacts" class="nav-link">Контакты</a>
         </nav>
     </header>
 
     <main class="main-content">
-        <div class="rounded-image-container">
-            <img src="assets/images/camera.jpg" alt="Камера видеонаблюдения" class="rounded-image">
-            <div class="image-overlay-text">
-               
-            </div>
-        </div>
+        <div class="background-image"></div>
         
-        <!-- Здесь может быть дополнительный контент для прокрутки -->
+        <section class="services-section">
+            <h2 class="services-title">НАШИ УСЛУГИ</h2>
+            
+            <!-- Категории услуг -->
+            <div class="services-categories">
+                <button 
+                    class="category-button" 
+                    [class.active]="selectedCategory === 'video-surveillance'"
+                    (click)="selectCategory('video-surveillance')">
+                    Видеонаблюдение
+                </button>
+                <button 
+                    class="category-button" 
+                    [class.active]="selectedCategory === 'fire-safety'"
+                    (click)="selectCategory('fire-safety')">
+                    Пожарная безопасность
+                </button>
+                <button 
+                    class="category-button" 
+                    [class.active]="selectedCategory === 'access-control'"
+                    (click)="selectCategory('access-control')">
+                    Контроль доступа
+                </button>
+            </div>
+
+            <!-- Сетка услуг -->
+            <div class="services-grid">
+                <div class="service-card" *ngFor="let service of getServicesByCategory()">
+                    <h3>{{ service.title }}</h3>
+                    
+                    <div class="service-description">
+                        <p>{{ service.description }}</p>
+                        <ul>
+                            <li *ngFor="let feature of service.features">{{ feature }}</li>
+                        </ul>
+                    </div>
+
+                    <div class="service-price" *ngIf="service.basePrice">
+                        <p>Базовая стоимость: {{ service.basePrice | number:'1.0-0' }} ₽</p>
+                    </div>
+
+                    <div class="calculator" *ngIf="service.calculator">
+                        <h4>Рассчитать стоимость</h4>
+                        <div class="calculator-inputs">
+                            <div class="input-group" *ngFor="let input of service.calculator.inputs">
+                                <label [for]="input.label">{{ input.label }}</label>
+                                
+                                <ng-container [ngSwitch]="input.type">
+                                    <input 
+                                        *ngSwitchCase="'number'"
+                                        type="number"
+                                        [id]="input.label"
+                                        
+                                        [(ngModel)]="calculatorValues[input.label]"
+                                        (ngModelChange)="updateTotalPrice()"
+                                        [placeholder]="'Введите ' + input.label.toLowerCase()">
+                                    
+                                    <select 
+                                        *ngSwitchCase="'select'"
+                                        [id]="input.label"
+                                        [(ngModel)]="calculatorValues[input.label]"
+                                        (ngModelChange)="updateTotalPrice()">
+                                        <option value="" disabled selected>Выберите {{ input.label.toLowerCase() }}</option>
+                                        <option *ngFor="let option of input.options" [value]="option">
+                                            {{ option }}
+                                        </option>
+                                    </select>
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <div class="total-price" *ngIf="totalPrice > 0">
+                            Итоговая стоимость: {{ totalPrice | number:'1.0-0' }} ₽
+                        </div>
+                    </div>
+
+                    <button 
+                        class="request-button"
+                        (click)="openRequestModal(service)">
+                        Оставить заявку
+                    </button>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <!-- Модальное окно заявки -->
+    <div class="modal-overlay" *ngIf="isRequestModalOpen">
+        <div class="modal-content">
+            <button class="close-button" (click)="closeRequestModal()">&times;</button>
+            
+            <h3>Оставить заявку</h3>
+            <p *ngIf="selectedService">Услуга: {{ selectedService.title }}</p>
+            <p *ngIf="totalPrice > 0">Расчетная стоимость: {{ totalPrice | number:'1.0-0' }} ₽</p>
+
+            <form (ngSubmit)="submitRequest()">
+                <div class="form-group">
+                    <label for="name">Ваше имя</label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        [(ngModel)]="requestForm.name" 
+                        name="name" 
+                        required 
+                        placeholder="Введите ваше имя">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Телефон</label>
+                    <input 
+                        type="tel" 
+                        id="phone" 
+                        [(ngModel)]="requestForm.phone" 
+                        name="phone" 
+                        required 
+                        placeholder="+7 (___) ___-__-__">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        [(ngModel)]="requestForm.email" 
+                        name="email" 
+                        required 
+                        placeholder="Введите ваш email">
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Сообщение</label>
+                    <textarea 
+                        id="message" 
+                        [(ngModel)]="requestForm.message" 
+                        name="message" 
+                        placeholder="Опишите ваши требования или вопросы"></textarea>
+                </div>
+
+                <button type="submit" class="submit-button">Отправить заявку</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Кнопка прокрутки наверх -->
+    <button 
+        class="scroll-to-top-button" 
+        (click)="scrollToTop()"
+        *ngIf="showScrollButton"
+        aria-label="Прокрутить наверх">
+        ↑
+    </button>
 </body>

@@ -1,0 +1,1037 @@
+/* Базовые стили для html */
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* Основные стили для body */
+body {
+    background-color: #1C243C;
+    width: 100%;
+    height: 700px;
+    margin: 0;
+    padding: 0;
+    min-height: 1000px;
+    overflow-x: hidden;
+}
+
+/* Стили для названия компании */
+.company-name {
+    position: relative;
+    margin-top: 40px;
+    margin-left: 40px;
+    color: #FF2B72;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    padding: 10px;
+    padding-bottom: 5px;
+    z-index: 1000;
+}
+
+/* Стили для подзаголовка компании */
+.company-subtitle {
+    position: relative;
+    margin-top: -5px;
+    margin-left: 50px;
+    color: #a0a0a0;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    opacity: 0.8;
+    z-index: 1000;
+    display: block;
+}
+
+/* Контейнер для контактной информации */
+.contact-info {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    text-align: right;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+/* Стили для текста контактов */
+.contact-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    position: relative;
+    z-index: 1500;
+}
+
+/* Разделительная линия после контактного текста */
+.contact-text::after {
+    content: '';
+    position: absolute;
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 40px;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Кнопка обратной связи */
+.feedback-button {
+    background-color: #FF2B72;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    order: 2;
+    position: relative;
+    z-index: 1500;
+}
+
+/* Эффект наведения на кнопку обратной связи */
+.feedback-button:hover {
+    background-color: #ff4785;
+}
+
+/* Стили для часов работы */
+.working-hours {
+    color: #ffffff;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Стили для номера телефона */
+.phone-number {
+    color: #FF2B72;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    text-decoration: none;
+}
+
+/* Стили для навигационного меню */
+.nav-menu {
+    position: relative;
+    margin-top: 20px;
+    margin-left: 40px;
+    display: flex;
+    gap: 30px;
+    padding: 20px;
+    z-index: 1000;
+    width: calc(100% - 80px);
+}
+
+/* Разделительная линия перед навигационным меню */
+.nav-menu::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(100vw - 80px);
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Стили для элементов навигации */
+.nav-item {
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    padding: 10px;
+    transition: color 0.3s ease;
+}
+
+/* Эффект наведения на элементы навигации */
+.nav-item:hover {
+    color: #FF2B72;
+}
+
+/* Основной контент */
+.main-content {
+    margin-top: 0;
+    position: relative;
+    z-index: 1;
+}
+
+/* Контейнер для закругленного изображения */
+.rounded-image-container {
+    position: relative;
+    margin-top: -250px;
+    margin-left: 0px;
+    width: 100%;
+    height: 300px;
+    border-radius: 55px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transform: none;
+    z-index: 900;
+}
+
+/* Стили для изображения */
+.rounded-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.9) contrast(1.1) opacity(0.5);
+}
+
+/* Текст поверх изображения */
+.image-overlay-text {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    z-index: 901;
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    padding-top: 50px;
+}
+
+/* Заголовок поверх изображения */
+.image-overlay-title {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Подзаголовок поверх изображения */
+.image-overlay-subtitle {
+    font-size: 60px;
+    margin-top: -320px;
+    margin-bottom: 20px;
+    font-family: 'Arial';
+    color: #ffffff;
+}
+
+/* Кнопка оставить отзыв */
+.leave-review-button {
+    background-color: #FF2B72;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 15px 35px;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 500px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* Эффект наведения на кнопку оставить отзыв */
+.leave-review-button:hover {
+    background-color: #ff4785;
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+}
+
+/* Содержимое модального окна */
+.modal-content {
+    position: relative;
+    background-color: #1C243C;
+    margin: 5% auto;
+    padding: 40px;
+    width: 50%;
+    max-width: 600px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Кнопка закрытия */
+.close-button {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: #FF2B72;
+}
+
+/* Заголовок формы */
+.modal-content h2 {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 30px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Стили для формы */
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group label {
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #FF2B72;
+}
+
+/* Кнопка отправки формы */
+.submit-review-button {
+    background-color: #FF2B72;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 15px 35px;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.submit-review-button:hover {
+    background-color: #ff4785;
+}
+
+/* Медиа-запросы для адаптивности */
+@media screen and (max-width: 1460px) {
+    .rounded-image-container {
+        width: 100%;
+        margin-top: -200px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .nav-menu {
+        gap: 15px;
+    }
+    
+    .contact-info {
+        right: 20px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .company-name {
+        font-size: 20px;
+        margin-left: 20px;
+    }
+
+    .company-subtitle {
+        font-size: 14px;
+        margin-left: 30px;
+    }
+
+    .nav-menu {
+        margin-left: 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .nav-item {
+        font-size: 14px;
+    }
+
+    .contact-info {
+        position: relative;
+        top: 0;
+        right: 0;
+        justify-content: flex-end;
+        padding: 10px 20px;
+    }
+
+    .modal-content {
+        width: 70%;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 48px;
+        margin-top: -250px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        min-height: 800px;
+    }
+
+    .contact-info {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-end;
+    }
+
+    .contact-text::after {
+        display: none;
+    }
+
+    .nav-menu {
+        justify-content: center;
+    }
+
+    .rounded-image-container {
+        margin-top: -150px;
+        height: 250px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 36px;
+        margin-top: -200px;
+    }
+
+    .leave-review-button {
+        margin-top: 400px;
+        padding: 12px 25px;
+        font-size: 14px;
+    }
+
+    .modal-content {
+        width: 90%;
+        padding: 30px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .company-name {
+        text-align: center;
+        margin: 20px 10px 0;
+    }
+
+    .company-subtitle {
+        text-align: center;
+        margin: 5px 10px;
+    }
+
+    .contact-info {
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .nav-menu {
+        margin: 10px;
+        padding: 10px;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .nav-item {
+        padding: 5px;
+    }
+
+    .rounded-image-container {
+        margin-top: -100px;
+        height: 200px;
+        border-radius: 30px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 28px;
+        margin-top: -150px;
+    }
+
+    .leave-review-button {
+        margin-top: 300px;
+        padding: 10px 20px;
+        font-size: 12px;
+    }
+
+    .modal-content {
+        padding: 20px;
+    }
+
+    .modal-content h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 8px;
+    }
+
+    .submit-review-button {
+        padding: 12px 25px;
+        font-size: 14px;
+    }
+}
+
+/* Медиа-запросы для больших экранов */
+@media screen and (min-width: 1921px) {
+    body {
+        min-height: 1200px;
+    }
+
+    .rounded-image-container {
+        width: 90%;
+        max-width: 2000px;
+        height: 400px;
+        margin-top: -300px;
+    }
+
+    .company-name {
+        font-size: 32px;
+        margin-left: 60px;
+    }
+
+    .company-subtitle {
+        font-size: 20px;
+        margin-left: 70px;
+    }
+
+    .nav-menu {
+        margin-left: 60px;
+        gap: 40px;
+    }
+
+    .nav-item {
+        font-size: 18px;
+    }
+
+    .contact-info {
+        right: 60px;
+    }
+
+    .phone-number {
+        font-size: 22px;
+    }
+
+    .working-hours {
+        font-size: 18px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 72px;
+        margin-top: -380px;
+    }
+
+    .leave-review-button {
+        margin-top: 600px;
+        padding: 20px 45px;
+        font-size: 18px;
+    }
+
+    .modal-content {
+        max-width: 800px;
+        padding: 50px;
+    }
+
+    .modal-content h2 {
+        font-size: 32px;
+    }
+
+    .form-group label {
+        font-size: 18px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 15px;
+        font-size: 16px;
+    }
+
+    .submit-review-button {
+        padding: 18px 40px;
+        font-size: 18px;
+    }
+}
+
+/* Медиа-запросы для очень маленьких экранов */
+@media screen and (max-width: 375px) {
+    body {
+        min-height: 600px;
+    }
+
+    .company-name {
+        font-size: 18px;
+        margin: 15px 5px 0;
+    }
+
+    .company-subtitle {
+        font-size: 12px;
+        margin: 3px 5px;
+    }
+
+    .contact-info {
+        padding: 5px 10px;
+    }
+
+    .working-hours {
+        font-size: 14px;
+    }
+
+    .phone-number {
+        font-size: 16px;
+    }
+
+    .feedback-button {
+        padding: 8px 20px;
+        font-size: 12px;
+    }
+
+    .nav-menu {
+        margin: 5px;
+        padding: 5px;
+        gap: 3px;
+    }
+
+    .nav-item {
+        font-size: 12px;
+        padding: 3px;
+    }
+
+    .rounded-image-container {
+        margin-top: -80px;
+        height: 180px;
+        border-radius: 20px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 24px;
+        margin-top: -130px;
+    }
+
+    .leave-review-button {
+        margin-top: 250px;
+        padding: 8px 16px;
+        font-size: 11px;
+    }
+
+    .modal-content {
+        padding: 15px;
+        width: 95%;
+    }
+
+    .modal-content h2 {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        gap: 5px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    .submit-review-button {
+        padding: 10px 20px;
+        font-size: 12px;
+        margin-top: 15px;
+    }
+
+    .close-button {
+        font-size: 24px;
+        right: 15px;
+        top: 5px;
+    }
+}
+
+/* Медиа-запросы для экстремально больших экранов */
+@media screen and (min-width: 2560px) {
+    body {
+        min-height: 1400px;
+    }
+
+    .rounded-image-container {
+        width: 85%;
+        max-width: 2400px;
+        height: 500px;
+        margin-top: -350px;
+    }
+
+    .company-name {
+        font-size: 38px;
+        margin-left: 80px;
+    }
+
+    .company-subtitle {
+        font-size: 24px;
+        margin-left: 90px;
+    }
+
+    .nav-menu {
+        margin-left: 80px;
+        gap: 50px;
+    }
+
+    .nav-item {
+        font-size: 22px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 86px;
+        margin-top: -450px;
+    }
+
+    .leave-review-button {
+        margin-top: 700px;
+        padding: 25px 55px;
+        font-size: 22px;
+    }
+
+    .modal-content {
+        max-width: 1000px;
+        padding: 60px;
+    }
+
+    .modal-content h2 {
+        font-size: 38px;
+    }
+
+    .form-group label {
+        font-size: 22px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 18px;
+        font-size: 20px;
+    }
+
+    .submit-review-button {
+        padding: 22px 48px;
+        font-size: 22px;
+    }
+}
+
+/* Медиа-запросы для мобильных устройств */
+@media screen and (max-width: 320px) {
+    /* iPhone 5/SE */
+    .rounded-image-container {
+        height: 160px;
+        margin-top: -70px;
+        border-radius: 15px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 22px;
+        margin-top: -120px;
+    }
+
+    .leave-review-button {
+        margin-top: 220px;
+        padding: 8px 16px;
+        font-size: 10px;
+    }
+}
+
+@media screen and (min-width: 375px) and (max-width: 390px) {
+    /* iPhone X/11/12/13 */
+    .rounded-image-container {
+        height: 180px;
+        margin-top: -80px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 24px;
+        margin-top: -130px;
+    }
+
+    .leave-review-button {
+        margin-top: 250px;
+    }
+}
+
+@media screen and (min-width: 391px) and (max-width: 414px) {
+    /* iPhone 6/7/8 Plus */
+    .rounded-image-container {
+        height: 190px;
+        margin-top: -90px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 26px;
+        margin-top: -140px;
+    }
+
+    .leave-review-button {
+        margin-top: 270px;
+    }
+}
+
+/* Медиа-запросы для планшетов */
+@media screen and (min-width: 768px) and (max-width: 834px) {
+    /* iPad Mini/Air */
+    .rounded-image-container {
+        height: 280px;
+        margin-top: -180px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 42px;
+        margin-top: -230px;
+    }
+
+    .leave-review-button {
+        margin-top: 450px;
+    }
+}
+
+@media screen and (min-width: 835px) and (max-width: 1024px) {
+    /* iPad Pro */
+    .rounded-image-container {
+        height: 320px;
+        margin-top: -220px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 46px;
+        margin-top: -270px;
+    }
+
+    .leave-review-button {
+        margin-top: 500px;
+    }
+}
+
+/* Медиа-запросы для ноутбуков */
+@media screen and (min-width: 1366px) and (max-width: 1440px) {
+    /* Стандартные ноутбуки */
+    .rounded-image-container {
+        height: 350px;
+        margin-top: -250px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 54px;
+        margin-top: -300px;
+    }
+
+    .leave-review-button {
+        margin-top: 550px;
+    }
+}
+
+@media screen and (min-width: 1441px) and (max-width: 1920px) {
+    /* Большие ноутбуки и настольные мониторы */
+    .rounded-image-container {
+        height: 380px;
+        margin-top: -280px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 58px;
+        margin-top: -330px;
+    }
+
+    .leave-review-button {
+        margin-top: 580px;
+    }
+}
+
+/* Медиа-запросы для складных устройств */
+@media screen and (max-width: 280px) {
+    /* Galaxy Fold */
+    .rounded-image-container {
+        height: 150px;
+        margin-top: -60px;
+        border-radius: 12px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 20px;
+        margin-top: -110px;
+    }
+
+    .leave-review-button {
+        margin-top: 200px;
+        padding: 6px 14px;
+        font-size: 9px;
+    }
+}
+
+/* Медиа-запросы для средних телефонов */
+@media screen and (min-width: 415px) and (max-width: 480px) {
+    /* Pixel 3a, Galaxy A51/71 */
+    .rounded-image-container {
+        height: 210px;
+        margin-top: -95px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 28px;
+        margin-top: -160px;
+    }
+
+    .leave-review-button {
+        margin-top: 290px;
+        font-size: 13px;
+    }
+}
+
+/* Медиа-запросы для больших телефонов */
+@media screen and (min-width: 481px) and (max-width: 567px) {
+    /* iPhone 12/13 Pro Max */
+    .rounded-image-container {
+        height: 230px;
+        margin-top: -110px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 32px;
+        margin-top: -180px;
+    }
+
+    .leave-review-button {
+        margin-top: 320px;
+        font-size: 14px;
+    }
+}
+
+/* Медиа-запросы для маленьких планшетов */
+@media screen and (min-width: 600px) and (max-width: 767px) {
+    /* Surface Duo */
+    .rounded-image-container {
+        height: 260px;
+        margin-top: -140px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 38px;
+        margin-top: -210px;
+    }
+
+    .leave-review-button {
+        margin-top: 380px;
+        font-size: 15px;
+    }
+}
+
+/* Медиа-запросы для больших планшетов */
+@media screen and (min-width: 1025px) and (max-width: 1280px) {
+    /* Surface Pro */
+    .rounded-image-container {
+        height: 340px;
+        margin-top: -240px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 50px;
+        margin-top: -290px;
+    }
+
+    .leave-review-button {
+        margin-top: 520px;
+        font-size: 16px;
+    }
+}
+
+/* Медиа-запросы для мониторов 2K */
+@media screen and (min-width: 2048px) and (max-width: 2559px) {
+    /* 2K мониторы */
+    .rounded-image-container {
+        height: 450px;
+        margin-top: -320px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 80px;
+        margin-top: -420px;
+    }
+
+    .leave-review-button {
+        margin-top: 650px;
+        padding: 22px 50px;
+        font-size: 20px;
+    }
+}
+
+/* Медиа-запросы для мониторов 4K */
+@media screen and (min-width: 3840px) {
+    /* 4K мониторы */
+    .rounded-image-container {
+        height: 600px;
+        margin-top: -400px;
+    }
+
+    .image-overlay-subtitle {
+        font-size: 100px;
+        margin-top: -500px;
+    }
+
+    .leave-review-button {
+        margin-top: 800px;
+        padding: 30px 60px;
+        font-size: 26px;
+    }
+
+    .modal-content {
+        max-width: 1200px;
+        padding: 80px;
+    }
+
+    .modal-content h2 {
+        font-size: 46px;
+    }
+
+    .form-group label {
+        font-size: 28px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 24px;
+        font-size: 24px;
+    }
+
+    .submit-review-button {
+        padding: 28px 56px;
+        font-size: 26px;
+    }
+}
+
+

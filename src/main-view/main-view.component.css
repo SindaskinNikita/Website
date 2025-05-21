@@ -1925,6 +1925,20 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
     text-transform: uppercase;
     font-family: 'Arial', sans-serif;
     letter-spacing: 1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+}
+
+.services-header::before,
+.services-header::after {
+    content: '';
+    height: 0.2px;
+    background-color: rgba(255, 255, 255, 0.6);
+    flex: 1;
+    margin: 0 15px;
 }
 
 .services-grid {
@@ -2171,7 +2185,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
 .work-steps {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 0;
 }
 
 /* Убираем отступ между первыми двумя шагами */
@@ -2192,6 +2206,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
     align-items: center;
     gap: 15px;
     position: relative;
+    margin: 0;
 }
 
 .step-icon {
@@ -2330,5 +2345,29 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
         width: 25px;
         height: 25px;
     }
+}
+
+.scroll-to-top-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #FF2B72; /* Синий цвет для круга */
+  color: #ffffff; /* Розовый цвет для стрелки */
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  z-index: 10000; /* Поверх всех элементов */
+}
+
+.scroll-to-top-button:hover {
+  background-color: #ff4785;
+  transform: scale(1.1);
 }
 

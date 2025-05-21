@@ -8,7 +8,7 @@
                 <div class="working-hours">Круглосуточно</div>
                 <a href="tel:+7994444451" class="phone-number">+7 (922) 128-62-22</a>
             </div>
-            <button class="feedback-button">Обратная связь</button>
+            <button class="feedback-button" (click)="openFeedbackModal()">Обратная связь</button>
         </div>
 
         <nav class="nav-menu">
@@ -21,42 +21,88 @@
         </nav>
     </header>
 
-
-    
     <main class="main-content">
         <div class="rounded-image-container">
             <img src="assets/images/camera.jpg" alt="Камера видеонаблюдения" class="rounded-image">
-            
+            <div class="image-overlay-text">
+                <div class="image-overlay-subtitle">Отзывы о нас</div>
+            </div>
         </div>
         
-        <!-- Здесь может быть дополнительный контент для прокрутки -->
+        <!-- Секция отзывов -->
+        <section class="reviews-section">
+            <div class="reviews-container">
+                <div class="review-card" *ngFor="let review of reviews">
+                    <div class="review-header">
+                        <div class="reviewer-avatar"></div>
+                        <div class="reviewer-name">{{ review.name }}</div>
+                    </div>
+                    <div class="review-text">
+                        {{ review.text }}
+                    </div>
+                </div>
+            </div>
+            <!-- Кнопка "Оставить отзыв" под отзывами -->
+            <div class="leave-review-button-container">
+                <button class="leave-review-button" (click)="openModal()">Оставить отзыв</button>
+            </div>
+        </section>
     </main>
-    <div class="image-overlay-text">
-        <div class="image-overlay-subtitle">Отзывы о нас</div>
-        <button class="leave-review-button" onclick="document.getElementById('reviewModal').style.display='block'">Оставить отзыв</button>
-    </div>
 
     <!-- Модальное окно для отзыва -->
-    <div id="reviewModal" class="modal">
+    <div class="modal" [class.visible]="modalVisible">
         <div class="modal-content">
-            <span class="close-button" onclick="document.getElementById('reviewModal').style.display='none'">&times;</span>
+            <span class="close-button" (click)="closeModal()">&times;</span>
             <h2>Оставить отзыв</h2>
-            <form class="review-form">
+            <form class="review-form" (submit)="submitReview(); $event.preventDefault()">
                 <div class="form-group">
                     <label for="name">Ваше имя:</label>
-                    <input type="text" id="name" name="name" required>
+                    <input type="text" id="name" name="name" [(ngModel)]="newReview.name" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" [(ngModel)]="newReview.email" required>
                 </div>
                 <div class="form-group">
                     <label for="review">Ваш отзыв:</label>
-                    <textarea id="review" name="review" rows="5" required></textarea>
+                    <textarea id="review" name="review" rows="5" [(ngModel)]="newReview.text" required></textarea>
                 </div>
                 <button type="submit" class="submit-review-button">Отправить</button>
             </form>
         </div>
     </div>
-</body>
+    
+    <!-- Модальное окно для связи с администратором -->
+    <div class="modal feedback-modal" [class.visible]="feedbackModalVisible">
+        <div class="modal-content">
+            <span class="close-button" (click)="closeFeedbackModal()">&times;</span>
+            <h2>Связаться с администратором</h2>
+            <form class="feedback-form" (submit)="submitFeedback(); $event.preventDefault()">
+                <div class="form-group">
+                    <label for="feedbackName">Ваше имя:</label>
+                    <input type="text" id="feedbackName" name="feedbackName" [(ngModel)]="feedbackData.name" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedbackEmail">Email:</label>
+                    <input type="email" id="feedbackEmail" name="feedbackEmail" [(ngModel)]="feedbackData.email" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedbackPhone">Телефон:</label>
+                    <input type="tel" id="feedbackPhone" name="feedbackPhone" [(ngModel)]="feedbackData.phone">
+                </div>
+                <div class="form-group">
+                    <label for="feedbackMessage">Ваше сообщение:</label>
+                    <textarea id="feedbackMessage" name="feedbackMessage" rows="5" [(ngModel)]="feedbackData.message" required></textarea>
+                </div>
+                <div class="form-group checkbox-group">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="privacyPolicy" name="privacyPolicy" [(ngModel)]="feedbackData.privacyAccepted" required>
+                        <label for="privacyPolicy">Я принимаю условия обработки моих персональных данных</label>
+                    </div>
+                </div>
+                <button type="submit" class="submit-feedback-button" [disabled]="!feedbackData.privacyAccepted">Отправить</button>
+            </form>
+        </div>
+    </div>
+</body>ы
 

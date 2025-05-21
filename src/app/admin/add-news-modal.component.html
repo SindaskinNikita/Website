@@ -1,0 +1,30 @@
+<div class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>{{newsToEdit ? 'Редактировать новость' : 'Добавить новость'}}</h3>
+            <button class="close-btn" (click)="onClose()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="title">Заголовок</label>
+                    <input type="text" id="title" [(ngModel)]="news.title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="content">Содержание</label>
+                    <textarea id="content" [(ngModel)]="news.content" name="content" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="author">Автор</label>
+                    <input type="text" id="author" [(ngModel)]="news.author" name="author" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="onClose()">Отмена</button>
+                    <button type="submit" class="btn btn-primary">
+                        {{newsToEdit ? 'Сохранить' : 'Добавить'}}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

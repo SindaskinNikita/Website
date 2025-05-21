@@ -35,7 +35,12 @@ import { HttpClientModule } from '@angular/common/http';
                             <select id="status" [(ngModel)]="facility.status" name="status" required>
                                 <option value="active">Активен</option>
                                 <option value="inactive">Неактивен</option>
+                                <option value="ready">Готов</option>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cost">Стоимость</label>
+                            <input type="number" id="cost" [(ngModel)]="facility.cost" name="cost" required>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="cancel-btn" (click)="onClose()">Отмена</button>
@@ -198,7 +203,8 @@ export class AddFacilityModalComponent implements OnInit {
         name: '',
         address: '',
         type: '',
-        status: 'active'
+        status: 'active',
+        cost: 0
     };
 
     isEditing: boolean = false;
@@ -212,7 +218,8 @@ export class AddFacilityModalComponent implements OnInit {
                 name: this.facilityToEdit.name,
                 address: this.facilityToEdit.address,
                 type: this.facilityToEdit.type,
-                status: this.facilityToEdit.status
+                status: this.facilityToEdit.status,
+                cost: this.facilityToEdit.cost
             };
         }
     }
@@ -223,7 +230,11 @@ export class AddFacilityModalComponent implements OnInit {
 
     onSubmit(): void {
         if (this.isEditing && this.facilityToEdit) {
-            this.facilityService.updateFacility(this.facilityToEdit.id, this.facility).subscribe(
+            const updatedFacility: Facility = {
+                ...this.facility,
+                id: this.facilityToEdit.id
+            };
+            this.facilityService.updateFacility(updatedFacility).subscribe(
                 (updatedFacility: Facility) => {
                     this.facilityUpdated.emit(updatedFacility);
                     this.onClose();

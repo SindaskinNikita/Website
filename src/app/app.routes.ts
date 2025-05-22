@@ -6,29 +6,77 @@ import { ServicesPageComponent } from './services-page/services-page.component';
 import { CompanyPageComponent } from './company-page/company-page.component';
 import { ContactsPageComponent } from './contacts-page/contacts-page.component';
 import { EquipmentPageComponent } from './equipment-page/equipment-page.component';
+import { LoginComponent } from './auth/login/login.component';
+import { ForbiddenComponent } from './auth/forbidden/forbidden.component';
+import { NotFoundComponent } from './auth/not-found/not-found.component';
+import { AuthGuard } from './guards/auth.guard';
+import { UserRole } from './services/auth.service';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/admin', pathMatch: 'full' },
+    { path: 'login', component: LoginComponent },
+    { path: 'forbidden', component: ForbiddenComponent },
     { 
         path: 'admin', 
         component: AdminComponent,
+        canActivate: [AuthGuard],
+        data: { roles: [UserRole.ADMIN, UserRole.MANAGER] },
         children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', component: AdminComponent },
-            { path: 'employees', component: AdminComponent },
-            { path: 'facilities', component: AdminComponent },
-            { path: 'equipment', component: AdminComponent },
-            { path: 'news', component: AdminComponent },
-            { path: 'reports', component: AdminComponent },
-            { path: 'calculations', component: AdminComponent },
-            { path: 'reviews', component: AdminComponent },
-            { path: 'settings', component: AdminComponent }
+            { 
+                path: 'employees', 
+                component: AdminComponent,
+                data: { section: 'employees' }
+            },
+            { 
+                path: 'facilities', 
+                component: AdminComponent,
+                data: { section: 'facilities' }
+            },
+            { 
+                path: 'equipment', 
+                component: AdminComponent,
+                data: { section: 'equipment' }
+            },
+            { 
+                path: 'news', 
+                component: AdminComponent,
+                data: { section: 'news' }
+            },
+            { 
+                path: 'reports', 
+                component: AdminComponent,
+                data: { section: 'reports' }
+            },
+            { 
+                path: 'calculations', 
+                component: AdminComponent,
+                data: { section: 'calculations' }
+            },
+            { 
+                path: 'reviews', 
+                component: AdminComponent,
+                data: { section: 'reviews' }
+            },
+            { 
+                path: 'settings', 
+                component: AdminComponent,
+                data: { section: 'settings' }
+            }
         ]
+    },
+    {
+        path: 'admin/admin-section',
+        component: AdminComponent,
+        canActivate: [AuthGuard],
+        data: { roles: [UserRole.ADMIN] }
     },
     { path: 'main-view', component: MainViewComponent },
     { path: 'about-page', component: AboutPageComponent },
     { path: 'services-page', component: ServicesPageComponent },
     { path: 'company-page', component: CompanyPageComponent },
     { path: 'contacts-page', component: ContactsPageComponent },
-    { path: 'equipment-page', component: EquipmentPageComponent }
+    { path: 'equipment-page', component: EquipmentPageComponent },
+    { path: '**', component: NotFoundComponent }
 ];

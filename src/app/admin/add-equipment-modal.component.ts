@@ -5,13 +5,14 @@ import { Equipment } from '../models/equipment.model';
 
 @Component({
     selector: 'app-add-equipment-modal',
-    templateUrl: './add-equipment-modal.component.html',
-    styleUrls: ['./add-equipment-modal.component.css'],
     standalone: true,
-    imports: [CommonModule, FormsModule]
+    imports: [CommonModule, FormsModule],
+    templateUrl: './add-equipment-modal.component.html',
+    styleUrls: ['./add-equipment-modal.component.css']
 })
 export class AddEquipmentModalComponent implements OnInit {
     @Input() equipmentToEdit: Equipment | null = null;
+    @Input() isDarkTheme: boolean = false;
     @Output() close = new EventEmitter<void>();
     @Output() equipmentAdded = new EventEmitter<Equipment>();
     @Output() equipmentUpdated = new EventEmitter<Equipment>();

@@ -2371,3 +2371,208 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
   transform: scale(1.1);
 }
 
+/* Стили для модуля портфолио */
+.portfolio-section {
+    width: 95%;
+    max-width: 1800px;
+    margin: 80px auto;
+    position: relative;
+    z-index: 950;
+    padding: 20px 0 60px;
+}
+
+.portfolio-header {
+    font-size: 36px;
+    font-weight: bold;
+    color: #FF2B72;
+    text-align: center;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+}
+
+.portfolio-header::before,
+.portfolio-header::after {
+    content: '';
+    height: 0.2px;
+    background-color: rgba(255, 255, 255, 0.6);
+    flex: 1;
+    margin: 0 15px;
+}
+
+.portfolio-container {
+    position: relative;
+    width: 100%;
+    padding: 0 60px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+.portfolio-track-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.portfolio-track {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.5s ease;
+    cursor: grab;
+    user-select: none;
+    padding: 20px 0;
+}
+
+.portfolio-item {
+    min-width: 300px;
+    width: 300px;
+    height: 400px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.portfolio-item:hover {
+    transform: scale(1.02);
+}
+
+.portfolio-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.portfolio-item:hover .portfolio-image {
+    transform: scale(1.1);
+}
+
+.portfolio-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 20px;
+    color: white;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.portfolio-item:hover .portfolio-overlay {
+    transform: translateY(0);
+}
+
+.portfolio-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.portfolio-description {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.portfolio-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.portfolio-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(255, 43, 114, 0.8);
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.portfolio-button:hover {
+    background-color: #FF2B72;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.portfolio-button.prev {
+    left: 0;
+}
+
+.portfolio-button.next {
+    right: 0;
+}
+
+/* Адаптивные стили для портфолио */
+@media screen and (max-width: 1200px) {
+    .portfolio-item {
+        min-width: 280px;
+        height: 380px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .portfolio-header {
+        font-size: 28px;
+        margin-bottom: 30px;
+    }
+
+    .portfolio-item {
+        min-width: 260px;
+        height: 350px;
+    }
+
+    .portfolio-button {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .portfolio-header {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .portfolio-item {
+        min-width: 240px;
+        height: 320px;
+    }
+
+    .portfolio-button {
+        width: 35px;
+        height: 35px;
+    }
+
+    .portfolio-title {
+        font-size: 16px;
+    }
+
+    .portfolio-description {
+        font-size: 12px;
+    }
+}
+

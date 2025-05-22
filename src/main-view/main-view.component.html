@@ -265,7 +265,44 @@
             </div>
         </section>
         
-        <!-- Здесь может быть дополнительный контент для прокрутки -->
+        <!-- Секция портфолио -->
+        <section class="portfolio-section">
+            <h2 class="portfolio-header">Наши работы</h2>
+            
+            <div class="portfolio-container">
+                <button class="portfolio-button prev" (click)="slidePrev()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                
+                <div class="portfolio-track-container">
+                    <div class="portfolio-track" #portfolioSlider 
+                         (mousedown)="startDragging($event)"
+                         (mousemove)="onDragging($event)"
+                         (mouseup)="stopDragging()"
+                         (mouseleave)="stopDragging()"
+                         (touchstart)="startDragging($event)"
+                         (touchmove)="onDragging($event)"
+                         (touchend)="stopDragging()"
+                         (touchcancel)="stopDragging()">
+                        <div class="portfolio-item" *ngFor="let item of portfolioItems">
+                            <img [src]="item.image" [alt]="item.title" class="portfolio-image">
+                            <div class="portfolio-overlay">
+                                <h3 class="portfolio-title">{{item.title}}</h3>
+                                <p class="portfolio-description">{{item.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="portfolio-button next" (click)="slideNext()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18L15 12L9 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </section>
     </main>
 
     <button class="scroll-to-top-button" (click)="scrollToTop()">

@@ -9,22 +9,11 @@ import { EquipmentPageComponent } from './equipment-page/equipment-page.componen
 
 export const routes: Routes = [
     { path: '', redirectTo: '/admin', pathMatch: 'full' },
-    { 
-        path: 'admin', 
-        component: AdminComponent,
-        children: [
-            { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-            { path: 'dashboard', component: AdminComponent },
-            { path: 'employees', component: AdminComponent },
-            { path: 'facilities', component: AdminComponent },
-            { path: 'equipment', component: AdminComponent },
-            { path: 'news', component: AdminComponent },
-            { path: 'reports', component: AdminComponent },
-            { path: 'calculations', component: AdminComponent },
-            { path: 'reviews', component: AdminComponent },
-            { path: 'settings', component: AdminComponent }
-        ]
-    },
+    { path: 'admin', component: AdminComponent },
+    { path: 'admin/employees', component: AdminComponent },
+    { path: 'admin/facilities', component: AdminComponent },
+    { path: 'admin/reports', component: AdminComponent },
+    { path: 'admin/settings', component: AdminComponent },
     { path: 'main-view', component: MainViewComponent },
     { path: 'about-page', component: AboutPageComponent },
     { path: 'services-page', component: ServicesPageComponent },

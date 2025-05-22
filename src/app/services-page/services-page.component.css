@@ -7,6 +7,7 @@ html {
 
 /* Основные стили для body */
 body {
+  
     font-family: 'Arial', sans-serif;
     color: #fff;
     line-height: 1.6;
@@ -18,6 +19,7 @@ body {
     overflow-x: hidden;
     min-height: 100vh;
     position: relative;
+    
 }
 
 /* Стили для названия компании */
@@ -181,6 +183,7 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     transform: none;
     z-index: 900;
+    background-color: #1C243C;
 }
 
 /* Стили для изображения */
@@ -494,239 +497,213 @@ body {
     }
 }
 
-/* Основные стили */
+/* Стили для секции услуг */
 .services-section {
-    padding: 40px 20px;
+    padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    color: #fff;
 }
 
 .services-title {
-    color: #FF2B72;
-    font-size: 36px;
     text-align: center;
-    margin-bottom: 40px;
+    color: #FF2B72;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    font-family: 'Arial', sans-serif;
     font-weight: bold;
 }
 
-/* Категории услуг */
-.services-categories {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 40px;
-    flex-wrap: wrap;
+.service-category {
+    margin-bottom: 3rem;
 }
 
-.category-button {
-    padding: 12px 24px;
-    border: 2px solid #1C243C;
-    border-radius: 25px;
-    background: transparent;
-    color: #1C243C;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.category-title {
+    color: #FF2B72;
+    border-bottom: 2px solid #FF2B72;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
 }
 
-.category-button:hover {
-    background: #1C243C;
-    color: white;
-}
-
-.category-button.active {
-    background: #FF2B72;
-    border-color: #FF2B72;
-    color: white;
-}
-
-/* Сетка услуг */
 .services-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 30px;
-    max-width: 800px;
-    margin: 0 auto;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
 }
 
-/* Карточка услуги */
 .service-card {
-    background: white;
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
     transition: transform 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .service-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(255, 43, 114, 0.2);
 }
 
-.service-card h3 {
-    color: #1C243C;
-    font-size: 24px;
-    margin-bottom: 20px;
+.service-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.service-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.8);
+}
+
+.service-content {
+    padding: 1.5rem;
+}
+
+.service-content h3 {
+    color: #FF2B72;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
 }
 
 .service-description {
-    margin-bottom: 20px;
-}
-
-.service-description p {
-    color: #666;
-    margin-bottom: 15px;
-}
-
-.service-description ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.service-description li {
-    color: #666;
-    margin-bottom: 10px;
-    padding-left: 20px;
-    position: relative;
-}
-
-.service-description li:before {
-    content: "•";
-    color: #FF2B72;
-    position: absolute;
-    left: 0;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    font-family: 'Arial', sans-serif;
 }
 
 .service-price {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
-.service-price p {
-    color: #1C243C;
-    font-size: 20px;
+    font-size: 1.25rem;
+    color: #FF2B72;
     font-weight: bold;
-    margin: 0;
+    margin-bottom: 1rem;
+    font-family: 'Arial', sans-serif;
 }
 
-/* Калькулятор */
-.calculator {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+.service-calculator {
+    margin-bottom: 1rem;
 }
 
-.calculator h4 {
-    color: #1C243C;
-    margin-bottom: 15px;
-    font-size: 18px;
-}
-
-.calculator-inputs {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.input-group label {
-    color: #666;
-    font-size: 14px;
-}
-
-.input-group input,
-.input-group select {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-.total-price {
-    margin-top: 15px;
-    padding: 10px;
-    background: #1C243C;
-    color: white;
-    border-radius: 5px;
-    text-align: center;
-    font-weight: bold;
-}
-
-/* Кнопка заявки */
-.request-button {
-    width: 100%;
-    padding: 15px;
+.calculator-button {
     background: #FF2B72;
     color: white;
     border: none;
-    border-radius: 10px;
-    font-size: 16px;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
+    font-family: 'Arial', sans-serif;
+}
+
+.calculator-button:hover {
+    background: #ff4785;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 43, 114, 0.4);
+}
+
+.request-button {
+    width: 100%;
+    background: #FF2B72;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Arial', sans-serif;
 }
 
 .request-button:hover {
-    background: #e61e5c;
+    background: #ff4785;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 43, 114, 0.4);
 }
 
-/* Модальное окно заявки */
+/* Стили для модальных окон */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(28, 36, 60, 0.9);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    backdrop-filter: blur(5px);
 }
 
 .modal-content {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
+    background: #1C243C;
+    padding: 2rem;
+    border-radius: 10px;
     width: 90%;
     max-width: 500px;
     position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.calculator-modal {
+    max-width: 600px;
 }
 
 .close-button {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 1rem;
+    right: 1rem;
     background: none;
     border: none;
-    font-size: 24px;
+    font-size: 1.5rem;
     cursor: pointer;
-    color: #666;
+    color: #FF2B72;
+    transition: color 0.3s ease;
+}
+
+.close-button:hover {
+    color: #ff4785;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
-    color: #666;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
 }
 
 .form-group input,
+.form-group select,
 .form-group textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #FF2B72;
+    box-shadow: 0 0 0 2px rgba(255, 43, 114, 0.2);
 }
 
 .form-group textarea {
@@ -734,63 +711,306 @@ body {
     resize: vertical;
 }
 
+.calculator-result {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.calculator-result h4 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+    font-family: 'Arial', sans-serif;
+}
+
+.calculator-result .price {
+    font-size: 1.5rem;
+    color: #FF2B72;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+}
+
+.calculate-button,
 .submit-button {
     width: 100%;
-    padding: 15px;
     background: #FF2B72;
     color: white;
     border: none;
-    border-radius: 10px;
-    font-size: 16px;
+    padding: 0.75rem;
+    border-radius: 25px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    font-size: 1rem;
+    font-family: 'Arial', sans-serif;
+    transition: all 0.3s ease;
 }
 
+.calculate-button:hover,
 .submit-button:hover {
-    background: #e61e5c;
+    background: #ff4785;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 43, 114, 0.4);
 }
 
-/* Адаптивность */
-@media (max-width: 768px) {
-    .services-categories {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .category-button {
-        width: 100%;
-    }
-
-    .service-card {
-        padding: 20px;
-    }
-
-    .calculator-inputs {
-        gap: 10px;
-    }
-}
-
-/* Кнопка прокрутки наверх */
+/* Стили для кнопки прокрутки наверх */
 .scroll-to-top-button {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 2rem;
+    right: 2rem;
     background: #FF2B72;
     color: white;
+    border: none;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
     transition: all 0.3s ease;
     z-index: 100;
 }
 
+.scroll-to-top-button.visible {
+    opacity: 1;
+}
+
 .scroll-to-top-button:hover {
-    background: #e61e5c;
+    background: #ff4785;
     transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 43, 114, 0.4);
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .services-title {
+        font-size: 2rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .service-card {
+        margin: 0 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .services-section {
+        padding: 1rem;
+    }
+
+    .service-content {
+        padding: 1rem;
+    }
+
+    .service-content h3 {
+        font-size: 1.25rem;
+    }
+
+    .service-description {
+        font-size: 0.9rem;
+    }
+
+    .calculator-button,
+    .request-button {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+.services-intro {
+    padding: 3rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #fff;
+}
+
+.intro-text {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.main-description {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #ffffff;
+    margin-bottom: 2rem;
+    font-family: 'Arial', sans-serif;
+}
+
+.services-subtitle {
+    color: #FF2B72;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+}
+
+.service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.service-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1.5rem;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.service-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: #FF2B72;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.service-item:hover {
+    background: rgba(255, 43, 114, 0.05);
+    transform: translateX(10px);
+    border-color: rgba(255, 43, 114, 0.2);
+}
+
+.service-item:hover::before {
+    opacity: 1;
+}
+
+.service-info h3 {
+    color: #FF2B72;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+}
+
+.service-info p {
+    color: #ffffff;
+    line-height: 1.6;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Удаляем неиспользуемые стили для маркеров */
+.service-marker {
+    display: none;
+}
+
+.contract-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 1rem;
+}
+
+.contract-list li {
+    color: #ffffff;
+    padding: 0.5rem 0;
+    position: relative;
+    padding-left: 1.5rem;
+    font-family: 'Arial', sans-serif;
+}
+
+.contract-list li::before {
+    content: '•';
+    color: #FF2B72;
+    position: absolute;
+    left: 0;
+    font-size: 1.2rem;
+}
+
+.service-footer {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 43, 114, 0.1);
+    border-radius: 15px;
+    color: #fff;
+    text-align: center;
+    font-size: 1.2rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    border: 1px solid rgba(255, 43, 114, 0.2);
+}
+
+/* Адаптивные стили для новой секции */
+@media (max-width: 768px) {
+    .services-intro {
+        padding: 2rem 1rem;
+    }
+
+    .intro-text {
+        padding: 1.5rem;
+    }
+
+    .main-description {
+        font-size: 1.1rem;
+    }
+
+    .services-subtitle {
+        font-size: 1.6rem;
+    }
+
+    .service-item {
+        padding: 1rem;
+    }
+
+    .service-info h3 {
+        font-size: 1.2rem;
+    }
+
+    .service-footer {
+        font-size: 1.1rem;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .services-intro {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .intro-text {
+        padding: 1rem;
+    }
+
+    .main-description {
+        font-size: 1rem;
+    }
+
+    .services-subtitle {
+        font-size: 1.4rem;
+    }
+
+    .service-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .service-info h3 {
+        font-size: 1.1rem;
+    }
+
+    .service-footer {
+        font-size: 1rem;
+        margin-top: 1.5rem;
+    }
 }

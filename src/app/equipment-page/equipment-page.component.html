@@ -20,37 +20,124 @@
             <a href="about-page" class="nav-item">Отзывы</a>
         </nav>
     </header>
-
+    
     <main class="main-content">
         <div class="rounded-image-container">
             <img src="assets/images/camera.jpg" alt="Камера видеонаблюдения" class="rounded-image">
+           
         </div>
-        
-        <!-- Секция с оборудованием -->
-        <section class="equipment-section">
-            <div class="equipment-description">
-                <p>Мы предлагаем широкий ассортимент оборудования для обеспечения безопасности вашего дома и бизнеса. Наши решения включают в себя системы видеонаблюдения, охранные сигнализации, системы контроля доступа и многое другое.</p>
+    </main>
+
+    <main class="equipment-content">
+
+        <div class="filters-panel">
+            <div class="search-box">
+                <input type="text" placeholder="Поиск оборудования..." class="search-input">
+                <button class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
-            <div class="equipment-cards">
-                <div class="equipment-card">
-                    <img src="assets/images/equipment1.jpg" alt="Камера видеонаблюдения" class="equipment-image">
-                    <h3 class="equipment-title">Камеры видеонаблюдения</h3>
-                    <p class="equipment-text">Высококачественные камеры для внутреннего и наружного наблюдения.</p>
-                    <button class="equipment-button">Подробнее</button>
+            
+            <div class="categories">
+                <button class="category-button active">Все</button>
+                <button class="category-button">Видеонаблюдение</button>
+                <button class="category-button">Сетевое оборудование</button>
+                <button class="category-button">Охранные системы</button>
+                <button class="category-button">СКУД</button>
+            </div>
+        </div>
+
+        <!-- Сетка товаров -->
+        <div class="products-grid">
+            <!-- Карточка товара 1 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="assets/images/camera.jpg" alt="IP камера 2NN">
                 </div>
-                <div class="equipment-card">
-                    <img src="assets/images/equipment2.jpg" alt="Охранная сигнализация" class="equipment-image">
-                    <h3 class="equipment-title">Охранные сигнализации</h3>
-                    <p class="equipment-text">Надежные системы для защиты вашего имущества.</p>
-                    <button class="equipment-button">Подробнее</button>
-                </div>
-                <div class="equipment-card">
-                    <img src="assets/images/equipment3.jpg" alt="Система контроля доступа" class="equipment-image">
-                    <h3 class="equipment-title">Системы контроля доступа</h3>
-                    <p class="equipment-text">Современные решения для управления доступом.</p>
-                    <button class="equipment-button">Подробнее</button>
+                <div class="product-info">
+                    <h3 class="product-title">IP камера 2NN</h3>
+                    <ul class="product-features">
+                        <li>Пластиковый корпус</li>
+                        <li>Угол обзора: 92° × 54°</li>
+                        <li>ИК-подсветка до 30м</li>
+                    </ul>
+                    <div class="product-price">2 300 ₽</div>
+                    <div class="product-buttons">
+                        <button class="details-button">Подробнее</button>
+                        <button class="order-button">Заказать</button>
+                    </div>
                 </div>
             </div>
-        </section>
+
+            <!-- Карточка товара 2 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="assets/images/camera.jpg" alt="IP камера 2NN с микрофоном">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">IP камера 2NN с микрофоном и microSD</h3>
+                    <ul class="product-features">
+                        <li>Встроенный микрофон</li>
+                        <li>Угол обзора: 108° × 58°</li>
+                        <li>Запись на microSD</li>
+                    </ul>
+                    <div class="product-price">7 400 ₽</div>
+                    <div class="product-buttons">
+                        <button class="details-button">Подробнее</button>
+                        <button class="order-button">Заказать</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Карточка товара 3 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="assets/images/camera.jpg" alt="IP камера 5NN">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">IP камера 5NN</h3>
+                    <ul class="product-features">
+                        <li>Разрешение 2592×1944</li>
+                        <li>Угол обзора: 100° × 76°</li>
+                        <li>Запись до 16 суток</li>
+                    </ul>
+                    <div class="product-price">10 600 ₽</div>
+                    <div class="product-buttons">
+                        <button class="details-button">Подробнее</button>
+                        <button class="order-button">Заказать</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Карточка товара 4 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="assets/images/camera.jpg" alt="IP камера 5NN с объективом">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">IP камера 5NN с объективом 5-50мм</h3>
+                    <ul class="product-features">
+                        <li>Нейросетевая аналитика</li>
+                        <li>Разрешение 1920×1080</li>
+                        <li>ИК-подсветка до 80м</li>
+                    </ul>
+                    <div class="product-price">14 200 ₽</div>
+                    <div class="product-buttons">
+                        <button class="details-button">Подробнее</button>
+                        <button class="order-button">Заказать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Пагинация -->
+        <div class="pagination">
+            <button class="pagination-button active">1</button>
+            <button class="pagination-button">2</button>
+            <button class="pagination-button">3</button>
+            <button class="pagination-button">4</button>
+            <span class="pagination-dots">...</span>
+            <button class="pagination-button">10</button>
+        </div>
     </main>
 </body>

@@ -59,6 +59,7 @@ body {
     display: flex;
     align-items: center;
     gap: 30px;
+    z-index: 1500;
 }
 
 /* Стили для текста контактов */

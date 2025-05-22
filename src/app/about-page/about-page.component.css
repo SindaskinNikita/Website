@@ -7,17 +7,17 @@ html {
 
 /* Основные стили для body */
 body {
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+    line-height: 1.6;
+    font-weight: 400;
     background-color: #1C243C;
-    width: 100%;
-    height: 700px;
     margin: 0;
     padding: 0;
-    min-height: 1000px;
+    width: 100%;
     overflow-x: hidden;
-    font-family: 'Roboto', Arial, sans-serif;
-    line-height: 1.6;
-    font-weight: 300;
-    color: #fff;
+    min-height: 100vh;
+    position: relative;
 }
 
 /* Стили для названия компании */
@@ -66,7 +66,7 @@ body {
     align-items: flex-end;
     gap: 5px;
     position: relative;
-    z-index: 1500;
+    z-index: 1000;
 }
 
 /* Разделительная линия после контактного текста */

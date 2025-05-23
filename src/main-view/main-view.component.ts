@@ -5,21 +5,23 @@ import { Router } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ReviewsService, Review } from '../app/services/reviews.service';
 import { Subscription } from 'rxjs';
+import { OrderService } from '../app/services/order.service';
+import { Order } from '../app/models/order.model';
 
 @Component({
   selector: 'app-main-view',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './main-view.component.html',
-  styleUrl: './main-view.component.css',
+  styleUrls: ['./main-view.component.css'],
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [
         style({ opacity: 0, transform: 'translateY(20px)' }),
-        animate('500ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
       ]),
       transition(':leave', [
-        animate('500ms ease-in', style({ opacity: 0, transform: 'translateY(-20px)' }))
+        animate('300ms ease-in', style({ opacity: 0, transform: 'translateY(-20px)' }))
       ])
     ])
   ]
@@ -156,7 +158,9 @@ export class MainViewComponent implements OnInit, AfterViewInit, OnDestroy {
   reviews: Review[] = [];
   displayedReviews: Review[] = [];
   currentReviewIndex = 0;
-  reviewsPerPage = 4;
+  private reviewsPerPage = window.innerWidth >= 1400 ? 4 : 
+                          window.innerWidth >= 1200 ? 3 : 
+                          window.innerWidth >= 768 ? 2 : 1;
   private reviewInterval: any;
 
   modalVisible = false;
@@ -175,10 +179,29 @@ export class MainViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   isScrollButtonVisible = false;
 
+  orderForm = {
+    service: '',
+    customService: '',
+    name: '',
+    email: '',
+    phone: ''
+  };
+
+  // Добавляем массив с идентификаторами услуг
+  readonly services = [
+    { id: 'video', name: 'Видеонаблюдение' },
+    { id: 'electrical', name: 'Сборка электрощитков' },
+    { id: 'access', name: 'Система контроля и управлением доступа' },
+    { id: 'security', name: 'Охранная система' },
+    { id: 'network', name: 'Сети связи и оптоволокно' },
+    { id: 'installation', name: 'Электромонтажные работы' }
+  ];
+
   constructor(
     private ngZone: NgZone, 
     private router: Router,
-    private reviewsService: ReviewsService
+    private reviewsService: ReviewsService,
+    private orderService: OrderService
   ) {
     this.resizeObserver = new ResizeObserver(this.handleResize);
   }
@@ -198,54 +221,72 @@ export class MainViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private updateDisplayedReviews(): void {
-    this.displayedReviews = [];
-    for (let i = 0; i < this.reviewsPerPage; i++) {
-      const index = (this.currentReviewIndex + i) % this.reviews.length;
-      if (this.reviews[index]) {
-        this.displayedReviews.push(this.reviews[index]);
+    this.ngZone.run(() => {
+      const startIndex = this.currentReviewIndex % this.reviews.length;
+      this.displayedReviews = [];
+      
+      for (let i = 0; i < this.reviewsPerPage; i++) {
+        const index = (startIndex + i) % this.reviews.length;
+        if (this.reviews[index]) {
+          const review = { ...this.reviews[index] };
+          // Уменьшаем задержку анимации для каждого отзыва
+          review['animationDelay'] = `${i * 100}ms`;
+          this.displayedReviews.push(review);
+        }
       }
-    }
+    });
   }
 
   private startReviewRotation(): void {
     this.ngZone.runOutsideAngular(() => {
       this.reviewInterval = setInterval(() => {
-        this.ngZone.run(() => {
-          this.currentReviewIndex = (this.currentReviewIndex + 1) % this.reviews.length;
-          this.updateDisplayedReviews();
-        });
-      }, 15000); // Ротация каждые 15 секунд
+        this.currentReviewIndex = (this.currentReviewIndex + 1) % this.reviews.length;
+        this.updateDisplayedReviews();
+      }, 60000); // Увеличиваем интервал ротации до 1 минуты (60000 мс)
     });
   }
 
   ngAfterViewInit(): void {
     if (this.portfolioSlider) {
-      // Получаем все элементы слайдера
-      this.items = Array.from(this.portfolioSlider.nativeElement.getElementsByClassName('portfolio-item'));
-      
-      // Клонируем первые 2 элемента в конец
-      const cloneCount = 2;
-      for (let i = 0; i < cloneCount; i++) {
-        const clone = this.items[i].cloneNode(true) as HTMLElement;
-        this.portfolioSlider.nativeElement.appendChild(clone);
-      }
+        // Получаем все элементы слайдера
+        this.items = Array.from(this.portfolioSlider.nativeElement.getElementsByClassName('portfolio-item'));
+        
+        // Клонируем элементы для бесконечной прокрутки
+        const itemsToClone = Math.ceil(window.innerWidth / (this.items[0]?.offsetWidth || 300));
+        
+        // Клонируем элементы в начало и конец
+        for (let i = 0; i < itemsToClone; i++) {
+            // Клонируем последние элементы в начало
+            const endClone = this.items[this.items.length - 1 - i].cloneNode(true) as HTMLElement;
+            endClone.classList.add('clone');
+            this.portfolioSlider.nativeElement.insertBefore(endClone, this.portfolioSlider.nativeElement.firstChild);
+            
+            // Клонируем первые элементы в конец
+            const startClone = this.items[i].cloneNode(true) as HTMLElement;
+            startClone.classList.add('clone');
+            this.portfolioSlider.nativeElement.appendChild(startClone);
+        }
 
-      // Настраиваем наблюдателей
-      this.setupObservers();
+        // Обновляем массив элементов с клонами
+        this.items = Array.from(this.portfolioSlider.nativeElement.getElementsByClassName('portfolio-item'));
+        
+        // Устанавливаем начальную позицию (пропускаем клонированные элементы)
+        this.currentIndex = itemsToClone;
+        this.scrollToIndex(this.currentIndex, false);
 
-      // Инициализируем размеры
-      this.updateDimensions();
-
-      // Добавляем слушатель окончания анимации
-      this.portfolioSlider.nativeElement.addEventListener('transitionend', this.handleTransitionEnd);
-      
-      // Запускаем автоматическую прокрутку вне зоны Angular
-      this.ngZone.runOutsideAngular(() => {
-        this.startAutoScroll();
-      });
-
-      // Оптимизируем обработку изображений
-      this.optimizeImages();
+        // Настраиваем наблюдателей
+        this.setupObservers();
+        
+        // Инициализируем размеры
+        this.updateDimensions();
+        
+        // Добавляем слушатель окончания анимации
+        this.portfolioSlider.nativeElement.addEventListener('transitionend', this.handleTransitionEnd);
+        
+        // Запускаем автоматическую прокрутку
+        this.ngZone.runOutsideAngular(() => {
+            this.startAutoScroll();
+        });
     }
   }
 
@@ -344,19 +385,22 @@ export class MainViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private handleTransitionEnd = () => {
-    this.isTransitioning = false;
-    
-    if (this.currentIndex >= this.items.length) {
-      const track = this.portfolioSlider.nativeElement;
-      
-      track.style.transition = 'none';
-      this.currentIndex = 0;
-      this.scrollToIndex(0);
-      
-      requestAnimationFrame(() => {
-        track.style.transition = 'transform 0.5s ease';
-      });
+    const track = this.portfolioSlider.nativeElement;
+    const totalItems = this.items.length;
+    const itemsToClone = Math.ceil(window.innerWidth / (this.items[0]?.offsetWidth || 300));
+
+    // Если достигли конца, перепрыгиваем в начало
+    if (this.currentIndex >= totalItems - itemsToClone) {
+        this.currentIndex = itemsToClone;
+        this.scrollToIndex(this.currentIndex, false);
     }
+    // Если достигли начала, перепрыгиваем в конец
+    else if (this.currentIndex <= itemsToClone - 1) {
+        this.currentIndex = totalItems - itemsToClone - 1;
+        this.scrollToIndex(this.currentIndex, false);
+    }
+
+    this.isTransitioning = false;
   }
 
   private startAutoScroll(): void {
@@ -371,12 +415,7 @@ export class MainViewComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.isDragging || this.isTransitioning) return;
     
     this.isTransitioning = true;
-    this.currentIndex = Math.max(0, this.currentIndex - 1);
-    
-    if (this.currentIndex === 0) {
-      this.currentIndex = this.items.length - 1;
-    }
-    
+    this.currentIndex--;
     this.scrollToIndex(this.currentIndex);
   }
 
@@ -385,26 +424,21 @@ export class MainViewComponent implements OnInit, AfterViewInit, OnDestroy {
     
     this.isTransitioning = true;
     this.currentIndex++;
-    
-    if (this.currentIndex > this.items.length) {
-      this.scrollToIndex(0);
-      this.currentIndex = 0;
-    } else {
-      this.scrollToIndex(this.currentIndex);
-    }
+    this.scrollToIndex(this.currentIndex);
   }
 
-  private scrollToIndex(index: number): void {
+  private scrollToIndex(index: number, withAnimation: boolean = true): void {
     if (!this.portfolioSlider || !this.itemWidth) return;
     
     const track = this.portfolioSlider.nativeElement;
     
     if (this.animationFrame) {
-      cancelAnimationFrame(this.animationFrame);
+        cancelAnimationFrame(this.animationFrame);
     }
     
     this.animationFrame = requestAnimationFrame(() => {
-      track.style.transform = `translateX(-${index * this.itemWidth}px)`;
+        track.style.transition = withAnimation ? 'transform 0.5s ease' : 'none';
+        track.style.transform = `translateX(-${index * this.itemWidth}px)`;
     });
   }
 
@@ -454,8 +488,6 @@ export class MainViewComponent implements OnInit, AfterViewInit, OnDestroy {
     const currentPosition = matrix.m41;
     
     this.currentIndex = Math.round(Math.abs(currentPosition) / this.itemWidth);
-    this.currentIndex = Math.max(0, Math.min(this.currentIndex, this.items.length));
-    
     this.scrollToIndex(this.currentIndex);
   }
 
@@ -514,5 +546,104 @@ export class MainViewComponent implements OnInit, AfterViewInit, OnDestroy {
   checkScroll() {
     // Показываем кнопку, когда прокрутка больше 300px
     this.isScrollButtonVisible = window.pageYOffset > 300;
+  }
+
+  onServiceChange(value: string): void {
+    if (value !== 'other') {
+      this.orderForm.customService = '';
+    }
+  }
+
+  submitOrder(): void {
+    if (!this.orderForm.service) {
+      alert('Пожалуйста, выберите услугу');
+      return;
+    }
+
+    if (this.orderForm.service === 'other' && !this.orderForm.customService) {
+      alert('Пожалуйста, опишите вашу проблему');
+      return;
+    }
+
+    if (!this.orderForm.name || !this.orderForm.email || !this.orderForm.phone) {
+      alert('Пожалуйста, заполните все обязательные поля!');
+      return;
+    }
+
+    // Создаем объект заказа
+    const order: Order = {
+      service: this.orderForm.service === 'other' ? this.orderForm.customService : this.orderForm.service,
+      name: this.orderForm.name,
+      email: this.orderForm.email,
+      phone: this.orderForm.phone,
+      date: new Date(),
+      status: 'new'
+    };
+
+    // Отправка заказа в базу данных
+    this.orderService.createOrder(order).subscribe({
+      next: () => {
+        alert('Заявка успешно отправлена!');
+        // Очистка формы
+        this.orderForm = {
+          service: '',
+          customService: '',
+          name: '',
+          email: '',
+          phone: ''
+        };
+      },
+      error: (error) => {
+        alert('Произошла ошибка при отправке заявки');
+        console.error('Error:', error);
+      }
+    });
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    const newReviewsPerPage = window.innerWidth >= 1400 ? 4 : 
+                             window.innerWidth >= 1200 ? 3 : 
+                             window.innerWidth >= 768 ? 2 : 1;
+                             
+    if (this.reviewsPerPage !== newReviewsPerPage) {
+      this.reviewsPerPage = newReviewsPerPage;
+      this.updateDisplayedReviews();
+    }
+  }
+
+  // Добавляем метод для ручного переключения отзывов
+  nextReviews(): void {
+    if (this.reviewInterval) {
+      clearInterval(this.reviewInterval);
+    }
+    this.currentReviewIndex = (this.currentReviewIndex + 1) % this.reviews.length;
+    this.updateDisplayedReviews();
+    this.startReviewRotation();
+  }
+
+  prevReviews(): void {
+    if (this.reviewInterval) {
+      clearInterval(this.reviewInterval);
+    }
+    this.currentReviewIndex = (this.currentReviewIndex - 1 + this.reviews.length) % this.reviews.length;
+    this.updateDisplayedReviews();
+    this.startReviewRotation();
+  }
+
+  // Метод для перехода к конкретной услуге
+  navigateToService(serviceId: string): void {
+    this.router.navigate(['/services-page']).then(() => {
+      // Даем небольшую задержку для загрузки страницы
+      setTimeout(() => {
+        const element = document.getElementById(serviceId);
+        if (element) {
+          element.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start'
+          });
+        }
+      }, 100);
+    });
   }
 }

@@ -7,6 +7,7 @@ export interface Review {
   text: string;
   date: string;
   rating: number;
+  animationDelay?: string;
 }
 
 @Injectable({

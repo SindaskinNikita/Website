@@ -250,20 +250,20 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
 /* Кнопка запроса */
 .request-button {
     background-color: #FF2B72;
-    color: white; 
+    color: white;
     border: none;
-    border-radius: 30px;
-    padding: 15px 40px;
-    font-size: 18px;
-    font-family: 'Arial', sans-serif;
+    border-radius: 25px;
+    padding: 15px 35px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: all 0.3s ease;
 }
 
-/* Эффект наведения на кнопку запроса */
 .request-button:hover {
-    background-color: #FF2B72;
-    transform: translateY(2px);
+    background-color: #ff4785;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 43, 114, 0.4);
 }
 
 /* Медиа-запросы для адаптивности */
@@ -2284,14 +2284,29 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
     min-width: 220px;
     padding: 15px;
     border-radius: 5px;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
     font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
 .form-input::placeholder {
     color: rgba(255, 255, 255, 0.6);
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
 }
 
 .order-button {
@@ -2424,45 +2439,40 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
 }
 
 .portfolio-track-container {
-    width: 100%;
     overflow: hidden;
     position: relative;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .portfolio-track {
     display: flex;
     gap: 20px;
     transition: transform 0.5s ease;
-    cursor: grab;
-    user-select: none;
-    padding: 20px 0;
+    will-change: transform;
+    touch-action: pan-y;
 }
 
 .portfolio-item {
-    min-width: 300px;
+    flex: 0 0 auto;
     width: 300px;
     height: 400px;
-    flex-shrink: 0;
-    border-radius: 15px;
-    overflow: hidden;
     position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    cursor: pointer;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
 }
 
-.portfolio-item:hover {
-    transform: scale(1.02);
+.portfolio-item.clone {
+    pointer-events: none;
 }
 
 .portfolio-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.portfolio-item:hover .portfolio-image {
-    transform: scale(1.1);
+    transition: transform 0.3s ease;
 }
 
 .portfolio-overlay {
@@ -2481,6 +2491,10 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
     transform: translateY(0);
 }
 
+.portfolio-item:hover .portfolio-image {
+    transform: scale(1.1);
+}
+
 .portfolio-title {
     font-size: 18px;
     font-weight: bold;
@@ -2489,18 +2503,8 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
 
 .portfolio-description {
     font-size: 14px;
+    margin: 0;
     opacity: 0.8;
-}
-
-.portfolio-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    pointer-events: none;
-    z-index: 1;
 }
 
 .portfolio-button {
@@ -2534,51 +2538,33 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
     right: 0;
 }
 
-/* Адаптивные стили для портфолио */
-@media screen and (max-width: 1200px) {
+@media (max-width: 768px) {
     .portfolio-item {
-        min-width: 280px;
-        height: 380px;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .portfolio-header {
-        font-size: 28px;
-        margin-bottom: 30px;
-    }
-
-    .portfolio-item {
-        min-width: 260px;
+        width: 260px;
         height: 350px;
     }
-
+    
     .portfolio-button {
         width: 40px;
         height: 40px;
     }
 }
 
-@media screen and (max-width: 480px) {
-    .portfolio-header {
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-
+@media (max-width: 480px) {
     .portfolio-item {
-        min-width: 240px;
+        width: 240px;
         height: 320px;
     }
-
+    
     .portfolio-button {
         width: 35px;
         height: 35px;
     }
-
+    
     .portfolio-title {
         font-size: 16px;
     }
-
+    
     .portfolio-description {
         font-size: 12px;
     }
@@ -2620,27 +2606,43 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
 }
 
 .reviews-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 20px;
     padding: 20px;
     margin: 0 auto;
     max-width: 1400px;
+    will-change: transform;
+}
+
+.reviews-track {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+    transition: transform 0.5s ease;
 }
 
 .review-card {
     background-color: rgba(36, 44, 72, 0.6);
     border-radius: 15px;
-    padding: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 25px;
+    transition: all 0.3s ease;
     height: 100%;
+    min-height: 200px;
     display: flex;
     flex-direction: column;
+    backdrop-filter: blur(10px);
+    will-change: transform, opacity;
+    transform: translateZ(0);
 }
 
 .review-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    background-color: rgba(36, 44, 72, 0.8);
 }
 
 .review-header {
@@ -2673,6 +2675,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
 .star {
     color: #FF2B72;
     font-size: 18px;
+    text-shadow: 0 0 5px rgba(255, 43, 114, 0.3);
 }
 
 .star.empty {
@@ -2700,7 +2703,8 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
     padding: 15px 35px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: all 0.3s ease;
+    transform: translateZ(0);
 }
 
 .leave-review-button:hover {
@@ -2708,30 +2712,41 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
     transform: translateY(-2px);
 }
 
-/* Адаптивные стили для отзывов */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивные стили */
 @media screen and (max-width: 1400px) {
-    .reviews-container {
+    .reviews-track {
         grid-template-columns: repeat(3, 1fr);
-        max-width: 1200px;
     }
 }
 
 @media screen and (max-width: 1200px) {
-    .reviews-container {
+    .reviews-track {
         grid-template-columns: repeat(2, 1fr);
-        max-width: 900px;
     }
 }
 
 @media screen and (max-width: 768px) {
-    .reviews-container {
+    .reviews-track {
         grid-template-columns: 1fr;
-        max-width: 600px;
-        padding: 10px;
+    }
+    
+    .reviews-header {
+        font-size: 28px;
     }
     
     .review-card {
-        padding: 15px;
+        padding: 20px;
     }
 }
 
@@ -2739,18 +2754,31 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
     .reviews-header {
         font-size: 24px;
     }
-
+    
     .review-card {
         padding: 15px;
     }
-
-    .review-text {
-        font-size: 13px;
+    
+    .reviewer-name {
+        font-size: 16px;
     }
+    
+    .review-text {
+        font-size: 14px;
+    }
+}
 
-    .dot {
-        width: 10px;
-        height: 10px;
+/* Оптимизация производительности */
+@media (prefers-reduced-motion: no-preference) {
+    .review-card {
+        animation: fadeIn 0.5s ease-out forwards;
+    }
+}
+
+@supports (backdrop-filter: blur(10px)) {
+    .review-card {
+        backdrop-filter: blur(10px);
+        background-color: rgba(36, 44, 72, 0.4);
     }
 }
 
@@ -2874,4 +2902,45 @@ h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, a {
 .contact-email span {
     font-size: 16px;
 }
+
+.service-select {
+    flex: 1;
+    min-width: 220px;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.service-select:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.service-select option {
+    background-color: #1C243C;
+    color: white;
+    padding: 10px;
+}
+
+.service-select option:first-child {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.service-select option:checked {
+    background-color: rgba(36, 44, 72, 0.8);
+}
+
+/* Удаляем неиспользуемые стили */
+/* Стили для блока "Установка и обслуживание" */
+.installation-service-block,
+.content-wrapper {
+    display: none;
+}
+
 

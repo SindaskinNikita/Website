@@ -77,7 +77,7 @@
                 <div class="advantage-icon-circle">
                     <div class="advantage-icon">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8s8,3.59,8,8 S16.41,20,12,20z M9.29,16.29L5.7,12.7c-0.39-0.39-0.39-1.02,0-1.41c0.39-0.39,1.02-0.39,1.41,0L10,14.17l6.88-6.88 c0.39-0.39,1.02-0.39,1.41,0c0.39,0.39,0.39,1.02,0,1.41l-7.59,7.59C10.32,16.68,9.68,16.68,9.29,16.29z"/>
+                            <path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8s8,3.59,8,8S16.41,20,12,20z M9.29,16.29L5.7,12.7c-0.39-0.39-0.39-1.02,0-1.41c0.39-0.39,1.02-0.39,1.41,0L10,14.17l6.88-6.88 c0.39-0.39,1.02-0.39,1.41,0c0.39,0.39,0.39,1.02,0,1.41l-7.59,7.59C10.32,16.68,9.68,16.68,9.29,16.29z"/>
                         </svg>
                     </div>
                 </div>
@@ -137,7 +137,7 @@
                         </svg>
                     </div>
                     <h3 class="service-title">Видеонаблюдение</h3>
-                    <button class="service-button">Подробнее</button>
+                    <button class="service-button" (click)="navigateToService('video')">Подробнее</button>
                 </div>
                 
                 <!-- Сервис 2: Сборка электрощитков -->
@@ -151,7 +151,7 @@
                         </svg>
                     </div>
                     <h3 class="service-title">Сборка электрощитков</h3>
-                    <button class="service-button">Подробнее</button>
+                    <button class="service-button" (click)="navigateToService('electrical')">Подробнее</button>
                 </div>
                 
                 <!-- Сервис 3: Система контроля и управлением доступа -->
@@ -159,11 +159,11 @@
                     <div class="service-icon-circle">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10z"/>
-                            <path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
+                            <path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2 2z"/>
                         </svg>
                     </div>
                     <h3 class="service-title">Система контроля и управлением доступа</h3>
-                    <button class="service-button">Подробнее</button>
+                    <button class="service-button" (click)="navigateToService('access')">Подробнее</button>
                 </div>
                 
                 <!-- Сервис 4: Охранная система -->
@@ -177,7 +177,7 @@
                         </svg>
                     </div>
                     <h3 class="service-title">Охранная система</h3>
-                    <button class="service-button">Подробнее</button>
+                    <button class="service-button" (click)="navigateToService('security')">Подробнее</button>
                 </div>
                 
                 <!-- Сервис 5: Сети связи и оптоволокно -->
@@ -190,7 +190,7 @@
                         </svg>
                     </div>
                     <h3 class="service-title">Сети связи и оптоволокно</h3>
-                    <button class="service-button">Подробнее</button>
+                    <button class="service-button" (click)="navigateToService('network')">Подробнее</button>
                 </div>
                 
                 <!-- Сервис 6: Электромонтажные работы -->
@@ -201,7 +201,7 @@
                         </svg>
                     </div>
                     <h3 class="service-title">Электромонтажные работы</h3>
-                    <button class="service-button">Подробнее</button>
+                    <button class="service-button" (click)="navigateToService('installation')">Подробнее</button>
                 </div>
             </div>
         </section>
@@ -264,11 +264,15 @@
             </div>
             
             <!-- Форма заказа -->
-            <div id="orderForm" class="order-form-container">
+            <div class="order-form-container">
                 <h3 class="order-form-header">Оформите заявку онлайн!</h3>
                 
-                <div class="order-form">
-                    <select class="form-input" required>
+                <form #orderFormElement="ngForm" class="order-form" (ngSubmit)="submitOrder()">
+                    <select class="form-input service-select" 
+                            [(ngModel)]="orderForm.service" 
+                            name="service" 
+                            (ngModelChange)="onServiceChange($event)" 
+                            required>
                         <option value="" disabled selected>*Какая услуга вас интересует:</option>
                         <option value="video">Видеонаблюдение</option>
                         <option value="electrical">Сборка электрощитков</option>
@@ -276,14 +280,44 @@
                         <option value="security">Охранная система</option>
                         <option value="network">Сети связи и оптоволокно</option>
                         <option value="installation">Электромонтажные работы</option>
+                        <option value="other">Другое</option>
                     </select>
-                    <input type="text" placeholder="*Ваше имя:" class="form-input">
-                    <input type="email" placeholder="*Эл. почта:" class="form-input">
-                    <input type="tel" placeholder="*Телефон:" class="form-input">
-                    <div class="button-container" style="text-align: center; margin-top: 20px;">
+                    
+                    <input *ngIf="orderForm.service === 'other'" 
+                           type="text" 
+                           [(ngModel)]="orderForm.customService"
+                           name="customService" 
+                           placeholder="*Опишите вашу проблему:" 
+                           class="form-input custom-service-input" 
+                           required>
+                           
+                    <input type="text" 
+                           [(ngModel)]="orderForm.name"
+                           name="name" 
+                           placeholder="*Ваше имя:" 
+                           class="form-input" 
+                           required>
+                           
+                    <input type="email" 
+                           [(ngModel)]="orderForm.email"
+                           name="email" 
+                           placeholder="*Эл. почта:" 
+                           class="form-input" 
+                           required
+                           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                           
+                    <input type="tel" 
+                           [(ngModel)]="orderForm.phone"
+                           name="phone" 
+                           placeholder="*Телефон:" 
+                           class="form-input" 
+                           required
+                           pattern="[0-9+()-\s]{10,}">
+                           
+                    <div class="button-container">
                         <button type="submit" class="order-button">Оставить заявку</button>
                     </div>
-                </div>
+                </form>
             </div>
         </section>
         
@@ -331,18 +365,20 @@
             <h2 class="reviews-header">Отзывы наших клиентов</h2>
             
             <div class="reviews-container">
-                <div class="review-card" *ngFor="let review of displayedReviews" [@fadeInOut]>
-                    <div class="review-header">
-                        <div class="reviewer-info">
-                            <div class="reviewer-name">{{ review.name }}</div>
-                            <div class="review-date">{{ review.date }}</div>
-                            <div class="review-rating">
-                                <span class="star" *ngFor="let star of [].constructor(review.rating)">★</span>
-                                <span class="star empty" *ngFor="let star of [].constructor(5 - review.rating)">☆</span>
+                <div class="reviews-track">
+                    <div class="review-card" *ngFor="let review of displayedReviews" [@fadeInOut] [style.animation-delay]="review.animationDelay">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-name">{{ review.name }}</div>
+                                <div class="review-date">{{ review.date }}</div>
+                                <div class="review-rating">
+                                    <span class="star" *ngFor="let star of [].constructor(review.rating)">★</span>
+                                    <span class="star empty" *ngFor="let star of [].constructor(5 - review.rating)">☆</span>
+                                </div>
                             </div>
                         </div>
+                        <div class="review-text">{{ review.text }}</div>
                     </div>
-                    <div class="review-text">{{ review.text }}</div>
                 </div>
             </div>
 

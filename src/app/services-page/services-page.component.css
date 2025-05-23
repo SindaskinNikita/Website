@@ -930,6 +930,27 @@ body {
     overflow: hidden;
 }
 
+/* Анимация подсветки выбранной услуги */
+@keyframes highlightService {
+    0% {
+        background: rgba(36, 44, 72, 0.7);
+        transform: translateX(0);
+    }
+    50% {
+        background: rgba(255, 43, 114, 0.1);
+        transform: translateX(10px);
+    }
+    100% {
+        background: rgba(36, 44, 72, 0.7);
+        transform: translateX(0);
+    }
+}
+
+.service-item.highlighted {
+    animation: highlightService 2s ease;
+    border-color: rgba(255, 43, 114, 0.3);
+}
+
 .service-item::before {
     content: '';
     position: absolute;

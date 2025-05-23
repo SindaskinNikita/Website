@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "start:server": "ts-node -P tsconfig.server.json src/server/server.ts",
-    "seed": "ts-node -P tsconfig.server.json src/server/database/seed.ts"
+    "seed": "ts-node -P tsconfig.server.json src/server/database/seed.ts",
+    "json-server": "json-server --watch db.json"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +27,7 @@
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "express": "^4.21.2",
+    "json-server": "^0.17.4",
     "mongoose": "^8.12.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "~7.8.0",

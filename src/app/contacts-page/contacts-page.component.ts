@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -16,10 +16,18 @@ export class ContactsPageComponent implements OnInit {
     phone: '',
     message: ''
   };
+  isScrollButtonVisible = false;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.checkScroll();
+  }
+
+  @HostListener('window:scroll', [])
+  checkScroll() {
+    // Показываем кнопку, когда прокрутка больше 300px
+    this.isScrollButtonVisible = window.pageYOffset > 300;
   }
 
   scrollToTop() {

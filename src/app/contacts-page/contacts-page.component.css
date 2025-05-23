@@ -626,7 +626,7 @@ body {
     bottom: 20px;
     right: 20px;
     background-color: #FF2B72;
-    color: #1C243C;
+    color: #ffffff;
     border: none;
     border-radius: 50%;
     width: 50px;
@@ -638,6 +638,13 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s ease, transform 0.3s ease;
     z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.scroll-to-top-button.visible {
+    opacity: 1;
+    visibility: visible;
 }
 
 .scroll-to-top-button:hover {

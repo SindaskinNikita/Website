@@ -7,7 +7,6 @@ html {
 
 /* Основные стили для body */
 body {
-  
     font-family: 'Arial', sans-serif;
     color: #fff;
     line-height: 1.6;
@@ -19,7 +18,6 @@ body {
     overflow-x: hidden;
     min-height: 100vh;
     position: relative;
-    
 }
 
 /* Стили для названия компании */
@@ -534,18 +532,75 @@ body {
 }
 
 .service-card {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    transition: transform 0.3s ease;
-    backdrop-filter: blur(10px);
+    background-color: rgba(36, 44, 72, 0.7);
+    border-radius: 15px;
+    padding: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(255, 43, 114, 0.05) 0%, transparent 70%);
+    z-index: -1;
 }
 
 .service-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(255, 43, 114, 0.2);
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 43, 114, 0.2);
+    background-color: rgba(36, 44, 72, 0.9);
+}
+
+.service-icon-circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: rgba(36, 44, 72, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.service-icon-circle::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 43, 114, 0.3);
+    box-sizing: border-box;
+}
+
+.service-card:hover .service-icon-circle {
+    background-color: rgba(255, 43, 114, 0.1);
+}
+
+.service-icon-circle svg {
+    width: 50px;
+    height: 50px;
+    fill: #FF2B72;
+    filter: drop-shadow(0 0 5px rgba(255, 43, 114, 0.5));
+    transition: all 0.3s ease;
+}
+
+.service-card:hover .service-icon-circle svg {
+    transform: scale(1.1);
+    fill: #ff4785;
 }
 
 .service-image {
@@ -574,10 +629,9 @@ body {
 }
 
 .service-description {
-    color: #ffffff;
-    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 20px;
     line-height: 1.6;
-    font-family: 'Arial', sans-serif;
 }
 
 .service-price {
@@ -649,7 +703,7 @@ body {
     width: 90%;
     max-width: 500px;
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: #fff;
 }
 
@@ -756,31 +810,33 @@ body {
 /* Стили для кнопки прокрутки наверх */
 .scroll-to-top-button {
     position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background: #FF2B72;
-    color: white;
+    bottom: 20px;
+    right: 20px;
+    background-color: #FF2B72;
+    color: #ffffff;
     border: none;
-    width: 40px;
-    height: 40px;
     border-radius: 50%;
-    cursor: pointer;
+    width: 50px;
+    height: 50px;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    z-index: 10000;
     opacity: 0;
-    transition: all 0.3s ease;
-    z-index: 100;
+    visibility: hidden;
 }
 
 .scroll-to-top-button.visible {
     opacity: 1;
+    visibility: visible;
 }
 
 .scroll-to-top-button:hover {
-    background: #ff4785;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 43, 114, 0.4);
+    background-color: #ff4785;
+    transform: scale(1.1);
 }
 
 /* Адаптивные стили */
@@ -835,7 +891,7 @@ body {
 }
 
 .intro-text {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(36, 44, 72, 0.7);
     border-radius: 20px;
     padding: 2rem;
     backdrop-filter: blur(10px);
@@ -865,7 +921,7 @@ body {
 }
 
 .service-item {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(36, 44, 72, 0.7);
     padding: 1.5rem;
     border-radius: 15px;
     transition: all 0.3s ease;
@@ -887,7 +943,7 @@ body {
 }
 
 .service-item:hover {
-    background: rgba(255, 43, 114, 0.05);
+    background: rgba(36, 44, 72, 0.9);
     transform: translateX(10px);
     border-color: rgba(255, 43, 114, 0.2);
 }
@@ -1012,5 +1068,216 @@ body {
     .service-footer {
         font-size: 1rem;
         margin-top: 1.5rem;
+    }
+}
+
+/* Заголовок секции */
+.services-header {
+    font-size: 36px;
+    font-weight: bold;
+    color: #FF2B72;
+    text-align: center;
+    margin: 40px 0;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.services-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: #FF2B72;
+}
+
+/* Контейнер для сервисов */
+.services-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(36, 44, 72, 0.6);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Иконка сервиса */
+.service-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+    color: #FF2B72;
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-icon {
+    transform: scale(1.1);
+}
+
+/* Кнопка "Подробнее" */
+.service-button {
+    background-color: #FF2B72;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: auto;
+}
+
+.service-button:hover {
+    background-color: #ff4785;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 43, 114, 0.4);
+}
+
+/* Цены */
+.price-section {
+    margin-top: 60px;
+    padding: 40px 0;
+    background-color: rgba(36, 44, 72, 0.4);
+}
+
+.price-header {
+    font-size: 32px;
+    font-weight: bold;
+    color: #FF2B72;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.price-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.price-card {
+    background-color: rgba(36, 44, 72, 0.6);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.price-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 43, 114, 0.2);
+}
+
+.price-title {
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.price-amount {
+    font-size: 36px;
+    color: #FF2B72;
+    margin-bottom: 20px;
+}
+
+.price-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.price-features li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.price-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #FF2B72;
+}
+
+/* Адаптивные стили */
+@media screen and (max-width: 768px) {
+    .services-header {
+        font-size: 28px;
+    }
+
+    .service-card {
+        padding: 20px;
+    }
+
+    .service-title {
+        font-size: 20px;
+    }
+
+    .price-header {
+        font-size: 28px;
+    }
+
+    .price-card {
+        padding: 20px;
+    }
+
+    .price-amount {
+        font-size: 30px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .services-header {
+        font-size: 24px;
+    }
+
+    .service-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .service-button {
+        padding: 10px 25px;
+        font-size: 14px;
+    }
+
+    .price-header {
+        font-size: 24px;
+    }
+
+    .price-title {
+        font-size: 20px;
+    }
+
+    .price-amount {
+        font-size: 26px;
+    }
+}
+
+.intro-title {
+    color: #FF2B72;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.3;
+}
+
+@media (max-width: 768px) {
+    .intro-title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .intro-title {
+        font-size: 1.75rem;
     }
 }

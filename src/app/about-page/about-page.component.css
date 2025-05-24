@@ -422,13 +422,10 @@ body {
     padding: 0 20px;
 }
 
+/* Удаляем стили для разделительных полос */
 .reviews-header::before,
 .reviews-header::after {
-    content: '';
-    height: 0.2px;
-    background-color: rgba(255, 255, 255, 0.6);
-    flex: 1;
-    margin: 0 15px;
+    display: none;
 }
 
 .reviews-container {

@@ -15,7 +15,9 @@ export class CompanyPageComponent implements OnInit {
   feedbackForm = {
     name: '',
     phone: '',
-    message: ''
+    email: '',
+    message: '',
+    privacyAccepted: false
   };
   isScrollButtonVisible = false;
 
@@ -92,13 +94,18 @@ export class CompanyPageComponent implements OnInit {
     this.feedbackForm = {
       name: '',
       phone: '',
-      message: ''
+      email: '',
+      message: '',
+      privacyAccepted: false
     };
   }
 
   submitFeedback() {
-    // Здесь будет логика отправки формы
-    console.log('Отправка формы:', this.feedbackForm);
-    this.closeFeedbackModal();
+    if (this.feedbackForm.privacyAccepted) {
+      console.log('Отправка формы:', this.feedbackForm);
+      this.resetForm();
+      this.closeFeedbackModal();
+      alert('Спасибо за обратную связь! Мы свяжемся с вами в ближайшее время.');
+    }
   }
 }

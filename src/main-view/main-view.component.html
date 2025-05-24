@@ -8,7 +8,7 @@
                 <div class="working-hours">Круглосуточно</div>
                 <a href="tel:+7994444451" class="phone-number">+7 (922) 128-62-22 </a>
             </div>
-            <button class="feedback-button">Обратная связь</button>
+            <button class="feedback-button" (click)="openFeedbackModal()">Обратная связь</button>
         </div>
 
         <nav class="nav-menu">
@@ -133,7 +133,7 @@
                 <div class="service-card">
                     <div class="service-icon-circle">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18 4v1h-2V4c0-.55-.45-1-1-1H9c-.55 0-1 .45-1 1v1H6V4c0-.55-.45-1-1-1s-1 .45-1 1v16c0 .55.45 1 1 1s1-.45 1-1v-1h2v1c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-1h2v1c0 .55.45 1 1 1s1-.45 1-1V4c0-.55-.45-1-1-1s-1 .45-1 1zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zm-4 3c0 1.1-.89 2-2 2s-2-.9-2-2 .89-2 2-2 2 .9 2 2 2z"/>
+                            <path d="M18 4v1h-2V4c0-.55-.45-1-1-1H9c-.55 0-1 .45-1 1v1H6V4c0-.55-.45-1-1-1s-1 .45-1 1v16c0 .55.45 1 1 1s1-.45 1-1v-1h2v1c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-1h2v1c0 .55.45 1 1 1s1-.45 1-1V4c0-.55-.45-1-1-1s-1 .45-1 1zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zm-4 3c0 1.1-.89 2-2 2s-2-.9-2-2 .89-2 2-2 2 .9 2 2 2 2z"/>
                         </svg>
                     </div>
                     <h3 class="service-title">Видеонаблюдение</h3>
@@ -431,4 +431,37 @@
             </div>
         </div>
     </footer>
+
+    <!-- Модальное окно обратной связи -->
+    <div class="modal feedback-modal" [class.visible]="isFeedbackModalOpen">
+        <div class="modal-content">
+            <span class="close-button" (click)="closeFeedbackModal()">&times;</span>
+            <h2>Связаться с администратором</h2>
+            <form class="feedback-form" (submit)="submitFeedback(); $event.preventDefault()">
+                <div class="form-group">
+                    <label for="feedbackName">Ваше имя:</label>
+                    <input type="text" id="feedbackName" name="feedbackName" [(ngModel)]="feedbackForm.name" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedbackEmail">Email:</label>
+                    <input type="email" id="feedbackEmail" name="feedbackEmail" [(ngModel)]="feedbackForm.email" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedbackPhone">Телефон:</label>
+                    <input type="tel" id="feedbackPhone" name="feedbackPhone" [(ngModel)]="feedbackForm.phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedbackMessage">Ваше сообщение:</label>
+                    <textarea id="feedbackMessage" name="feedbackMessage" rows="5" [(ngModel)]="feedbackForm.message" required></textarea>
+                </div>
+                <div class="form-group checkbox-group">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="privacyPolicy" name="privacyPolicy" [(ngModel)]="feedbackForm.privacyAccepted" required>
+                        <label for="privacyPolicy">Я принимаю условия обработки моих персональных данных</label>
+                    </div>
+                </div>
+                <button type="submit" [disabled]="!feedbackForm.privacyAccepted">Отправить</button>
+            </form>
+        </div>
+    </div>
 </body>

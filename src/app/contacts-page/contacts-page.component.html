@@ -102,25 +102,35 @@
         </svg>
     </button>
 
-    <!-- Модальное окно обратной связи -->
-    <div class="modal-overlay" *ngIf="isFeedbackModalOpen" (click)="closeFeedbackModal()">
-        <div class="modal-content" (click)="$event.stopPropagation()">
-            <button class="close-button" (click)="closeFeedbackModal()">×</button>
-            <h3>Обратная связь</h3>
-            <form (ngSubmit)="submitFeedback()">
+    <!-- Модальное окно для связи с администратором -->
+    <div class="modal feedback-modal" [class.visible]="feedbackModalVisible">
+        <div class="modal-content">
+            <span class="close-button" (click)="closeFeedbackModal()">&times;</span>
+            <h2>Связаться с администратором</h2>
+            <form class="feedback-form" (submit)="submitFeedback(); $event.preventDefault()">
                 <div class="form-group">
-                    <label for="name">Ваше имя</label>
-                    <input type="text" id="name" [(ngModel)]="feedbackForm.name" name="name" required>
+                    <label for="feedbackName">Ваше имя:</label>
+                    <input type="text" id="feedbackName" name="feedbackName" [(ngModel)]="feedbackData.name" required>
                 </div>
                 <div class="form-group">
-                    <label for="phone">Телефон</label>
-                    <input type="tel" id="phone" [(ngModel)]="feedbackForm.phone" name="phone" required>
+                    <label for="feedbackEmail">Email:</label>
+                    <input type="email" id="feedbackEmail" name="feedbackEmail" [(ngModel)]="feedbackData.email" required>
                 </div>
                 <div class="form-group">
-                    <label for="message">Сообщение</label>
-                    <textarea id="message" [(ngModel)]="feedbackForm.message" name="message" required></textarea>
+                    <label for="feedbackPhone">Телефон:</label>
+                    <input type="tel" id="feedbackPhone" name="feedbackPhone" [(ngModel)]="feedbackData.phone">
                 </div>
-                <button type="submit" class="submit-button">Отправить</button>
+                <div class="form-group">
+                    <label for="feedbackMessage">Ваше сообщение:</label>
+                    <textarea id="feedbackMessage" name="feedbackMessage" rows="5" [(ngModel)]="feedbackData.message" required></textarea>
+                </div>
+                <div class="form-group checkbox-group">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="privacyPolicy" name="privacyPolicy" [(ngModel)]="feedbackData.privacyAccepted" required>
+                        <label for="privacyPolicy">Я принимаю условия обработки моих персональных данных</label>
+                    </div>
+                </div>
+                <button type="submit" class="submit-feedback-button" [disabled]="!feedbackData.privacyAccepted">Отправить</button>
             </form>
         </div>
     </div>

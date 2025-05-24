@@ -681,83 +681,93 @@ body {
     box-shadow: 0 5px 15px rgba(255, 43, 114, 0.4);
 }
 
-/* Стили для модальных окон */
-.modal-overlay {
+/* Модальное окно */
+.modal {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(28, 36, 60, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    backdrop-filter: blur(5px);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
 }
 
+/* Видимость модального окна */
+.modal.visible {
+    display: block;
+}
+
+/* Содержимое модального окна */
 .modal-content {
-    background: #1C243C;
-    padding: 2rem;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #fff;
-}
-
-.calculator-modal {
+    background-color: #1C243C;
+    margin: 5% auto;
+    padding: 35px 40px;
+    width: 50%;
     max-width: 600px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    font-size: 0.95em;
 }
 
+/* Кнопка закрытия */
 .close-button {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
+    right: 20px;
+    top: 10px;
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: bold;
     cursor: pointer;
-    color: #FF2B72;
-    transition: color 0.3s ease;
 }
 
 .close-button:hover {
-    color: #ff4785;
+    color: #FF2B72;
+}
+
+/* Заголовок формы */
+.modal-content h2 {
+    color: #ffffff;
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Стили для формы */
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #fff;
+    color: #ffffff;
     font-family: 'Arial', sans-serif;
+    font-size: 16px;
 }
 
 .form-group input,
-.form-group select,
 .form-group textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 25px;
-    font-size: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
     font-family: 'Arial', sans-serif;
-    transition: all 0.3s ease;
+    font-size: 14px;
 }
 
 .form-group input:focus,
-.form-group select:focus,
 .form-group textarea:focus {
     outline: none;
     border-color: #FF2B72;
-    box-shadow: 0 0 0 2px rgba(255, 43, 114, 0.2);
 }
 
 .form-group textarea {
@@ -765,46 +775,173 @@ body {
     resize: vertical;
 }
 
-.calculator-result {
-    margin: 1rem 0;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+/* Стили для группы чекбокса */
+.checkbox-group {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.calculator-result h4 {
-    color: #fff;
-    margin-bottom: 0.5rem;
-    font-family: 'Arial', sans-serif;
+.checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
 }
 
-.calculator-result .price {
-    font-size: 1.5rem;
-    color: #FF2B72;
-    font-weight: bold;
-    font-family: 'Arial', sans-serif;
+.checkbox-container input[type="checkbox"] {
+    margin-top: 4px;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    accent-color: #FF2B72;
 }
 
-.calculate-button,
-.submit-button {
-    width: 100%;
-    background: #FF2B72;
+.checkbox-container label {
+    font-size: 14px;
+    color: #ffffff;
+    cursor: pointer;
+    line-height: 1.4;
+}
+
+/* Кнопка отправки формы */
+.submit-feedback-button {
+    background-color: #FF2B72;
     color: white;
     border: none;
-    padding: 0.75rem;
     border-radius: 25px;
-    cursor: pointer;
-    font-size: 1rem;
+    padding: 15px 35px;
+    font-size: 16px;
     font-family: 'Arial', sans-serif;
+    cursor: pointer;
     transition: all 0.3s ease;
+    margin-top: 20px;
+    font-weight: bold;
 }
 
-.calculate-button:hover,
-.submit-button:hover {
-    background: #ff4785;
-    transform: translateY(-2px);
+.submit-feedback-button:hover:not(:disabled) {
+    background-color: #ff4785;
+    transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(255, 43, 114, 0.4);
+}
+
+.submit-feedback-button:active:not(:disabled) {
+    transform: scale(0.95) translateY(0);
+    box-shadow: 0 2px 8px rgba(255, 43, 114, 0.3);
+}
+
+.submit-feedback-button:disabled {
+    background-color: rgba(255, 43, 114, 0.5);
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Медиа-запросы для модального окна */
+@media screen and (max-width: 992px) {
+    .modal-content {
+        width: 65%;
+        max-width: 500px;
+        padding: 25px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .modal-content {
+        width: 80%;
+        max-width: 450px;
+        padding: 22px;
+        margin: 8% auto;
+        font-size: 0.9em;
+    }
+    
+    .modal-content h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .form-group {
+        gap: 8px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .modal-content {
+        width: 85%;
+        max-width: 400px;
+        padding: 18px;
+        margin: 12% auto 5% auto;
+        font-size: 0.85em;
+    }
+
+    .modal-content h2 {
+        font-size: 18px;
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 10px;
+    }
+
+    .submit-feedback-button {
+        padding: 12px 25px;
+        font-size: 14px;
+    }
+    
+    .checkbox-container label {
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .modal-content {
+        width: 90%;
+        max-width: 350px;
+        padding: 15px;
+        margin: 15% auto 5% auto;
+        font-size: 0.8em;
+    }
+    
+    .close-button {
+        right: 10px;
+        top: 5px;
+    }
+
+    .modal-content h2 {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    
+    .form-group {
+        gap: 6px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .submit-feedback-button {
+        padding: 10px 20px;
+        font-size: 13px;
+        margin-top: 15px;
+    }
+    
+    .checkbox-container {
+        gap: 6px;
+    }
+    
+    .checkbox-container label {
+        font-size: 12px;
+        line-height: 1.3;
+    }
 }
 
 /* Стили для кнопки прокрутки наверх */

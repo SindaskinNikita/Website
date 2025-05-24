@@ -10,13 +10,16 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./contacts-page.component.css']
 })
 export class ContactsPageComponent implements OnInit {
-  isFeedbackModalOpen = false;
-  feedbackForm = {
-    name: '',
-    phone: '',
-    message: ''
-  };
+  feedbackModalVisible = false;
   isScrollButtonVisible = false;
+  
+  feedbackData = {
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+    privacyAccepted: false
+  };
 
   constructor() { }
 
@@ -34,26 +37,33 @@ export class ContactsPageComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  openFeedbackModal() {
-    this.isFeedbackModalOpen = true;
+  openFeedbackModal(): void {
+    this.feedbackModalVisible = true;
   }
 
-  closeFeedbackModal() {
-    this.isFeedbackModalOpen = false;
+  closeFeedbackModal(): void {
+    this.feedbackModalVisible = false;
     this.resetForm();
   }
 
   resetForm() {
-    this.feedbackForm = {
+    this.feedbackData = {
       name: '',
+      email: '',
       phone: '',
-      message: ''
+      message: '',
+      privacyAccepted: false
     };
   }
 
-  submitFeedback() {
-    // Здесь будет логика отправки формы
-    console.log('Отправка формы:', this.feedbackForm);
-    this.closeFeedbackModal();
+  submitFeedback(): void {
+    if (this.feedbackData.name && this.feedbackData.email && this.feedbackData.message && this.feedbackData.privacyAccepted) {
+      // Здесь можно добавить логику отправки данных на сервер
+      console.log('Отправка сообщения:', this.feedbackData);
+      
+      this.resetForm();
+      this.closeFeedbackModal();
+      alert('Ваше сообщение успешно отправлено!');
+    }
   }
 }

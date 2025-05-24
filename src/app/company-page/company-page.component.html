@@ -753,24 +753,34 @@
     </button>
 
     <!-- Модальное окно обратной связи -->
-    <div class="modal-overlay" *ngIf="isFeedbackModalOpen" (click)="closeFeedbackModal()">
-        <div class="modal-content" (click)="$event.stopPropagation()">
-            <button class="close-button" (click)="closeFeedbackModal()">×</button>
-            <h3>Обратная связь</h3>
-            <form (ngSubmit)="submitFeedback()">
+    <div class="modal feedback-modal" [class.visible]="isFeedbackModalOpen">
+        <div class="modal-content">
+            <span class="close-button" (click)="closeFeedbackModal()">&times;</span>
+            <h2>Обратная связь</h2>
+            <form class="feedback-form" (ngSubmit)="submitFeedback()">
                 <div class="form-group">
                     <label for="name">Ваше имя</label>
-                    <input type="text" id="name" [(ngModel)]="feedbackForm.name" name="name" required>
+                    <input type="text" id="name" name="name" [(ngModel)]="feedbackForm.name" required>
                 </div>
                 <div class="form-group">
                     <label for="phone">Телефон</label>
-                    <input type="tel" id="phone" [(ngModel)]="feedbackForm.phone" name="phone" required>
+                    <input type="tel" id="phone" name="phone" [(ngModel)]="feedbackForm.phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" [(ngModel)]="feedbackForm.email" required>
                 </div>
                 <div class="form-group">
                     <label for="message">Сообщение</label>
-                    <textarea id="message" [(ngModel)]="feedbackForm.message" name="message" required></textarea>
+                    <textarea id="message" name="message" [(ngModel)]="feedbackForm.message" required></textarea>
                 </div>
-                <button type="submit" class="submit-button">Отправить</button>
+                <div class="checkbox-group">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="privacy" name="privacy" [(ngModel)]="feedbackForm.privacyAccepted" required>
+                        <label for="privacy">Я согласен на обработку персональных данных</label>
+                    </div>
+                </div>
+                <button type="submit" class="submit-feedback-button" [disabled]="!feedbackForm.privacyAccepted">Отправить</button>
             </form>
         </div>
     </div>

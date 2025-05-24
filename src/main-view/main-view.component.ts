@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, OnInit, AfterViewInit, OnDestroy, NgZone, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ReviewsService, Review } from '../app/services/reviews.service';
@@ -8,10 +8,18 @@ import { Subscription } from 'rxjs';
 import { OrderService } from '../app/services/order.service';
 import { Order } from '../app/models/order.model';
 
+interface FeedbackForm {
+  name: string;
+  phone: string;
+  email: string;
+  message: string;
+  privacyAccepted: boolean;
+}
+
 @Component({
   selector: 'app-main-view',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './main-view.component.html',
   styleUrls: ['./main-view.component.css'],
   animations: [
@@ -28,6 +36,7 @@ import { Order } from '../app/models/order.model';
 })
 export class MainViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('portfolioSlider') portfolioSlider!: ElementRef;
+  @ViewChild('feedbackFormElement') feedbackFormElement!: NgForm;
 
   // Массив элементов портфолио
   portfolioItems = [
@@ -196,6 +205,15 @@ export class MainViewComponent implements OnInit, AfterViewInit, OnDestroy {
     { id: 'network', name: 'Сети связи и оптоволокно' },
     { id: 'installation', name: 'Электромонтажные работы' }
   ];
+
+  isFeedbackModalOpen = false;
+  feedbackForm: FeedbackForm = {
+    name: '',
+    phone: '',
+    email: '',
+    message: '',
+    privacyAccepted: false
+  };
 
   constructor(
     private ngZone: NgZone, 
@@ -645,5 +663,39 @@ export class MainViewComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }, 100);
     });
+  }
+
+  openFeedbackModal(): void {
+    this.isFeedbackModalOpen = true;
+  }
+
+  closeFeedbackModal(): void {
+    this.isFeedbackModalOpen = false;
+    this.resetFeedbackForm();
+  }
+
+  resetFeedbackForm(): void {
+    this.feedbackForm = {
+      name: '',
+      phone: '',
+      email: '',
+      message: '',
+      privacyAccepted: false
+    };
+  }
+
+  submitFeedback(): void {
+    if (this.feedbackForm.name && this.feedbackForm.phone && 
+        this.feedbackForm.email && this.feedbackForm.message && 
+        this.feedbackForm.privacyAccepted) {
+      // Здесь можно добавить логику отправки данных на сервер
+      console.log('Отправка сообщения:', this.feedbackForm);
+      
+      this.resetFeedbackForm();
+      this.closeFeedbackModal();
+      alert('Ваше сообщение успешно отправлено!');
+    } else {
+      alert('Пожалуйста, заполните все обязательные поля и примите условия обработки персональных данных');
+    }
   }
 }

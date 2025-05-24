@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { EquipmentService } from '../services/equipment.service';
+import { Equipment } from '../models/equipment.interface';
 
 @Component({
   selector: 'app-equipment-page',
@@ -9,8 +11,12 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './equipment-page.component.html',
   styleUrl: './equipment-page.component.css'
 })
-export class EquipmentPageComponent {
+export class EquipmentPageComponent implements OnInit {
   feedbackModalVisible = false;
+  equipment: Equipment[] = [];
+  categories: string[] = [];
+  selectedCategory = 'Все';
+  searchQuery = '';
   
   feedbackData = {
     name: '',
@@ -19,6 +25,32 @@ export class EquipmentPageComponent {
     message: '',
     privacyAccepted: false
   };
+
+  constructor(private equipmentService: EquipmentService) {}
+
+  ngOnInit(): void {
+    this.equipmentService.getEquipment().subscribe(equipment => {
+      this.equipment = equipment;
+    });
+
+    this.categories = this.equipmentService.getCategories();
+
+    this.equipmentService.getSelectedCategory().subscribe(category => {
+      this.selectedCategory = category;
+    });
+
+    this.equipmentService.getSearchQuery().subscribe(query => {
+      this.searchQuery = query;
+    });
+  }
+
+  onCategorySelect(category: string): void {
+    this.equipmentService.setSelectedCategory(category);
+  }
+
+  onSearch(): void {
+    this.equipmentService.setSearchQuery(this.searchQuery);
+  }
 
   openFeedbackModal(): void {
     this.feedbackModalVisible = true;

@@ -1,71 +1,32 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Equipment } from '../models/equipment.interface';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Equipment } from '../models/equipment.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class EquipmentService {
-    private equipment: Equipment[] = [
-        {
-            id: 1,
-            name: 'IP камера 2NN',
-            category: 'Видеонаблюдение',
-            image: 'assets/images/camera.jpg',
-            features: [
-                'Пластиковый корпус',
-                'Угол обзора: 92° × 54°',
-                'ИК-подсветка до 30м'
-            ],
-            price: 2300,
-            description: 'Компактная IP-камера для внутреннего видеонаблюдения'
-        },
-        {
-            id: 2,
-            name: 'IP камера 2NN с микрофоном',
-            category: 'Видеонаблюдение',
-            image: 'assets/images/camera.jpg',
-            features: [
-                'Встроенный микрофон',
-                'Угол обзора: 108° × 58°',
-                'Запись на microSD'
-            ],
-            price: 7400,
-            description: 'IP-камера со встроенным микрофоном для аудио-видео наблюдения'
-        },
-        {
-            id: 3,
-            name: 'IP камера 5NN',
-            category: 'Видеонаблюдение',
-            image: 'assets/images/camera.jpg',
-            features: [
-                'Разрешение 2592×1944',
-                'Угол обзора: 100° × 76°',
-                'Запись до 16 суток'
-            ],
-            price: 10600,
-            description: 'Высококачественная IP-камера с расширенными возможностями'
-        },
-        {
-            id: 4,
-            name: 'IP камера 5NN с объективом',
-            category: 'Видеонаблюдение',
-            image: 'assets/images/camera.jpg',
-            features: [
-                'Нейросетевая аналитика',
-                'Разрешение 1920×1080',
-                'ИК-подсветка до 80м'
-            ],
-            price: 14200,
-            description: 'Профессиональная IP-камера с вариофокальным объективом'
-        }
-    ];
-
-    private equipmentSubject = new BehaviorSubject<Equipment[]>(this.equipment);
+    private apiUrl = `${environment.apiUrl}/equipment`;
+    private equipment: Equipment[] = [];
+    private equipmentSubject = new BehaviorSubject<Equipment[]>([]);
     private selectedCategorySubject = new BehaviorSubject<string>('Все');
     private searchQuerySubject = new BehaviorSubject<string>('');
 
-    constructor() { }
+    constructor(private http: HttpClient) {
+        this.loadEquipment();
+    }
+
+    private loadEquipment(): void {
+        this.http.get<Equipment[]>(this.apiUrl).subscribe(
+            equipment => {
+                this.equipment = equipment;
+                this.equipmentSubject.next(equipment);
+            },
+            error => console.error('Ошибка при загрузке оборудования:', error)
+        );
+    }
 
     getEquipment(): Observable<Equipment[]> {
         return this.equipmentSubject.asObservable();
@@ -112,5 +73,21 @@ export class EquipmentService {
 
     getCategories(): string[] {
         return ['Все', ...new Set(this.equipment.map(item => item.category))];
+    }
+
+    addEquipment(equipment: Omit<Equipment, 'id'>): Observable<Equipment> {
+        return this.http.post<Equipment>(this.apiUrl, equipment);
+    }
+
+    updateEquipment(equipment: Equipment): Observable<Equipment> {
+        return this.http.put<Equipment>(`${this.apiUrl}/${equipment.id}`, equipment);
+    }
+
+    deleteEquipment(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    }
+
+    getEquipmentById(id: number): Observable<Equipment | undefined> {
+        return of(this.equipment.find(e => e.id === id));
     }
 } 

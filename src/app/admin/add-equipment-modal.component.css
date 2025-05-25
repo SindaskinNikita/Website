@@ -13,106 +13,102 @@
 
 .modal-content {
     background: white;
-    padding: 20px;
+    padding: 2rem;
     border-radius: 8px;
-    width: 500px;
-    max-width: 90%;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-.modal-header h3 {
-    margin: 0;
-    color: #333;
-}
-
-.close-btn {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #666;
-}
-
-.close-btn:hover {
+h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
     color: #333;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
 }
 
-.form-group label {
+label {
     display: block;
-    margin-bottom: 5px;
-    color: #555;
-    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #666;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+input, select, textarea {
     width: 100%;
-    padding: 8px 12px;
+    padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 14px;
-    box-sizing: border-box;
+    font-size: 1rem;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+textarea {
+    resize: vertical;
+    min-height: 100px;
 }
 
-.modal-footer {
+.features-list {
+    margin: 0.5rem 0;
+}
+
+.feature-item {
     display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #eee;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background: #f5f5f5;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
 }
 
-.btn {
-    padding: 8px 16px;
+.feature-item button {
+    background: #ff4444;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.2s;
 }
 
-.btn-primary {
-    background-color: #007bff;
-    color: white;
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+button {
+    padding: 0.5rem 1rem;
     border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
 }
 
-.btn-primary:hover {
-    background-color: #0056b3;
-}
-
-.btn-secondary {
-    background-color: #6c757d;
+button[type="submit"] {
+    background: #4CAF50;
     color: white;
-    border: none;
 }
 
-.btn-secondary:hover {
-    background-color: #545b62;
+button[type="submit"]:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+
+button[type="button"] {
+    background: #f5f5f5;
+    color: #333;
+}
+
+button[type="button"]:hover {
+    background: #e0e0e0;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+    background: #45a049;
 }
 
 /* Темная тема */

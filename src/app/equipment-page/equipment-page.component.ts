@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EquipmentService } from '../services/equipment.service';
-import { Equipment } from '../models/equipment.interface';
+import { Equipment } from '../models/equipment.model';
 
 @Component({
   selector: 'app-equipment-page',
@@ -29,12 +29,25 @@ export class EquipmentPageComponent implements OnInit {
   constructor(private equipmentService: EquipmentService) {}
 
   ngOnInit(): void {
-    this.equipmentService.getEquipment().subscribe(equipment => {
-      this.equipment = equipment;
+    this.loadEquipment();
+    this.loadCategories();
+    this.subscribeToFilters();
+  }
+
+  private loadEquipment(): void {
+    this.equipmentService.getEquipment().subscribe({
+      next: (equipment) => {
+        this.equipment = equipment;
+      },
+      error: (error) => console.error('Ошибка при загрузке оборудования:', error)
     });
+  }
 
+  private loadCategories(): void {
     this.categories = this.equipmentService.getCategories();
+  }
 
+  private subscribeToFilters(): void {
     this.equipmentService.getSelectedCategory().subscribe(category => {
       this.selectedCategory = category;
     });

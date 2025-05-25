@@ -20,11 +20,19 @@ export class AddEquipmentModalComponent implements OnInit {
         id: 0,
         name: '',
         type: '',
+        category: '',
         facility: '',
         status: 'active',
         lastMaintenance: new Date(),
-        nextMaintenance: new Date()
+        nextMaintenance: new Date(),
+        features: [],
+        description: '',
+        image: '',
+        price: 0
     };
+
+    categories: string[] = ['Камеры', 'Серверы', 'Сетевое оборудование', 'Системы безопасности'];
+    statuses: ('active' | 'inactive' | 'maintenance')[] = ['active', 'inactive', 'maintenance'];
 
     ngOnInit() {
         if (this.equipmentToEdit) {
@@ -36,11 +44,24 @@ export class AddEquipmentModalComponent implements OnInit {
         if (this.equipmentToEdit) {
             this.equipmentUpdated.emit(this.equipment);
         } else {
-            this.equipmentAdded.emit(this.equipment);
+            // При создании нового оборудования не отправляем id
+            const { id, ...newEquipment } = this.equipment;
+            this.equipmentAdded.emit(newEquipment as Equipment);
         }
     }
 
     onClose() {
         this.close.emit();
+    }
+
+    addFeature() {
+        const feature = prompt('Введите характеристику оборудования:');
+        if (feature) {
+            this.equipment.features = [...this.equipment.features, feature];
+        }
+    }
+
+    removeFeature(index: number) {
+        this.equipment.features = this.equipment.features.filter((_, i) => i !== index);
     }
 } 

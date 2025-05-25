@@ -311,16 +311,22 @@ export class AdminComponent implements OnInit {
     }
 
     onEquipmentAdded(equipment: Equipment): void {
-        this.equipmentService.addEquipment(equipment).subscribe(() => {
-            this.loadEquipment();
-            this.onCloseAddEquipmentModal();
+        this.equipmentService.addEquipment(equipment).subscribe({
+            next: () => {
+                this.loadEquipment();
+                this.showAddEquipmentModal = false;
+            },
+            error: (error) => console.error('Ошибка при добавлении оборудования:', error)
         });
     }
 
     onEquipmentUpdated(equipment: Equipment): void {
-        this.equipmentService.updateEquipment(equipment).subscribe(() => {
-            this.loadEquipment();
-            this.onCloseAddEquipmentModal();
+        this.equipmentService.updateEquipment(equipment).subscribe({
+            next: () => {
+                this.loadEquipment();
+                this.selectedEquipment = null;
+            },
+            error: (error) => console.error('Ошибка при обновлении оборудования:', error)
         });
     }
 
@@ -331,52 +337,82 @@ export class AdminComponent implements OnInit {
 
     onDeleteEquipment(equipment: Equipment): void {
         if (confirm('Вы уверены, что хотите удалить это оборудование?')) {
-            this.equipmentService.deleteEquipment(equipment.id).subscribe(() => {
-                this.loadEquipment();
+            this.equipmentService.deleteEquipment(equipment.id).subscribe({
+                next: () => {
+                    this.loadEquipment();
+                },
+                error: (error) => console.error('Ошибка при удалении оборудования:', error)
             });
         }
     }
 
     // Временный метод для загрузки тестовых данных оборудования
     private loadTestEquipment(): void {
-        this.equipments = [
-            { 
-                id: 1, 
-                name: 'Кондиционер FS-2500', 
-                type: 'Климатическое оборудование', 
-                facility: 'Офис на Ленина', 
+        const testEquipment: Equipment[] = [
+            {
+                id: 1,
+                name: 'IP камера 2NN',
+                type: 'Видеонаблюдение',
+                category: 'Камеры',
+                facility: 'Главный офис',
                 status: 'active',
-                lastMaintenance: new Date('2023-06-15'),
-                nextMaintenance: new Date('2023-09-15')
+                lastMaintenance: new Date('2024-01-15'),
+                nextMaintenance: new Date('2024-07-15'),
+                description: 'Компактная IP-камера для внутреннего видеонаблюдения',
+                features: ['Пластиковый корпус', 'Угол обзора: 92° × 54°', 'ИК-подсветка до 30м'],
+                image: 'assets/images/camera.jpg',
+                price: 2300
             },
-            { 
-                id: 2, 
-                name: 'Котел Viessmann', 
-                type: 'Отопительное оборудование', 
-                facility: 'Складское помещение', 
+            {
+                id: 2,
+                name: 'IP камера 2NN с микрофоном',
+                type: 'Видеонаблюдение',
+                category: 'Камеры',
+                facility: 'Склад',
                 status: 'active',
-                lastMaintenance: new Date('2023-04-22'),
-                nextMaintenance: new Date('2023-07-22')
+                lastMaintenance: new Date('2024-02-01'),
+                nextMaintenance: new Date('2024-08-01'),
+                description: 'IP-камера со встроенным микрофоном для аудио-видео наблюдения',
+                features: ['Встроенный микрофон', 'Угол обзора: 108° × 58°', 'Запись на microSD'],
+                image: 'assets/images/camera.jpg',
+                price: 7400
             },
-            { 
-                id: 3, 
-                name: 'Компрессор AirFlow XL', 
-                type: 'Промышленное оборудование', 
-                facility: 'Производственный цех', 
+            {
+                id: 3,
+                name: 'IP камера 5NN',
+                type: 'Видеонаблюдение',
+                category: 'Камеры',
+                facility: 'Производство',
+                status: 'maintenance',
+                lastMaintenance: new Date('2024-03-01'),
+                nextMaintenance: new Date('2024-09-01'),
+                description: 'Высококачественная IP-камера с расширенными возможностями',
+                features: ['Разрешение 2592×1944', 'Угол обзора: 100° × 76°', 'Запись до 16 суток'],
+                image: 'assets/images/camera.jpg',
+                price: 10600
+            },
+            {
+                id: 4,
+                name: 'IP камера 5NN с объективом',
+                type: 'Видеонаблюдение',
+                category: 'Камеры',
+                facility: 'Охрана',
                 status: 'inactive',
-                lastMaintenance: new Date('2023-01-05'),
-                nextMaintenance: new Date('2023-04-05')
-            },
-            { 
-                id: 4, 
-                name: 'Система видеонаблюдения SecureView', 
-                type: 'Охранное оборудование', 
-                facility: 'Главный офис', 
-                status: 'active',
-                lastMaintenance: new Date('2023-05-30'),
-                nextMaintenance: new Date('2023-08-30')
+                lastMaintenance: new Date('2024-01-01'),
+                nextMaintenance: new Date('2024-07-01'),
+                description: 'Профессиональная IP-камера с вариофокальным объективом',
+                features: ['Нейросетевая аналитика', 'Разрешение 1920×1080', 'ИК-подсветка до 80м'],
+                image: 'assets/images/camera.jpg',
+                price: 14200
             }
         ];
+
+        // Добавляем тестовые данные через сервис
+        testEquipment.forEach(equipment => {
+            this.equipmentService.addEquipment(equipment).subscribe({
+                error: (error) => console.error('Ошибка при добавлении тестового оборудования:', error)
+            });
+        });
     }
 
     loadNews() {
@@ -422,9 +458,12 @@ export class AdminComponent implements OnInit {
         });
     }
 
-    loadEquipment() {
-        this.equipmentService.getEquipment().subscribe(equipment => {
-            this.equipments = equipment;
+    loadEquipment(): void {
+        this.equipmentService.getEquipment().subscribe({
+            next: (equipment) => {
+                this.equipments = equipment;
+            },
+            error: (error) => console.error('Ошибка при загрузке оборудования:', error)
         });
     }
 

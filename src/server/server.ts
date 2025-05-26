@@ -1,11 +1,7 @@
 import express from 'express'
 import cors from 'cors'
-import { PostgresDataSource } from './database/database.config'
-import employeeRoutes from './routes/employee.routes'
-import facilityRoutes from './routes/facility.routes'
-import authRoutes from './routes/auth.routes'
-import feedbackRoutes from './routes/feedback.routes'
-import equipmentRoutes from './routes/equipment.routes'
+import employeeSimpleRoutes from './routes/employee-simple.routes'
+import authSimpleRoutes from './routes/auth-simple.routes'
 
 const app = express()
 const port = process.env['PORT'] || 3000
@@ -19,22 +15,18 @@ app.use((req, res, next) => {
     next()
 })
 
-// Инициализация подключения к базе данных
-PostgresDataSource.initialize()
-    .then(() => {
-        console.log('Подключение к базе данных установлено')
-        
-        // Регистрируем маршруты только после успешного подключения к БД
-        app.use('/api/employees', employeeRoutes)
-        app.use('/api/facilities', facilityRoutes)
-        app.use('/api/auth', authRoutes)
-        app.use('/api/feedback', feedbackRoutes)
-        app.use('/api/equipment', equipmentRoutes)
-        
-        app.listen(port, () => {
-            console.log(`Сервер запущен на порту ${port}`)
-        })
-    })
-    .catch((error) => {
-        console.error('Ошибка при подключении к базе данных:', error)
-    })
+// Регистрируем маршруты
+app.use('/api/auth', authSimpleRoutes)
+app.use('/api/employees', employeeSimpleRoutes)
+
+app.listen(port, () => {
+    console.log(`Сервер запущен на порту ${port}`)
+    console.log('Доступные маршруты:')
+    console.log('- POST /api/auth/login - авторизация')
+    console.log('- GET /api/auth/verify - проверка токена')
+    console.log('- GET /api/employees - получить всех сотрудников')
+    console.log('- GET /api/employees/:id - получить сотрудника по ID')
+    console.log('- POST /api/employees - добавить сотрудника')
+    console.log('- PUT /api/employees/:id - обновить сотрудника')
+    console.log('- DELETE /api/employees/:id - удалить сотрудника')
+})

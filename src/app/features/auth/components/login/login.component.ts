@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../../core/services/auth.service';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,14 +14,14 @@ import { AuthService } from '../../../../core/services/auth.service';
         <h2>Вход в систему</h2>
         <form (ngSubmit)="onSubmit()">
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="username">Имя пользователя</label>
             <input 
-              type="email" 
-              id="email" 
-              [(ngModel)]="email" 
-              name="email" 
+              type="text" 
+              id="username" 
+              [(ngModel)]="username" 
+              name="username" 
               required
-              placeholder="Введите email">
+              placeholder="Введите имя пользователя">
           </div>
           <div class="form-group">
             <label for="password">Пароль</label>
@@ -34,7 +34,7 @@ import { AuthService } from '../../../../core/services/auth.service';
               placeholder="Введите пароль">
           </div>
           <div class="error-message" *ngIf="errorMessage">{{errorMessage}}</div>
-          <button type="submit" [disabled]="!email || !password">Войти</button>
+          <button type="submit" [disabled]="!username || !password">Войти</button>
         </form>
       </div>
     </div>
@@ -110,8 +110,8 @@ import { AuthService } from '../../../../core/services/auth.service';
   `]
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
+  username: string = 'admin'; // Значение по умолчанию для тестирования
+  password: string = 'password123'; // Значение по умолчанию для тестирования
   errorMessage: string = '';
   isDarkTheme: boolean = false;
 
@@ -123,15 +123,19 @@ export class LoginComponent {
   onSubmit(): void {
     this.errorMessage = '';
     
-    this.authService.login(this.email, this.password).subscribe(
-      response => {
+    console.log('Попытка входа с данными:', { username: this.username, password: this.password });
+    
+    this.authService.login(this.username, this.password).subscribe({
+      next: (user) => {
+        console.log('Успешная авторизация, получен пользователь:', user);
+        console.log('Перенаправление в админ-панель');
         // Успешная авторизация
         this.router.navigate(['/admin']);
       },
-      error => {
-        this.errorMessage = 'Неверный email или пароль';
+      error: (error) => {
+        this.errorMessage = 'Неверное имя пользователя или пароль';
         console.error('Ошибка авторизации:', error);
       }
-    );
+    });
   }
 } 

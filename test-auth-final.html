@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Финальный тест авторизации</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        .test-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+        .test-section h3 {
+            margin-top: 0;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 10px;
+        }
+        button {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        .success {
+            background: linear-gradient(45deg, #d4edda, #c3e6cb);
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        .error {
+            background: linear-gradient(45deg, #f8d7da, #f5c6cb);
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+        .info {
+            background: linear-gradient(45deg, #d1ecf1, #bee5eb);
+            border: 2px solid #17a2b8;
+            color: #0c5460;
+        }
+        .credentials {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .credentials h4 {
+            margin-top: 0;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Финальный тест авторизации</h1>
+            <p>Проверка работы системы авторизации с хешированными паролями</p>
+        </div>
+        
+        <div class="credentials">
+            <h4>📋 Учетные данные для входа:</h4>
+            <p><strong>Все пользователи используют пароль:</strong> <code>password123</code></p>
+            <ul>
+                <li><strong>admin</strong> / password123 (роль: admin)</li>
+                <li><strong>manager</strong> / password123 (роль: manager)</li>
+                <li><strong>employee</strong> / password123 (роль: employee)</li>
+                <li><strong>guest</strong> / password123 (роль: guest)</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧪 1. Тест API авторизации</h3>
+            <button onclick="testLogin('admin', 'password123')">✅ Админ (правильный пароль)</button>
+            <button onclick="testLogin('manager', 'password123')">✅ Менеджер (правильный пароль)</button>
+            <button onclick="testLogin('admin', 'admin123')">❌ Админ (неправильный пароль)</button>
+            <button onclick="testLogin('admin', 'wrongpass')">❌ Админ (неверный пароль)</button>
+            <div id="login-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔍 2. Проверка токена</h3>
+            <button onclick="verifyToken()">Проверить текущий токен</button>
+            <button onclick="clearToken()">Очистить токен</button>
+            <div id="token-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>💾 3. Управление localStorage</h3>
+            <button onclick="checkStorage()">Проверить localStorage</button>
+            <button onclick="setValidUser()">Установить валидного пользователя</button>
+            <button onclick="clearStorage()">Очистить localStorage</button>
+            <div id="storage-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🌐 4. Навигация Angular</h3>
+            <button onclick="openAngularLogin()">Открыть страницу входа</button>
+            <button onclick="openAngularAdmin()">Открыть админ-панель</button>
+            <button onclick="openAngularEmployees()">Открыть сотрудников</button>
+            <div id="navigation-result"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentToken = null;
+
+        async function testLogin(username, password) {
+            try {
+                showResult('login-result', `🔄 Тестирование входа: ${username} / ${password}...`, 'info');
+                
+                const response = await fetch('http://localhost:3000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    currentToken = data.token;
+                    localStorage.setItem('currentUser', JSON.stringify(data));
+                    localStorage.setItem('token', data.token);
+                    
+                    showResult('login-result', 
+                        `✅ УСПЕШНАЯ АВТОРИЗАЦИЯ!\n\n` +
+                        `Пользователь: ${data.username}\n` +
+                        `Email: ${data.email}\n` +
+                        `Роль: ${data.role}\n` +
+                        `ID: ${data.id}\n\n` +
+                        `Токен сохранен в localStorage`, 'success');
+                } else {
+                    showResult('login-result', 
+                        `❌ ОШИБКА АВТОРИЗАЦИИ\n\n` +
+                        `Сообщение: ${data.message}\n` +
+                        `Статус: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                showResult('login-result', 
+                    `❌ ОШИБКА СЕТИ\n\n` +
+                    `Ошибка: ${error.message}\n` +
+                    `Проверьте, что сервер запущен на порту 3000`, 'error');
+            }
+        }
+
+        async function verifyToken() {
+            try {
+                const token = currentToken || localStorage.getItem('token');
+                
+                if (!token) {
+                    showResult('token-result', '❌ Токен отсутствует. Сначала выполните вход.', 'error');
+                    return;
+                }
+                
+                showResult('token-result', '🔄 Проверка токена...', 'info');
+                
+                const response = await fetch('http://localhost:3000/api/auth/verify', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult('token-result', 
+                        `✅ ТОКЕН ДЕЙСТВИТЕЛЕН!\n\n` +
+                        `Пользователь: ${data.username}\n` +
+                        `Email: ${data.email}\n` +
+                        `Роль: ${data.role}\n` +
+                        `ID: ${data.id}`, 'success');
+                } else {
+                    showResult('token-result', 
+                        `❌ ТОКЕН НЕДЕЙСТВИТЕЛЕН\n\n` +
+                        `Сообщение: ${data.message}\n` +
+                        `Статус: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                showResult('token-result', 
+                    `❌ ОШИБКА ПРОВЕРКИ ТОКЕНА\n\n` +
+                    `Ошибка: ${error.message}`, 'error');
+            }
+        }
+
+        function clearToken() {
+            currentToken = null;
+            localStorage.removeItem('token');
+            localStorage.removeItem('currentUser');
+            showResult('token-result', '✅ Токен очищен', 'info');
+        }
+
+        function checkStorage() {
+            const currentUser = localStorage.getItem('currentUser');
+            const token = localStorage.getItem('token');
+            
+            let result = '📦 СОДЕРЖИМОЕ LOCALSTORAGE:\n\n';
+            
+            if (currentUser) {
+                try {
+                    const user = JSON.parse(currentUser);
+                    result += `👤 Пользователь:\n${JSON.stringify(user, null, 2)}\n\n`;
+                } catch (e) {
+                    result += `❌ Ошибка парсинга пользователя: ${e.message}\n\n`;
+                }
+            } else {
+                result += '👤 Пользователь: не установлен\n\n';
+            }
+            
+            if (token) {
+                result += `🔑 Токен: ${token.substring(0, 50)}...\n`;
+                result += `📏 Длина токена: ${token.length} символов`;
+            } else {
+                result += '🔑 Токен: не установлен';
+            }
+            
+            showResult('storage-result', result, currentUser ? 'success' : 'info');
+        }
+
+        function setValidUser() {
+            const validUser = {
+                id: 1,
+                username: 'admin',
+                email: 'admin@example.com',
+                role: 'admin'
+            };
+            
+            const validToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcklkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc0ODI4NzU3MSwiZXhwIjoxNzQ4MzczOTcxfQ.WZDs4lYEA9w4rObUBp7Q8sbptLYJ2ZeakxmfW6pttOk';
+            
+            localStorage.setItem('currentUser', JSON.stringify(validUser));
+            localStorage.setItem('token', validToken);
+            currentToken = validToken;
+            
+            showResult('storage-result', 
+                `✅ ВАЛИДНЫЙ ПОЛЬЗОВАТЕЛЬ УСТАНОВЛЕН!\n\n` +
+                `${JSON.stringify(validUser, null, 2)}`, 'success');
+        }
+
+        function clearStorage() {
+            localStorage.clear();
+            currentToken = null;
+            showResult('storage-result', '✅ localStorage полностью очищен', 'info');
+        }
+
+        function openAngularLogin() {
+            const url = 'http://localhost:4200/login';
+            window.open(url, '_blank');
+            showResult('navigation-result', `🌐 Открыта страница входа: ${url}`, 'info');
+        }
+
+        function openAngularAdmin() {
+            const url = 'http://localhost:4200/admin';
+            window.open(url, '_blank');
+            showResult('navigation-result', `🌐 Открыта админ-панель: ${url}`, 'info');
+        }
+
+        function openAngularEmployees() {
+            const url = 'http://localhost:4200/admin/employees';
+            window.open(url, '_blank');
+            showResult('navigation-result', `🌐 Открыта страница сотрудников: ${url}`, 'info');
+        }
+
+        function showResult(elementId, message, type) {
+            const resultDiv = document.getElementById(elementId);
+            resultDiv.className = `result ${type}`;
+            resultDiv.textContent = message;
+        }
+
+        // Автоматическая проверка при загрузке страницы
+        window.onload = function() {
+            checkStorage();
+        };
+    </script>
+</body>
+</html> 

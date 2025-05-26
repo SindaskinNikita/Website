@@ -399,9 +399,18 @@ export class AdminComponent implements OnInit, OnDestroy {
 
     // Обновляем методы загрузки данных
     loadEmployees(): void {
-        this.employeeService.getEmployees().subscribe(employees => {
-            this.employees = employees;
-            this.filteredEmployees = employees;
+        console.log('🔄 Загружаю сотрудников...');
+        this.employeeService.getEmployees().subscribe({
+            next: (employees) => {
+                console.log('✅ Получены сотрудники:', employees);
+                this.employees = employees;
+                this.filteredEmployees = employees;
+                this.totalEmployees = employees.length;
+                this.calculateStatistics();
+            },
+            error: (error) => {
+                console.error('❌ Ошибка при загрузке сотрудников:', error);
+            }
         });
     }
 

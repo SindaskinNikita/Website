@@ -1,44 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Calculation } from '../models/calculation.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CalculationService {
-    private apiUrl = 'api/calculations';
+    private apiUrl = 'http://localhost:3000/api/calculations';
 
     constructor(private http: HttpClient) {}
 
     getCalculations(): Observable<Calculation[]> {
-        return of([
-            {
-                id: 1,
-                name: 'Расчет стоимости обслуживания',
-                type: 'cost',
-                date: new Date('2024-02-01'),
-                result: 150000
-            },
-            {
-                id: 2,
-                name: 'Расчет эффективности',
-                type: 'efficiency',
-                date: new Date('2024-02-15'),
-                result: 85.5
-            }
-        ]);
+        return this.http.get<Calculation[]>(this.apiUrl);
     }
 
     addCalculation(calculation: Calculation): Observable<Calculation> {
-        return of(calculation);
+        return this.http.post<Calculation>(this.apiUrl, calculation);
     }
 
     updateCalculation(calculation: Calculation): Observable<Calculation> {
-        return of(calculation);
+        return this.http.put<Calculation>(`${this.apiUrl}/${calculation.id}`, calculation);
     }
 
     deleteCalculation(id: number): Observable<void> {
-        return of(void 0);
+        return this.http.delete<void>(`${this.apiUrl}/${id}`);
     }
 }

@@ -13,8 +13,8 @@ export const PostgresDataSource = new DataSource({
     database: "postgres",
     schema: "public",
     entities: [Employee, Facility, User],
-    synchronize: true,
-    dropSchema: true,
+    synchronize: false,
+    dropSchema: false,
     logging: ["query", "error"],
     logger: "advanced-console"
 }) 

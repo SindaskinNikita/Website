@@ -33,12 +33,38 @@ export class AuthService {
     }
   }
 
-  login(email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.API_URL}/login`, { email, password }).pipe(
+  login(username: string, password: string): Observable<LoginResponse> {
+    console.log('AuthService.login вызван с:', { username, password });
+    
+    return this.http.post<any>(`${this.API_URL}/login`, { username, password }).pipe(
+      map(response => {
+        console.log('Ответ от сервера:', response);
+        
+        // Преобразуем ответ в нужный формат
+        const user: User = {
+          id: response.id,
+          username: response.username,
+          email: response.email,
+          role: response.role.toUpperCase() as 'ADMIN' | 'MANAGER' | 'EMPLOYEE' | 'GUEST'
+        };
+        
+        const loginResponse: LoginResponse = {
+          user: user,
+          token: response.token
+        };
+        
+        console.log('Преобразованный ответ:', loginResponse);
+        return loginResponse;
+      }),
       tap(response => {
+        console.log('Сохранение данных пользователя в localStorage');
         localStorage.setItem('currentUser', JSON.stringify(response.user));
         localStorage.setItem('token', response.token);
         this.currentUserSubject.next(response.user);
+      }),
+      catchError(error => {
+        console.error('Ошибка в AuthService.login:', error);
+        throw error;
       })
     );
   }

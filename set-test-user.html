@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка тестового пользователя</title>
+</head>
+<body>
+    <h1>Установка тестового пользователя</h1>
+    <button onclick="setTestUser()">Установить администратора</button>
+    <button onclick="clearUser()">Очистить пользователя</button>
+    <div id="result"></div>
+
+    <script>
+        function setTestUser() {
+            const testUser = {
+                id: 1,
+                username: 'admin',
+                email: 'admin@company.ru',
+                role: 'admin',
+                token: 'test-token-123'
+            };
+            
+            localStorage.setItem('currentUser', JSON.stringify(testUser));
+            document.getElementById('result').innerHTML = `
+                <p style="color: green;">✅ Тестовый пользователь установлен!</p>
+                <pre>${JSON.stringify(testUser, null, 2)}</pre>
+                <p>Теперь можете перейти на <a href="http://localhost:4200/admin" target="_blank">http://localhost:4200/admin</a></p>
+            `;
+        }
+        
+        function clearUser() {
+            localStorage.removeItem('currentUser');
+            document.getElementById('result').innerHTML = `
+                <p style="color: red;">❌ Пользователь удален из localStorage</p>
+            `;
+        }
+        
+        // Показываем текущего пользователя при загрузке
+        window.onload = function() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                document.getElementById('result').innerHTML = `
+                    <p style="color: blue;">ℹ️ Текущий пользователь:</p>
+                    <pre>${JSON.stringify(JSON.parse(currentUser), null, 2)}</pre>
+                `;
+            } else {
+                document.getElementById('result').innerHTML = `
+                    <p style="color: gray;">Пользователь не установлен</p>
+                `;
+            }
+        };
+    </script>
+</body>
+</html> 

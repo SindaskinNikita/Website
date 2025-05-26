@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+const bcrypt = require('bcrypt');
 
 // Настройки подключения к БД с правильными параметрами
 const pool = new Pool({
@@ -36,7 +37,7 @@ async function debugAuth() {
 
         console.log('Проверка учетных данных пользователя admin...');
         const userResult = await pool.query(
-            'SELECT id, username, email, password, role FROM users WHERE username = $1',
+            'SELECT id, username, email, password_hash, role FROM users WHERE username = $1',
             [testUsername]
         );
 
@@ -50,22 +51,20 @@ async function debugAuth() {
         console.log('ID:', user.id);
         console.log('Username:', user.username);
         console.log('Email:', user.email);
-        console.log('Password:', user.password);
+        console.log('Password Hash:', user.password_hash);
         console.log('Role:', user.role);
 
         // Проверка пароля
-        const isValidPassword = testPassword === user.password;
+        const isValidPassword = await bcrypt.compare(testPassword, user.password_hash);
         console.log('Проверка пароля:');
-        console.log('Введенный пароль:', testPassword);
-        console.log('Пароль в БД:', user.password);
         console.log('Результат сравнения:', isValidPassword);
         
         // Проверка типов данных
         console.log('Типы данных:');
         console.log('Тип введенного пароля:', typeof testPassword);
-        console.log('Тип пароля в БД:', typeof user.password);
+        console.log('Тип пароля в БД:', typeof user.password_hash);
         console.log('Длина введенного пароля:', testPassword.length);
-        console.log('Длина пароля в БД:', user.password.length);
+        console.log('Длина пароля в БД:', user.password_hash.length);
         
         // Проверка на скрытые символы
         console.log('Код каждого символа введенного пароля:');
@@ -74,8 +73,8 @@ async function debugAuth() {
         }
         
         console.log('Код каждого символа пароля в БД:');
-        for (let i = 0; i < user.password.length; i++) {
-            console.log(`Символ '${user.password[i]}' (индекс ${i}): ${user.password.charCodeAt(i)}`);
+        for (let i = 0; i < user.password_hash.length; i++) {
+            console.log(`Символ '${user.password_hash[i]}' (индекс ${i}): ${user.password_hash.charCodeAt(i)}`);
         }
     } catch (error) {
         console.error('Ошибка при отладке:', error);

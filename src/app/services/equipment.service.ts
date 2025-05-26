@@ -12,29 +12,7 @@ export class EquipmentService {
     constructor(private http: HttpClient) {}
 
     getEquipment(): Observable<Equipment[]> {
-        return new Observable<Equipment[]>(observer => {
-            observer.next([
-                {
-                    id: 1,
-                    name: 'Кондиционер',
-                    type: 'Климатическое оборудование',
-                    facility: 'Главный офис',
-                    status: 'active',
-                    lastMaintenance: new Date('2024-02-15'),
-                    nextMaintenance: new Date('2024-05-15')
-                },
-                {
-                    id: 2,
-                    name: 'Сервер',
-                    type: 'IT оборудование',
-                    facility: 'Дата-центр',
-                    status: 'active',
-                    lastMaintenance: new Date('2024-01-20'),
-                    nextMaintenance: new Date('2024-04-20')
-                }
-            ]);
-            observer.complete();
-        });
+        return this.http.get<Equipment[]>(this.apiUrl);
     }
 
     addEquipment(equipment: Equipment): Observable<Equipment> {

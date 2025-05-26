@@ -1,42 +1,34 @@
-import { Router, Request, Response, RequestHandler } from 'express';
+import express, { Request, Response, Router } from 'express';
 import { PostgresDataSource } from '../database/database.config';
 import { Employee } from '../entities/Employee';
 
-const router = Router();
+const router: Router = express.Router();
 
 interface ParamsWithId {
     id: string;
 }
 
 // Получить всех сотрудников
-const getAllEmployees: RequestHandler = async (_req, res) => {
+router.get('/', async (req: Request, res: Response): Promise<void> => {
     try {
         console.log('Начинаем получение сотрудников...');
         const employeeRepository = PostgresDataSource.getRepository(Employee);
-
-        // Получаем данные прямым SQL-запросом
-        const employees = await employeeRepository.query(`
-            SELECT 
-                id,
-                name,
-                position,
-                email,
-                phone,
-                created_at
-            FROM employee 
-            ORDER BY id;
-        `);
-        console.log('Данные из таблицы:', employees);
+        const employees = await employeeRepository.find({
+            order: {
+                id: 'ASC'
+            }
+        });
         
+        console.log('Получены сотрудники:', employees);
         res.json(employees);
     } catch (error: any) {
         console.error('Ошибка при получении сотрудников:', error);
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: 'Ошибка при получении списка сотрудников' });
     }
-};
+});
 
 // Получить сотрудника по ID
-const getEmployeeById: RequestHandler<ParamsWithId> = async (req, res) => {
+router.get('/:id', async (req: Request, res: Response): Promise<void> => {
     try {
         const employeeRepository = PostgresDataSource.getRepository(Employee);
         const employee = await employeeRepository.findOne({
@@ -52,7 +44,7 @@ const getEmployeeById: RequestHandler<ParamsWithId> = async (req, res) => {
     } catch (error: any) {
         res.status(500).json({ message: error.message });
     }
-};
+});
 
 // Проверка существования email
 const checkEmailExists = async (email: string, excludeId?: number): Promise<boolean> => {
@@ -69,31 +61,47 @@ const checkEmailExists = async (email: string, excludeId?: number): Promise<bool
 };
 
 // Добавить сотрудника
-const createEmployee: RequestHandler = async (req, res) => {
+router.post('/', async (req: Request, res: Response): Promise<void> => {
     try {
+        const { name, position, email, phone } = req.body;
+
+        if (!name || !position || !email) {
+            res.status(400).json({ message: 'Необходимо заполнить все обязательные поля' });
+            return;
+        }
+
         const employeeRepository = PostgresDataSource.getRepository(Employee);
         
         // Проверяем, существует ли email
-        const emailExists = await checkEmailExists(req.body.email);
+        const emailExists = await checkEmailExists(email);
         if (emailExists) {
             res.status(400).json({ message: 'Сотрудник с таким email уже существует' });
             return;
         }
         
-        const employee = employeeRepository.create(req.body);
+        const employee = employeeRepository.create({ name, position, email, phone });
         const result = await employeeRepository.save(employee);
         res.status(201).json(result);
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        console.error('Ошибка при добавлении сотрудника:', error);
+        res.status(500).json({ message: 'Ошибка при добавлении сотрудника' });
     }
-};
+});
 
 // Обновить сотрудника
-const updateEmployee: RequestHandler<ParamsWithId> = async (req, res) => {
+router.put('/:id', async (req: Request, res: Response): Promise<void> => {
     try {
+        const { id } = req.params;
+        const { name, position, email, phone } = req.body;
+
+        if (!name || !position || !email) {
+            res.status(400).json({ message: 'Необходимо заполнить все обязательные поля' });
+            return;
+        }
+
         const employeeRepository = PostgresDataSource.getRepository(Employee);
         const employee = await employeeRepository.findOne({
-            where: { id: parseInt(req.params['id']) }
+            where: { id: parseInt(id) }
         });
         
         if (!employee) {
@@ -102,28 +110,31 @@ const updateEmployee: RequestHandler<ParamsWithId> = async (req, res) => {
         }
         
         // Проверяем, существует ли email (исключая текущего сотрудника)
-        if (req.body.email && req.body.email !== employee.email) {
-            const emailExists = await checkEmailExists(req.body.email, employee.id);
+        if (email && email !== employee.email) {
+            const emailExists = await checkEmailExists(email, employee.id);
             if (emailExists) {
                 res.status(400).json({ message: 'Сотрудник с таким email уже существует' });
                 return;
             }
         }
         
-        employeeRepository.merge(employee, req.body);
+        employeeRepository.merge(employee, { name, position, email, phone });
         const result = await employeeRepository.save(employee);
         res.json(result);
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        console.error('Ошибка при обновлении сотрудника:', error);
+        res.status(500).json({ message: 'Ошибка при обновлении сотрудника' });
     }
-};
+});
 
 // Удалить сотрудника
-const deleteEmployee: RequestHandler<ParamsWithId> = async (req, res) => {
+router.delete('/:id', async (req: Request, res: Response): Promise<void> => {
     try {
+        const { id } = req.params;
+
         const employeeRepository = PostgresDataSource.getRepository(Employee);
         const employee = await employeeRepository.findOne({
-            where: { id: parseInt(req.params['id']) }
+            where: { id: parseInt(id) }
         });
         
         if (!employee) {
@@ -134,14 +145,9 @@ const deleteEmployee: RequestHandler<ParamsWithId> = async (req, res) => {
         await employeeRepository.remove(employee);
         res.status(204).send();
     } catch (error: any) {
-        res.status(500).json({ message: error.message });
+        console.error('Ошибка при удалении сотрудника:', error);
+        res.status(500).json({ message: 'Ошибка при удалении сотрудника' });
     }
-};
-
-router.get('/', getAllEmployees);
-router.get('/:id', getEmployeeById);
-router.post('/', createEmployee);
-router.put('/:id', updateEmployee);
-router.delete('/:id', deleteEmployee);
+});
 
 export default router; 

@@ -11,6 +11,7 @@ import { ForbiddenComponent } from './auth/forbidden/forbidden.component';
 import { NotFoundComponent } from './auth/not-found/not-found.component';
 import { AuthGuard } from './guards/auth.guard';
 import { UserRole } from './services/auth.service';
+import { FeedbackFormComponent } from './features/feedback/components/feedback-form/feedback-form.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/admin', pathMatch: 'full' },
@@ -63,6 +64,11 @@ export const routes: Routes = [
                 path: 'settings', 
                 component: AdminComponent,
                 data: { section: 'settings' }
+            },
+            { 
+                path: 'feedback', 
+                component: AdminComponent,
+                data: { section: 'feedback' }
             }
         ]
     },
@@ -78,5 +84,6 @@ export const routes: Routes = [
     { path: 'company-page', component: CompanyPageComponent },
     { path: 'contacts-page', component: ContactsPageComponent },
     { path: 'equipment-page', component: EquipmentPageComponent },
+    { path: 'feedback', component: FeedbackFormComponent, title: 'Обратная связь' },
     { path: '**', component: NotFoundComponent }
 ];

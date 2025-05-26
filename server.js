@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 // Настройки подключения к БД
 const pool = new Pool({
@@ -40,7 +41,7 @@ app.post('/api/auth/login', async (req, res) => {
 
         // Поиск пользователя
         const result = await pool.query(
-            'SELECT id, username, email, password, role FROM users WHERE username = $1',
+            'SELECT id, username, email, password_hash, role FROM users WHERE username = $1',
             [username]
         );
 
@@ -53,17 +54,22 @@ app.post('/api/auth/login', async (req, res) => {
         console.log('Пользователь найден:', {
             id: user.id,
             username: user.username,
-            role: user.role
+            role: user.role,
+            password_hash_exists: !!user.password_hash
         });
 
-        // Сравниваем пароли
-        const passwordStr = String(password).trim();
-        const dbPasswordStr = String(user.password).trim();
-        const isValidPassword = passwordStr === dbPasswordStr;
+        // Проверяем наличие хеша пароля
+        if (!user.password_hash) {
+            console.error('Хеш пароля отсутствует в БД для пользователя:', user.username);
+            return res.status(500).json({ message: 'Ошибка конфигурации пользователя' });
+        }
+
+        // Сравниваем хеши паролей
+        const isValidPassword = await bcrypt.compare(password, user.password_hash);
 
         console.log('Проверка пароля:', {
-            введенныйПароль: passwordStr,
-            парольВБД: dbPasswordStr,
+            password_hash_from_db: user.password_hash,
+            password_hash_type: typeof user.password_hash,
             результат: isValidPassword
         });
 

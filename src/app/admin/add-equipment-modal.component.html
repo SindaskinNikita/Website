@@ -15,23 +15,35 @@
                     <input type="text" id="type" [(ngModel)]="equipment.type" name="type" required>
                 </div>
                 <div class="form-group">
-                    <label for="facility">Объект</label>
-                    <input type="text" id="facility" [(ngModel)]="equipment.facility" name="facility" required>
+                    <label for="inventory_number">Инвентарный номер</label>
+                    <input type="text" id="inventory_number" [(ngModel)]="equipment.inventory_number" name="inventory_number" required>
                 </div>
                 <div class="form-group">
                     <label for="status">Статус</label>
                     <select id="status" [(ngModel)]="equipment.status" name="status" required>
-                        <option value="active">Исправно</option>
-                        <option value="inactive">Требует ремонта</option>
+                        <option value="Исправно">Исправно</option>
+                        <option value="Требует обслуживания">Требует обслуживания</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="lastMaintenance">Последнее обслуживание</label>
-                    <input type="date" id="lastMaintenance" [(ngModel)]="equipment.lastMaintenance" name="lastMaintenance" required>
+                    <label for="location">Местоположение</label>
+                    <input type="text" id="location" [(ngModel)]="equipment.location" name="location" required>
                 </div>
                 <div class="form-group">
-                    <label for="nextMaintenance">Следующее обслуживание</label>
-                    <input type="date" id="nextMaintenance" [(ngModel)]="equipment.nextMaintenance" name="nextMaintenance" required>
+                    <label for="responsible_person">Ответственное лицо</label>
+                    <input type="text" id="responsible_person" [(ngModel)]="equipment.responsible_person" name="responsible_person" required>
+                </div>
+                <div class="form-group">
+                    <label for="purchase_date">Дата покупки</label>
+                    <input type="date" id="purchase_date" [(ngModel)]="equipment.purchase_date" name="purchase_date" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_maintenance_date">Последнее обслуживание</label>
+                    <input type="date" id="last_maintenance_date" [(ngModel)]="equipment.last_maintenance_date" name="last_maintenance_date" required>
+                </div>
+                <div class="form-group">
+                    <label for="next_maintenance_date">Следующее обслуживание</label>
+                    <input type="date" id="next_maintenance_date" [(ngModel)]="equipment.next_maintenance_date" name="next_maintenance_date" required>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="onClose()">Отмена</button>

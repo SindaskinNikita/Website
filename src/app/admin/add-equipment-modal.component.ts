@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Equipment } from '../models/equipment.model';
@@ -17,31 +17,44 @@ export class AddEquipmentModalComponent implements OnInit {
     @Output() equipmentAdded = new EventEmitter<Equipment>();
     @Output() equipmentUpdated = new EventEmitter<Equipment>();
 
-    equipment: Equipment = {
-        id: 0,
+    equipment: Partial<Equipment> = {
         name: '',
         type: '',
-        facility: '',
-        status: 'active',
-        lastMaintenance: new Date(),
-        nextMaintenance: new Date()
+        status: 'Исправно',
+        inventory_number: '',
+        purchase_date: new Date(),
+        last_maintenance_date: new Date(),
+        next_maintenance_date: new Date(),
+        location: '',
+        description: '',
+        company_id: 0,
+        created_at: new Date()
     };
 
-    ngOnInit() {
+    ngOnInit(): void {
         if (this.equipmentToEdit) {
-            this.equipment = { ...this.equipmentToEdit };
+            this.equipment = {
+                ...this.equipmentToEdit,
+                purchase_date: new Date(this.equipmentToEdit.purchase_date),
+                last_maintenance_date: new Date(this.equipmentToEdit.last_maintenance_date),
+                next_maintenance_date: new Date(this.equipmentToEdit.next_maintenance_date)
+            };
         }
     }
 
-    onSubmit() {
+    onSubmit(): void {
         if (this.equipmentToEdit) {
-            this.equipmentUpdated.emit(this.equipment);
+            this.equipmentUpdated.emit({
+                ...this.equipmentToEdit,
+                ...this.equipment
+            } as Equipment);
         } else {
-            this.equipmentAdded.emit(this.equipment);
+            this.equipmentAdded.emit(this.equipment as Equipment);
         }
+        this.onClose();
     }
 
-    onClose() {
+    onClose(): void {
         this.close.emit();
     }
 } 

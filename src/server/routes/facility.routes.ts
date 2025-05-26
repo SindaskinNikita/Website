@@ -1,6 +1,6 @@
 import { Router, Request, Response, RequestHandler } from 'express';
 import { PostgresDataSource } from '../database/database.config';
-import { Facility } from '../entities/Facility';
+import { Facility, FacilityType, FacilityStatus } from '../entities/Facility';
 
 const router = Router();
 
@@ -15,36 +15,62 @@ const getAllFacilities: RequestHandler = async (_req, res) => {
         const facilityRepository = PostgresDataSource.getRepository(Facility);
         
         // Проверяем наличие данных
-        const count = await facilityRepository.query('SELECT COUNT(*) FROM facility');
+        const count = await facilityRepository.count();
         console.log('Количество записей:', count);
 
         // Если данных нет, заполняем тестовыми
-        if (parseInt(count[0].count) === 0) {
+        if (count === 0) {
             console.log('Таблица пустая, заполняем тестовыми данными...');
-            await facilityRepository.query(`
-                INSERT INTO facility (name, address, type, status, cost) VALUES
-                ('Офис на Ленина', 'ул. Ленина, 45', 'Офис', 'active', 2500000),
-                ('Складское помещение', 'ул. Промышленная, 12', 'Склад', 'ready_to_rent', 1800000),
-                ('Производственный цех', 'ул. Заводская, 8', 'Производство', 'ready', 5600000),
-                ('Главный офис', 'ул. Центральная, 1', 'Офис', 'rented', 7200000),
-                ('Торговая точка', 'ул. Магазинная, 76', 'Торговля', 'inactive', 1200000)
-            `);
+            const testFacilities = [
+                {
+                    name: 'Офис на Ленина',
+                    address: 'ул. Ленина, 45',
+                    type: 'Офис' as FacilityType,
+                    status: 'active' as FacilityStatus,
+                    cost: 2500000
+                },
+                {
+                    name: 'Складское помещение',
+                    address: 'ул. Промышленная, 12',
+                    type: 'Склад' as FacilityType,
+                    status: 'ready_to_rent' as FacilityStatus,
+                    cost: 1800000
+                },
+                {
+                    name: 'Производственный цех',
+                    address: 'ул. Заводская, 8',
+                    type: 'Производство' as FacilityType,
+                    status: 'ready' as FacilityStatus,
+                    cost: 5600000
+                },
+                {
+                    name: 'Главный офис',
+                    address: 'ул. Центральная, 1',
+                    type: 'Офис' as FacilityType,
+                    status: 'rented' as FacilityStatus,
+                    cost: 7200000
+                },
+                {
+                    name: 'Торговая точка',
+                    address: 'ул. Магазинная, 76',
+                    type: 'Торговля' as FacilityType,
+                    status: 'inactive' as FacilityStatus,
+                    cost: 1200000
+                }
+            ];
+            
+            await facilityRepository.save(testFacilities);
             console.log('Тестовые данные добавлены');
         }
 
         // Получаем все объекты
-        const facilities = await facilityRepository.query('SELECT * FROM facility');
+        const facilities = await facilityRepository.find();
         console.log('Получены объекты:', facilities);
         
         res.json(facilities);
     } catch (error: any) {
         console.error('Ошибка при получении объектов:', error);
-        console.error('Стек ошибки:', error.stack);
-        res.status(500).json({ 
-            message: error.message,
-            stack: error.stack,
-            query: error.query
-        });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -53,7 +79,7 @@ const getFacilityById: RequestHandler<ParamsWithId> = async (req, res) => {
     try {
         const facilityRepository = PostgresDataSource.getRepository(Facility);
         const facility = await facilityRepository.findOne({
-            where: { id: parseInt(req.params['id']) }
+            where: { id: parseInt(req.params.id) }
         });
         
         if (!facility) {
@@ -84,7 +110,7 @@ const updateFacility: RequestHandler<ParamsWithId> = async (req, res) => {
     try {
         const facilityRepository = PostgresDataSource.getRepository(Facility);
         const facility = await facilityRepository.findOne({
-            where: { id: parseInt(req.params['id']) }
+            where: { id: parseInt(req.params.id) }
         });
         
         if (!facility) {
@@ -105,7 +131,7 @@ const deleteFacility: RequestHandler<ParamsWithId> = async (req, res) => {
     try {
         const facilityRepository = PostgresDataSource.getRepository(Facility);
         const facility = await facilityRepository.findOne({
-            where: { id: parseInt(req.params['id']) }
+            where: { id: parseInt(req.params.id) }
         });
         
         if (!facility) {

@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmployeeService } from '../services/employee.service';
 import { FacilityService } from '../services/facility.service';
 import { Employee } from '../services/employee.service';
@@ -42,6 +42,7 @@ import { Subject } from 'rxjs';
         RouterModule, 
         HttpClientModule, 
         FormsModule,
+        ReactiveFormsModule,
         DatePipe,
         AddEmployeeModalComponent, 
         AddFacilityModalComponent, 
@@ -51,7 +52,7 @@ import { Subject } from 'rxjs';
     providers: [
         EmployeeService, 
         FacilityService, 
-        NewsService, 
+        NewsService,
         EquipmentService,
         ReportService,
         CalculationService,
@@ -73,7 +74,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     averageWorkload: number = 0;
     showAddEmployeeModal: boolean = false;
     showAddFacilityModal: boolean = false;
-    showAddEquipmentModal: boolean = false;
+    showAddEquipmentModal = false;
     selectedEmployee: Employee | null = null;
     selectedFacility: Facility | null = null;
     selectedEquipment: Equipment | null = null;
@@ -108,34 +109,45 @@ export class AdminComponent implements OnInit, OnDestroy {
     userRole: UserRole | null = null;
     userName: string = '';
 
-    // Для отображения роли на русском языке
-    getRoleInRussian(): string {
-        if (!this.userRole) return 'Гость';
-        
-        switch (this.userRole) {
-            case UserRole.ADMIN:
-                return 'Администратор';
-            case UserRole.MANAGER:
-                return 'Менеджер';
-            case UserRole.EMPLOYEE:
-                return 'Сотрудник';
-            case UserRole.GUEST:
-                return 'Гость';
-            default:
-                return String(this.userRole);
-        }
-    }
+    // Поиск для сотрудников
+    employeeSearchQuery: string = '';
+    filteredEmployees: Employee[] = [];
 
-    // Определяем доступ к функциям на основе ролей
-    roleAccess = {
-        [UserRole.ADMIN]: ['dashboard', 'employees', 'facilities', 'equipment', 'news', 'reports', 'calculations', 'reviews', 'settings', 'feedback'],
-        [UserRole.MANAGER]: ['dashboard', 'employees', 'facilities', 'equipment', 'news', 'reports', 'calculations', 'reviews', 'feedback'],
-        [UserRole.EMPLOYEE]: ['dashboard', 'equipment', 'news', 'calculations', 'reviews'],
-        [UserRole.GUEST]: ['dashboard', 'news']
+    // Поиск для оборудования
+    equipmentSearchQuery: string = '';
+    filteredEquipments: Equipment[] = [];
+
+    // Поиск для новостей
+    newsSearchQuery: string = '';
+    filteredNews: News[] = [];
+
+    // Поиск для отчетов
+    reportSearchQuery: string = '';
+    filteredReports: Report[] = [];
+
+    // Поиск для расчетов
+    calculationSearchQuery: string = '';
+    filteredCalculations: Calculation[] = [];
+
+    // Поиск для отзывов
+    reviewSearchQuery: string = '';
+    filteredReviews: Review[] = [];
+
+    loading = {
+        equipment: false
     };
 
-    // Добавляем Subject для отмены подписок при уничтожении компонента
+    // Свойства для модального окна оборудования
+    equipmentModalVisible = false;
+    equipmentEditMode = false;
+
     private destroy$ = new Subject<void>();
+    private roleAccess = {
+        [UserRole.ADMIN]: ['dashboard', 'employees', 'facilities', 'equipment', 'news', 'reports', 'calculations', 'settings', 'reviews', 'feedback'],
+        [UserRole.MANAGER]: ['dashboard', 'employees', 'facilities', 'equipment', 'reports'],
+        [UserRole.EMPLOYEE]: ['dashboard', 'facilities', 'equipment'],
+        [UserRole.GUEST]: ['dashboard']
+    };
 
     constructor(
         private router: Router,
@@ -216,17 +228,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         // Явно вызываем обновление данных пользователя
         this.authService.refreshCurrentUser();
 
-        this.loadEmployees();
-        this.loadFacilities();
-        this.calculateStatistics();
-        this.loadTestEquipment();
-        this.loadNews();
-        this.loadEquipment();
-        this.loadReports();
-        this.loadCalculations();
-        this.loadSettings();
-        this.loadReviews();
-        this.loadFeedbacks();
+        this.loadAllData();
     }
 
     // Добавляем метод для очистки подписок при уничтожении компонента
@@ -332,6 +334,12 @@ export class AdminComponent implements OnInit, OnDestroy {
             } else if (section === 'facilities') {
                 console.log('Загружаем данные объектов...');
                 this.loadFacilities();
+            } else if (section === 'feedback') {
+                console.log('Загружаем данные обратной связи...');
+                this.loadFeedbacks();
+            } else if (section === 'settings') {
+                console.log('Загружаем настройки...');
+                this.loadSettings();
             }
             return;
         }
@@ -352,6 +360,12 @@ export class AdminComponent implements OnInit, OnDestroy {
         } else if (section === 'facilities') {
             console.log('Загружаем данные объектов...');
             this.loadFacilities();
+        } else if (section === 'feedback') {
+            console.log('Загружаем данные обратной связи...');
+            this.loadFeedbacks();
+        } else if (section === 'settings') {
+            console.log('Загружаем настройки...');
+            this.loadSettings();
         }
     }
 
@@ -365,80 +379,72 @@ export class AdminComponent implements OnInit, OnDestroy {
             'reports': 'Отчеты',
             'calculations': 'Расчеты',
             'reviews': 'Отзывы',
+            'feedback': 'Обратная связь',
             'settings': 'Настройки'
         };
         return titles[section] || 'Админ-панель';
     }
 
-    private loadEmployees(): void {
-        console.log('Начинаем загрузку сотрудников...');
-        this.employeeService.getEmployees().subscribe(
-            (employees: Employee[]) => {
-                console.log('Получены сырые данные о сотрудниках:', employees);
-                
-                // Проверяем каждую запись
-                employees.forEach((emp, index) => {
-                    console.log(`Сотрудник ${index + 1}:`, {
-                        id: emp.id,
-                        name: emp.name,
-                        position: emp.position,
-                        email: emp.email,
-                        phone: emp.phone,
-                        created_at: emp.created_at,
-                        hasData: emp.name && emp.position && emp.email && emp.phone
-                    });
-                });
-
-                // Фильтруем пустые записи
-                this.employees = employees.filter(emp => 
-                    emp && emp.id && emp.name && emp.position && emp.email && emp.phone
-                );
-                
-                console.log('Отфильтрованные данные:', this.employees);
-                this.totalEmployees = this.employees.length;
-                console.log('Общее количество сотрудников:', this.totalEmployees);
-                this.calculateStatistics();
-            },
-            (error: Error) => {
-                console.error('Ошибка при загрузке сотрудников:', error);
-            }
-        );
+    private loadAllData(): void {
+        this.loadEmployees();
+        this.loadFacilities();
+        this.loadEquipment();
+        this.loadNews();
+        this.loadReports();
+        this.loadCalculations();
+        this.loadReviews();
+        this.loadFeedbacks();
+        this.loadSettings();
     }
 
-    private loadFacilities(): void {
-        console.log('Начинаем загрузку объектов...');
-        this.facilityService.getFacilities().subscribe(
-            (facilities) => {
-                console.log('Получены данные об объектах:', facilities);
-                this.facilities = facilities;
-                this.filteredFacilities = facilities;
-                this.totalFacilities = facilities.length;
-                this.calculateStatistics();
-            },
-            (error: Error) => {
-                console.error('Ошибка при загрузке объектов:', error);
-            }
-        );
+    // Обновляем методы загрузки данных
+    loadEmployees(): void {
+        this.employeeService.getEmployees().subscribe(employees => {
+            this.employees = employees;
+            this.filteredEmployees = employees;
+        });
     }
 
-    private calculateStatistics(): void {
-        // Если нет объектов, устанавливаем загрузку в 0%
-        if (this.totalFacilities === 0) {
-            this.averageWorkload = 0;
-            return;
-        }
-        
-        // Среднее количество сотрудников на объект
-        const avgEmployeesPerFacility = this.totalEmployees / this.totalFacilities;
-        
-        // Оптимальное соотношение: 3 сотрудника на объект = 100% загрузки
-        const optimalEmployeesPerFacility = 3;
-        
-        // Расчет процента загрузки (максимум 100%)
-        this.averageWorkload = Math.min(
-            Math.round((avgEmployeesPerFacility / optimalEmployeesPerFacility) * 100),
-            100
-        );
+    loadFacilities(): void {
+        this.facilityService.getFacilities().subscribe(facilities => {
+            this.facilities = facilities;
+            this.filteredFacilities = facilities;
+        });
+    }
+
+    loadEquipment(): void {
+        this.equipmentService.getEquipment().subscribe(equipment => {
+            this.equipments = equipment;
+            this.filteredEquipments = equipment;
+        });
+    }
+
+    loadNews(): void {
+        this.newsService.getNews().subscribe(news => {
+            this.newsList = news;
+            this.filteredNews = news;
+        });
+    }
+
+    loadReports(): void {
+        this.reportService.getReports().subscribe(reports => {
+            this.reports = reports;
+            this.filteredReports = reports;
+        });
+    }
+
+    loadCalculations(): void {
+        this.calculationService.getCalculations().subscribe(calculations => {
+            this.calculations = calculations;
+            this.filteredCalculations = calculations;
+        });
+    }
+
+    loadReviews(): void {
+        this.reviewService.getReviews().subscribe(reviews => {
+            this.reviews = reviews;
+            this.filteredReviews = reviews;
+        });
     }
 
     onAddEmployee(): void {
@@ -550,6 +556,11 @@ export class AdminComponent implements OnInit, OnDestroy {
     }
 
     // Методы для работы с оборудованием
+    onShowAddEquipmentModal(): void {
+        this.selectedEquipment = null;
+        this.showAddEquipmentModal = true;
+    }
+
     onAddEquipment(): void {
         this.selectedEquipment = null;
         this.showAddEquipmentModal = true;
@@ -585,54 +596,6 @@ export class AdminComponent implements OnInit, OnDestroy {
                 this.loadEquipment();
             });
         }
-    }
-
-    // Временный метод для загрузки тестовых данных оборудования
-    private loadTestEquipment(): void {
-        this.equipments = [
-            { 
-                id: 1, 
-                name: 'Кондиционер FS-2500', 
-                type: 'Климатическое оборудование', 
-                facility: 'Офис на Ленина', 
-                status: 'active',
-                lastMaintenance: new Date('2023-06-15'),
-                nextMaintenance: new Date('2023-09-15')
-            },
-            { 
-                id: 2, 
-                name: 'Котел Viessmann', 
-                type: 'Отопительное оборудование', 
-                facility: 'Складское помещение', 
-                status: 'active',
-                lastMaintenance: new Date('2023-04-22'),
-                nextMaintenance: new Date('2023-07-22')
-            },
-            { 
-                id: 3, 
-                name: 'Компрессор AirFlow XL', 
-                type: 'Промышленное оборудование', 
-                facility: 'Производственный цех', 
-                status: 'inactive',
-                lastMaintenance: new Date('2023-01-05'),
-                nextMaintenance: new Date('2023-04-05')
-            },
-            { 
-                id: 4, 
-                name: 'Система видеонаблюдения SecureView', 
-                type: 'Охранное оборудование', 
-                facility: 'Главный офис', 
-                status: 'active',
-                lastMaintenance: new Date('2023-05-30'),
-                nextMaintenance: new Date('2023-08-30')
-            }
-        ];
-    }
-
-    loadNews() {
-        this.newsService.getNews().subscribe(news => {
-            this.newsList = news;
-        });
     }
 
     onAddNews() {
@@ -672,19 +635,6 @@ export class AdminComponent implements OnInit, OnDestroy {
         });
     }
 
-    loadEquipment() {
-        this.equipmentService.getEquipment().subscribe(equipment => {
-            this.equipments = equipment;
-        });
-    }
-
-    // Методы для работы с отчетами
-    loadReports() {
-        this.reportService.getReports().subscribe((reports: Report[]) => {
-            this.reports = reports;
-        });
-    }
-
     onAddReport() {
         this.selectedReport = null;
         this.showAddReportModal = true;
@@ -706,13 +656,6 @@ export class AdminComponent implements OnInit, OnDestroy {
                 this.loadReports();
             });
         }
-    }
-
-    // Методы для работы с расчетами
-    loadCalculations() {
-        this.calculationService.getCalculations().subscribe((calculations: Calculation[]) => {
-            this.calculations = calculations;
-        });
     }
 
     onAddCalculation() {
@@ -740,9 +683,15 @@ export class AdminComponent implements OnInit, OnDestroy {
 
     // Методы для работы с настройками
     loadSettings() {
-        this.settingService.getSettings().subscribe(settings => {
-            this.settings = settings;
-        });
+        this.settingService.getSettings().subscribe(
+            settings => {
+                this.settings = settings;
+                console.log('Настройки загружены:', settings);
+            },
+            error => {
+                console.error('Ошибка при загрузке настроек:', error);
+            }
+        );
     }
 
     getSettingsByCategory(categoryId: string): Setting[] {
@@ -759,12 +708,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     }
 
     // Методы для работы с отзывами
-    loadReviews() {
-        this.reviewService.getReviews().subscribe(reviews => {
-            this.reviews = reviews;
-        });
-    }
-
     onApproveReview(review: Review) {
         review.status = 'approved';
         this.reviewService.updateReviewStatus(review).subscribe(() => {
@@ -888,6 +831,121 @@ export class AdminComponent implements OnInit, OnDestroy {
                     console.error('Ошибка при удалении обращения:', error);
                 }
             );
+        }
+    }
+
+    // Методы поиска
+    onEmployeeSearch(query: string): void {
+        if (!query) {
+            this.filteredEmployees = this.employees;
+            return;
+        }
+        query = query.toLowerCase();
+        this.filteredEmployees = this.employees.filter(employee => 
+            employee.name.toLowerCase().includes(query) ||
+            employee.position.toLowerCase().includes(query) ||
+            employee.email.toLowerCase().includes(query)
+        );
+    }
+
+    onEquipmentSearch(query: string): void {
+        if (!query) {
+            this.filteredEquipments = this.equipments;
+            return;
+        }
+        query = query.toLowerCase();
+        this.filteredEquipments = this.equipments.filter(equipment => 
+            equipment.name.toLowerCase().includes(query) ||
+            equipment.type.toLowerCase().includes(query) ||
+            equipment.location.toLowerCase().includes(query)
+        );
+    }
+
+    onNewsSearch(query: string): void {
+        if (!query) {
+            this.filteredNews = this.newsList;
+            return;
+        }
+        query = query.toLowerCase();
+        this.filteredNews = this.newsList.filter(news => 
+            news.title.toLowerCase().includes(query) ||
+            news.content.toLowerCase().includes(query)
+        );
+    }
+
+    onReportSearch(query: string): void {
+        if (!query) {
+            this.filteredReports = this.reports;
+            return;
+        }
+        query = query.toLowerCase();
+        this.filteredReports = this.reports.filter(report => 
+            report.title.toLowerCase().includes(query) ||
+            report.type.toLowerCase().includes(query)
+        );
+    }
+
+    onCalculationSearch(query: string): void {
+        if (!query) {
+            this.filteredCalculations = this.calculations;
+            return;
+        }
+        query = query.toLowerCase();
+        this.filteredCalculations = this.calculations.filter(calculation => 
+            calculation.name.toLowerCase().includes(query) ||
+            calculation.type.toLowerCase().includes(query)
+        );
+    }
+
+    onReviewSearch(query: string): void {
+        if (!query) {
+            this.filteredReviews = this.reviews;
+            return;
+        }
+        query = query.toLowerCase();
+        this.filteredReviews = this.reviews.filter(review => 
+            review.author.toLowerCase().includes(query) ||
+            review.content.toLowerCase().includes(query)
+        );
+    }
+
+    private calculateStatistics(): void {
+        // Если нет объектов, устанавливаем загрузку в 0%
+        if (this.totalFacilities === 0) {
+            this.averageWorkload = 0;
+            return;
+        }
+        
+        // Среднее количество сотрудников на объект
+        const avgEmployeesPerFacility = this.totalEmployees / this.totalFacilities;
+        
+        // Оптимальное соотношение: 3 сотрудника на объект = 100% загрузки
+        const optimalEmployeesPerFacility = 3;
+        
+        // Расчет процента загрузки (максимум 100%)
+        this.averageWorkload = Math.min(
+            Math.round((avgEmployeesPerFacility / optimalEmployeesPerFacility) * 100),
+            100
+        );
+    }
+
+    // Метод для получения роли на русском языке
+    getRoleInRussian(): string {
+        const currentUser = this.authService.currentUserValue;
+        if (!currentUser) return 'Гость';
+        
+        const roleStr = String(currentUser.role).toLowerCase();
+        switch (roleStr) {
+            case 'admin':
+                return 'Администратор';
+            case 'manager':
+                return 'Менеджер';
+            case 'employee':
+                return 'Сотрудник';
+            case 'guest':
+                return 'Гость';
+            default:
+                return 'Неизвестная роль';
         }
     }
 }

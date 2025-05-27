@@ -1,7 +1,8 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import cors from 'cors';
-import { dbConfig } from './config/db.config';
+import { PostgresDataSource } from './database/database.config';
+import employeeRoutes from './routes/employee.routes';
+import authRoutes from './routes/auth.routes';
 
 const app = express();
 
@@ -10,16 +11,17 @@ app.use(cors());
 app.use(express.json());
 
 // Подключение к БД
-mongoose.connect(dbConfig.url)
+PostgresDataSource.initialize()
     .then(() => {
-        console.log("Connected to database!");
+        console.log("Connected to PostgreSQL database!");
     })
     .catch((error) => {
-        console.log("Connection failed!", error);
+        console.log("PostgreSQL connection failed!", error);
     });
 
 // Роуты
-app.use('/api/employees', require('./routes/employee.routes'));
+app.use('/api/employees', employeeRoutes);
+app.use('/api/auth', authRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

@@ -1,56 +1,49 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Equipment } from '../models/equipment.model';
 
 @Component({
     selector: 'app-add-equipment-modal',
-    templateUrl: './add-equipment-modal.component.html',
-    styleUrls: ['./add-equipment-modal.component.css'],
     standalone: true,
-    imports: [CommonModule, FormsModule]
+    imports: [CommonModule, FormsModule],
+    templateUrl: './add-equipment-modal.component.html',
+    styleUrls: ['./add-equipment-modal.component.css']
 })
 export class AddEquipmentModalComponent implements OnInit {
     @Input() equipmentToEdit: Equipment | null = null;
+    @Input() isDarkTheme: boolean = false;
     @Output() close = new EventEmitter<void>();
     @Output() equipmentAdded = new EventEmitter<Equipment>();
     @Output() equipmentUpdated = new EventEmitter<Equipment>();
 
-    equipment: Equipment = {
-        id: 0,
+    equipment: Partial<Equipment> = {
         name: '',
         type: '',
-        category: '',
-        facility: '',
-        status: 'active',
-        lastMaintenance: new Date(),
-        nextMaintenance: new Date(),
-        features: [],
-        description: '',
-        image: '',
-        price: 0
-    };
 
-    categories: string[] = ['Камеры', 'Серверы', 'Сетевое оборудование', 'Системы безопасности'];
-    statuses: ('active' | 'inactive' | 'maintenance')[] = ['active', 'inactive', 'maintenance'];
-
-    ngOnInit() {
         if (this.equipmentToEdit) {
-            this.equipment = { ...this.equipmentToEdit };
+            this.equipment = {
+                ...this.equipmentToEdit,
+                purchase_date: new Date(this.equipmentToEdit.purchase_date),
+                last_maintenance_date: new Date(this.equipmentToEdit.last_maintenance_date),
+                next_maintenance_date: new Date(this.equipmentToEdit.next_maintenance_date)
+            };
         }
     }
 
-    onSubmit() {
+    onSubmit(): void {
         if (this.equipmentToEdit) {
-            this.equipmentUpdated.emit(this.equipment);
+            this.equipmentUpdated.emit({
+                ...this.equipmentToEdit,
+                ...this.equipment
+            } as Equipment);
         } else {
-            // При создании нового оборудования не отправляем id
-            const { id, ...newEquipment } = this.equipment;
-            this.equipmentAdded.emit(newEquipment as Equipment);
+
         }
+        this.onClose();
     }
 
-    onClose() {
+    onClose(): void {
         this.close.emit();
     }
 

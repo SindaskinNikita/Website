@@ -1,7 +1,7 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmployeeService } from '../services/employee.service';
 import { FacilityService } from '../services/facility.service';
 import { Employee } from '../services/employee.service';
@@ -27,6 +27,10 @@ import { ReviewService } from '../services/review.service';
 import { Review } from '../models/review.model';
 import { FeedbackService } from '../services/feedback.service';
 import { Feedback, FeedbackResponse } from '../models/feedback.model';
+import { DatePipe } from '@angular/common';
+import { AuthService, UserRole } from '../services/auth.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -38,6 +42,8 @@ import { Feedback, FeedbackResponse } from '../models/feedback.model';
         RouterModule, 
         HttpClientModule, 
         FormsModule,
+        ReactiveFormsModule,
+        DatePipe,
         AddEmployeeModalComponent, 
         AddFacilityModalComponent, 
         AddNewsModalComponent,
@@ -46,7 +52,7 @@ import { Feedback, FeedbackResponse } from '../models/feedback.model';
     providers: [
         EmployeeService, 
         FacilityService, 
-        NewsService, 
+        NewsService,
         EquipmentService,
         ReportService,
         CalculationService,
@@ -55,37 +61,36 @@ import { Feedback, FeedbackResponse } from '../models/feedback.model';
         FeedbackService
     ]
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
     currentSection: string = 'dashboard';
     pageTitle: string = 'Панель управления';
     employees: Employee[] = [];
     facilities: Facility[] = [];
-    equipments: Equipment[] = []; // Данные об оборудовании
+    filteredFacilities: Facility[] = [];
+    facilitySearchQuery: string = '';
+    equipments: Equipment[] = [];
     totalEmployees: number = 0;
     totalFacilities: number = 0;
     averageWorkload: number = 0;
     showAddEmployeeModal: boolean = false;
     showAddFacilityModal: boolean = false;
-    showAddEquipmentModal: boolean = false; // Видимость модального окна для оборудования
+    showAddEquipmentModal = false;
     selectedEmployee: Employee | null = null;
     selectedFacility: Facility | null = null;
-    selectedEquipment: Equipment | null = null; // Выбранное оборудование для редактирования
+    selectedEquipment: Equipment | null = null;
     isDarkTheme: boolean = false;
     newsList: News[] = [];
     showAddNewsModal: boolean = false;
     selectedNews: News | null = null;
 
-    // Свойства для отчетов
     reports: Report[] = [];
     showAddReportModal: boolean = false;
     selectedReport: Report | null = null;
 
-    // Свойства для расчетов
     calculations: Calculation[] = [];
     showAddCalculationModal: boolean = false;
     selectedCalculation: Calculation | null = null;
 
-    // Свойства для настроек
     settings: Setting[] = [];
     settingCategories = [
         { id: 'system', title: 'Системные настройки' },
@@ -94,12 +99,55 @@ export class AdminComponent implements OnInit {
         { id: 'appearance', title: 'Внешний вид' }
     ];
 
-    // Методы для работы с отзывами
     reviews: Review[] = [];
 
     feedbacks: Feedback[] = [];
     selectedFeedback: Feedback | null = null;
     newResponse: string = '';
+
+    // Добавляем свойства для управления ролями
+    userRole: UserRole | null = null;
+    userName: string = '';
+
+    // Поиск для сотрудников
+    employeeSearchQuery: string = '';
+    filteredEmployees: Employee[] = [];
+
+    // Поиск для оборудования
+    equipmentSearchQuery: string = '';
+    filteredEquipments: Equipment[] = [];
+
+    // Поиск для новостей
+    newsSearchQuery: string = '';
+    filteredNews: News[] = [];
+
+    // Поиск для отчетов
+    reportSearchQuery: string = '';
+    filteredReports: Report[] = [];
+
+    // Поиск для расчетов
+    calculationSearchQuery: string = '';
+    filteredCalculations: Calculation[] = [];
+
+    // Поиск для отзывов
+    reviewSearchQuery: string = '';
+    filteredReviews: Review[] = [];
+
+    loading = {
+        equipment: false
+    };
+
+    // Свойства для модального окна оборудования
+    equipmentModalVisible = false;
+    equipmentEditMode = false;
+
+    private destroy$ = new Subject<void>();
+    private roleAccess = {
+        [UserRole.ADMIN]: ['dashboard', 'employees', 'facilities', 'equipment', 'news', 'reports', 'calculations', 'settings', 'reviews', 'feedback'],
+        [UserRole.MANAGER]: ['dashboard', 'employees', 'facilities', 'equipment', 'reports'],
+        [UserRole.EMPLOYEE]: ['dashboard', 'facilities', 'equipment'],
+        [UserRole.GUEST]: ['dashboard']
+    };
 
     constructor(
         private router: Router,
@@ -112,7 +160,8 @@ export class AdminComponent implements OnInit {
         private calculationService: CalculationService,
         private settingService: SettingService,
         private reviewService: ReviewService,
-        private feedbackService: FeedbackService
+        private feedbackService: FeedbackService,
+        private authService: AuthService
     ) {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
@@ -122,7 +171,6 @@ export class AdminComponent implements OnInit {
             }
         });
 
-        // Загрузка темы из localStorage
         const savedTheme = localStorage.getItem('adminTheme');
         if (savedTheme) {
             this.isDarkTheme = savedTheme === 'dark';
@@ -130,17 +178,126 @@ export class AdminComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loadEmployees();
-        this.loadFacilities();
-        this.calculateStatistics();
-        this.loadTestEquipment(); // Загрузка тестовых данных
-        this.loadNews();
-        this.loadEquipment();
-        this.loadReports();
-        this.loadCalculations();
-        this.loadSettings();
-        this.loadReviews();
-        this.loadFeedbacks();
+        console.log('AdminComponent.ngOnInit()');
+        
+        // Подписываемся на изменения пользователя
+        this.authService.currentUser$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(user => {
+                console.log('Получены данные пользователя из AuthService:', user);
+                
+                if (user) {
+                    // Определяем роль пользователя через строковое представление
+                    const roleStr = String(user.role).toLowerCase();
+                    console.log('Строковое представление роли:', roleStr);
+                    
+                    // Устанавливаем роль по строковому представлению
+                    if (roleStr === 'admin') {
+                        console.log('Установка роли администратора');
+                        this.userRole = UserRole.ADMIN;
+                    } else if (roleStr === 'manager') {
+                        console.log('Установка роли менеджера');
+                        this.userRole = UserRole.MANAGER;
+                    } else if (roleStr === 'employee') {
+                        console.log('Установка роли сотрудника');
+                        this.userRole = UserRole.EMPLOYEE;
+                    } else if (roleStr === 'guest') {
+                        console.log('Установка роли гостя');
+                        this.userRole = UserRole.GUEST;
+                    } else {
+                        console.warn('Неизвестная роль пользователя:', user.role);
+                        // По умолчанию устанавливаем гостевую роль
+                        this.userRole = UserRole.GUEST;
+                    }
+                    
+                    this.userName = user.username;
+                    console.log('Роль пользователя установлена:', this.userRole);
+                    
+                    // Проверяем доступ к текущей секции после установки роли
+                    if (!this.hasAccessToSection(this.currentSection)) {
+                        console.log(`Нет доступа к текущей секции ${this.currentSection}, перенаправление на дашборд`);
+                        this.router.navigate(['/admin/dashboard']);
+                    }
+                } else {
+                    console.error('Пользователь не авторизован!');
+                    // Перенаправляем на страницу входа
+                    this.router.navigate(['/login']);
+                }
+            });
+        
+        // Явно вызываем обновление данных пользователя
+        this.authService.refreshCurrentUser();
+
+        this.loadAllData();
+    }
+
+    // Добавляем метод для очистки подписок при уничтожении компонента
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
+    // Проверяем, имеет ли пользователь доступ к определенной секции
+    hasAccessToSection(section: string): boolean {
+        console.log(`Проверка доступа к секции ${section}`);
+        
+        // Получаем текущего пользователя напрямую из сервиса
+        const currentUser = this.authService.currentUserValue;
+        console.log('Текущий пользователь при проверке доступа:', currentUser);
+        
+        if (!currentUser) {
+            console.log('Пользователь не авторизован, доступ запрещен');
+            return false;
+        }
+        
+        // Приводим роль к строковому представлению в нижнем регистре для стабильного сравнения
+        const roleStr = String(currentUser.role).toLowerCase();
+        console.log('Роль пользователя (строка):', roleStr);
+        
+        // Если пользователь админ, всегда разрешаем доступ
+        if (roleStr === 'admin') {
+            console.log('Пользователь - администратор, доступ разрешен');
+            return true;
+        }
+        
+        // Для остальных ролей определяем доступные секции
+        let allowedSections: string[] = [];
+        
+        if (roleStr === 'manager') {
+            allowedSections = this.roleAccess[UserRole.MANAGER];
+        } else if (roleStr === 'employee') {
+            allowedSections = this.roleAccess[UserRole.EMPLOYEE];
+        } else if (roleStr === 'guest') {
+            allowedSections = this.roleAccess[UserRole.GUEST];
+        } else {
+            allowedSections = this.roleAccess[UserRole.GUEST]; // По умолчанию
+        }
+        
+        // Проверяем наличие доступа к секции
+        const hasAccess = allowedSections.includes(section);
+        console.log(`Доступ ${hasAccess ? 'разрешен' : 'запрещен'} для роли ${roleStr} к секции ${section}`);
+        return hasAccess;
+    }
+
+    // Проверяем, имеет ли пользователь указанную роль
+    hasRole(role: UserRole): boolean {
+        return this.authService.hasRole(role);
+    }
+
+    // Проверяем, имеет ли пользователь любую из указанных ролей
+    hasAnyRole(roles: UserRole[]): boolean {
+        return this.authService.hasAnyRole(roles);
+    }
+
+    // Метод выхода из системы
+    logout(): void {
+        console.log('Вызван метод logout в AdminComponent');
+        // Очищаем localStorage напрямую
+        localStorage.removeItem('currentUser');
+        // Вызываем logout в AuthService
+        this.authService.logout();
+        // Перенаправляем на страницу входа
+        this.router.navigate(['/login']);
     }
 
     toggleTheme(): void {
@@ -148,9 +305,68 @@ export class AdminComponent implements OnInit {
         localStorage.setItem('adminTheme', this.isDarkTheme ? 'dark' : 'light');
     }
 
-    switchToSection(section: string) {
+    switchToSection(section: string): void {
+        console.log(`Переключение на раздел: ${section}`);
+        
+        // Получаем текущего пользователя напрямую из сервиса
+        const currentUser = this.authService.currentUserValue;
+        console.log('Текущий пользователь при переключении раздела:', currentUser);
+        
+        if (!currentUser) {
+            console.log('Пользователь не авторизован, перенаправление на страницу входа');
+            this.router.navigate(['/login']);
+            return;
+        }
+        
+        // Приводим роль к строковому представлению в нижнем регистре для стабильного сравнения
+        const roleStr = String(currentUser.role).toLowerCase();
+        console.log('Роль пользователя (строка):', roleStr);
+        
+        // Если пользователь админ, всегда разрешаем доступ
+        if (roleStr === 'admin') {
+            console.log('Пользователь - администратор, доступ разрешен');
+            this.currentSection = section;
+            this.pageTitle = this.getPageTitle(section);
+            
+            if (section === 'employees') {
+                console.log('Загружаем данные сотрудников...');
+                this.loadEmployees();
+            } else if (section === 'facilities') {
+                console.log('Загружаем данные объектов...');
+                this.loadFacilities();
+            } else if (section === 'feedback') {
+                console.log('Загружаем данные обратной связи...');
+                this.loadFeedbacks();
+            } else if (section === 'settings') {
+                console.log('Загружаем настройки...');
+                this.loadSettings();
+            }
+            return;
+        }
+        
+        // Проверяем доступ к секции для всех остальных ролей
+        if (!this.hasAccessToSection(section)) {
+            console.log(`Доступ к разделу ${section} запрещен для роли ${roleStr}`);
+            this.router.navigate(['/forbidden']);
+            return;
+        }
+
         this.currentSection = section;
         this.pageTitle = this.getPageTitle(section);
+        
+        if (section === 'employees') {
+            console.log('Загружаем данные сотрудников...');
+            this.loadEmployees();
+        } else if (section === 'facilities') {
+            console.log('Загружаем данные объектов...');
+            this.loadFacilities();
+        } else if (section === 'feedback') {
+            console.log('Загружаем данные обратной связи...');
+            this.loadFeedbacks();
+        } else if (section === 'settings') {
+            console.log('Загружаем настройки...');
+            this.loadSettings();
+        }
     }
 
     private getPageTitle(section: string): string {
@@ -163,50 +379,81 @@ export class AdminComponent implements OnInit {
             'reports': 'Отчеты',
             'calculations': 'Расчеты',
             'reviews': 'Отзывы',
+            'feedback': 'Обратная связь',
             'settings': 'Настройки'
         };
         return titles[section] || 'Админ-панель';
     }
 
-    private loadEmployees(): void {
-        this.employeeService.getEmployees().subscribe(
-            (employees: Employee[]) => {
+    private loadAllData(): void {
+        this.loadEmployees();
+        this.loadFacilities();
+        this.loadEquipment();
+        this.loadNews();
+        this.loadReports();
+        this.loadCalculations();
+        this.loadReviews();
+        this.loadFeedbacks();
+        this.loadSettings();
+    }
+
+    // Обновляем методы загрузки данных
+    loadEmployees(): void {
+        console.log('🔄 Загружаю сотрудников...');
+        this.employeeService.getEmployees().subscribe({
+            next: (employees) => {
+                console.log('✅ Получены сотрудники:', employees);
                 this.employees = employees;
+                this.filteredEmployees = employees;
                 this.totalEmployees = employees.length;
                 this.calculateStatistics();
             },
-            (error: Error) => {
-                console.error('Ошибка при загрузке сотрудников:', error);
+            error: (error) => {
+                console.error('❌ Ошибка при загрузке сотрудников:', error);
             }
-        );
-    }
-
-    private loadFacilities(): void {
-        this.facilityService.getFacilities().subscribe(facilities => {
-            this.facilities = facilities;
-            this.totalFacilities = facilities.length;
-            this.calculateStatistics();
         });
     }
 
-    private calculateStatistics(): void {
-        // Если нет объектов, устанавливаем загрузку в 0%
-        if (this.totalFacilities === 0) {
-            this.averageWorkload = 0;
-            return;
-        }
-        
-        // Среднее количество сотрудников на объект
-        const avgEmployeesPerFacility = this.totalEmployees / this.totalFacilities;
-        
-        // Оптимальное соотношение: 3 сотрудника на объект = 100% загрузки
-        const optimalEmployeesPerFacility = 3;
-        
-        // Расчет процента загрузки (максимум 100%)
-        this.averageWorkload = Math.min(
-            Math.round((avgEmployeesPerFacility / optimalEmployeesPerFacility) * 100),
-            100
-        );
+    loadFacilities(): void {
+        this.facilityService.getFacilities().subscribe(facilities => {
+            this.facilities = facilities;
+            this.filteredFacilities = facilities;
+        });
+    }
+
+    loadEquipment(): void {
+        this.equipmentService.getEquipment().subscribe(equipment => {
+            this.equipments = equipment;
+            this.filteredEquipments = equipment;
+        });
+    }
+
+    loadNews(): void {
+        this.newsService.getNews().subscribe(news => {
+            this.newsList = news;
+            this.filteredNews = news;
+        });
+    }
+
+    loadReports(): void {
+        this.reportService.getReports().subscribe(reports => {
+            this.reports = reports;
+            this.filteredReports = reports;
+        });
+    }
+
+    loadCalculations(): void {
+        this.calculationService.getCalculations().subscribe(calculations => {
+            this.calculations = calculations;
+            this.filteredCalculations = calculations;
+        });
+    }
+
+    loadReviews(): void {
+        this.reviewService.getReviews().subscribe(reviews => {
+            this.reviews = reviews;
+            this.filteredReviews = reviews;
+        });
     }
 
     onAddEmployee(): void {
@@ -219,17 +466,18 @@ export class AdminComponent implements OnInit {
         this.selectedEmployee = null;
     }
 
-    onEmployeeAdded(newEmployee: Employee): void {
-        this.employees.push(newEmployee);
-        this.totalEmployees = this.employees.length;
-        this.calculateStatistics();
+    onEmployeeAdded(employee: Employee): void {
+        this.employeeService.addEmployee(employee).subscribe(() => {
+            this.loadEmployees();
+            this.onCloseAddEmployeeModal();
+        });
     }
 
-    onEmployeeUpdated(updatedEmployee: Employee): void {
-        const index = this.employees.findIndex(e => e.id === updatedEmployee.id);
-        if (index !== -1) {
-            this.employees[index] = updatedEmployee;
-        }
+    onEmployeeUpdated(employee: Employee): void {
+        this.employeeService.updateEmployee(employee.id, employee).subscribe(() => {
+            this.loadEmployees();
+            this.onCloseAddEmployeeModal();
+        });
     }
 
     onEditEmployee(employee: Employee): void {
@@ -285,6 +533,7 @@ export class AdminComponent implements OnInit {
             this.facilityService.deleteFacility(facility.id).subscribe(
                 () => {
                     this.facilities = this.facilities.filter(f => f.id !== facility.id);
+                    this.filteredFacilities = this.filteredFacilities.filter(f => f.id !== facility.id);
                     this.totalFacilities = this.facilities.length;
                     this.calculateStatistics();
                 },
@@ -295,11 +544,32 @@ export class AdminComponent implements OnInit {
         }
     }
 
-    onLogout(): void {
-        // Логика выхода из системы
+    onViewFacility(facility: Facility): void {
+        // В будущем здесь будет открываться модальное окно с детальной информацией
+        console.log('Просмотр объекта:', facility);
+    }
+
+    onFacilitySearch(query: string): void {
+        this.facilitySearchQuery = query;
+        if (!query) {
+            this.filteredFacilities = this.facilities;
+            return;
+        }
+        
+        const searchQuery = query.toLowerCase();
+        this.filteredFacilities = this.facilities.filter(facility => 
+            facility.name.toLowerCase().includes(searchQuery) ||
+            facility.address.toLowerCase().includes(searchQuery) ||
+            facility.type.toLowerCase().includes(searchQuery)
+        );
     }
 
     // Методы для работы с оборудованием
+    onShowAddEquipmentModal(): void {
+        this.selectedEquipment = null;
+        this.showAddEquipmentModal = true;
+    }
+
     onAddEquipment(): void {
         this.selectedEquipment = null;
         this.showAddEquipmentModal = true;
@@ -346,81 +616,6 @@ export class AdminComponent implements OnInit {
         }
     }
 
-    // Временный метод для загрузки тестовых данных оборудования
-    private loadTestEquipment(): void {
-        const testEquipment: Equipment[] = [
-            {
-                id: 1,
-                name: 'IP камера 2NN',
-                type: 'Видеонаблюдение',
-                category: 'Камеры',
-                facility: 'Главный офис',
-                status: 'active',
-                lastMaintenance: new Date('2024-01-15'),
-                nextMaintenance: new Date('2024-07-15'),
-                description: 'Компактная IP-камера для внутреннего видеонаблюдения',
-                features: ['Пластиковый корпус', 'Угол обзора: 92° × 54°', 'ИК-подсветка до 30м'],
-                image: 'assets/images/camera.jpg',
-                price: 2300
-            },
-            {
-                id: 2,
-                name: 'IP камера 2NN с микрофоном',
-                type: 'Видеонаблюдение',
-                category: 'Камеры',
-                facility: 'Склад',
-                status: 'active',
-                lastMaintenance: new Date('2024-02-01'),
-                nextMaintenance: new Date('2024-08-01'),
-                description: 'IP-камера со встроенным микрофоном для аудио-видео наблюдения',
-                features: ['Встроенный микрофон', 'Угол обзора: 108° × 58°', 'Запись на microSD'],
-                image: 'assets/images/camera.jpg',
-                price: 7400
-            },
-            {
-                id: 3,
-                name: 'IP камера 5NN',
-                type: 'Видеонаблюдение',
-                category: 'Камеры',
-                facility: 'Производство',
-                status: 'maintenance',
-                lastMaintenance: new Date('2024-03-01'),
-                nextMaintenance: new Date('2024-09-01'),
-                description: 'Высококачественная IP-камера с расширенными возможностями',
-                features: ['Разрешение 2592×1944', 'Угол обзора: 100° × 76°', 'Запись до 16 суток'],
-                image: 'assets/images/camera.jpg',
-                price: 10600
-            },
-            {
-                id: 4,
-                name: 'IP камера 5NN с объективом',
-                type: 'Видеонаблюдение',
-                category: 'Камеры',
-                facility: 'Охрана',
-                status: 'inactive',
-                lastMaintenance: new Date('2024-01-01'),
-                nextMaintenance: new Date('2024-07-01'),
-                description: 'Профессиональная IP-камера с вариофокальным объективом',
-                features: ['Нейросетевая аналитика', 'Разрешение 1920×1080', 'ИК-подсветка до 80м'],
-                image: 'assets/images/camera.jpg',
-                price: 14200
-            }
-        ];
-
-        // Добавляем тестовые данные через сервис
-        testEquipment.forEach(equipment => {
-            this.equipmentService.addEquipment(equipment).subscribe({
-                error: (error) => console.error('Ошибка при добавлении тестового оборудования:', error)
-            });
-        });
-    }
-
-    loadNews() {
-        this.newsService.getNews().subscribe(news => {
-            this.newsList = news;
-        });
-    }
-
     onAddNews() {
         this.selectedNews = null;
         this.showAddNewsModal = true;
@@ -457,23 +652,6 @@ export class AdminComponent implements OnInit {
             this.onCloseAddNewsModal();
         });
     }
-
-    loadEquipment(): void {
-        this.equipmentService.getEquipment().subscribe({
-            next: (equipment) => {
-                this.equipments = equipment;
-            },
-            error: (error) => console.error('Ошибка при загрузке оборудования:', error)
-        });
-    }
-
-    // Методы для работы с отчетами
-    loadReports() {
-        this.reportService.getReports().subscribe((reports: Report[]) => {
-            this.reports = reports;
-        });
-    }
-
     onAddReport() {
         this.selectedReport = null;
         this.showAddReportModal = true;
@@ -495,13 +673,6 @@ export class AdminComponent implements OnInit {
                 this.loadReports();
             });
         }
-    }
-
-    // Методы для работы с расчетами
-    loadCalculations() {
-        this.calculationService.getCalculations().subscribe((calculations: Calculation[]) => {
-            this.calculations = calculations;
-        });
     }
 
     onAddCalculation() {
@@ -529,9 +700,15 @@ export class AdminComponent implements OnInit {
 
     // Методы для работы с настройками
     loadSettings() {
-        this.settingService.getSettings().subscribe(settings => {
-            this.settings = settings;
-        });
+        this.settingService.getSettings().subscribe(
+            settings => {
+                this.settings = settings;
+                console.log('Настройки загружены:', settings);
+            },
+            error => {
+                console.error('Ошибка при загрузке настроек:', error);
+            }
+        );
     }
 
     getSettingsByCategory(categoryId: string): Setting[] {
@@ -548,12 +725,6 @@ export class AdminComponent implements OnInit {
     }
 
     // Методы для работы с отзывами
-    loadReviews() {
-        this.reviewService.getReviews().subscribe(reviews => {
-            this.reviews = reviews;
-        });
-    }
-
     onApproveReview(review: Review) {
         review.status = 'approved';
         this.reviewService.updateReviewStatus(review).subscribe(() => {
@@ -677,6 +848,121 @@ export class AdminComponent implements OnInit {
                     console.error('Ошибка при удалении обращения:', error);
                 }
             );
+        }
+    }
+
+    // Методы поиска
+    onEmployeeSearch(query: string): void {
+        if (!query) {
+            this.filteredEmployees = this.employees;
+            return;
+        }
+        query = query.toLowerCase();
+        this.filteredEmployees = this.employees.filter(employee => 
+            employee.name.toLowerCase().includes(query) ||
+            employee.position.toLowerCase().includes(query) ||
+            employee.email.toLowerCase().includes(query)
+        );
+    }
+
+    onEquipmentSearch(query: string): void {
+        if (!query) {
+            this.filteredEquipments = this.equipments;
+            return;
+        }
+        query = query.toLowerCase();
+        this.filteredEquipments = this.equipments.filter(equipment => 
+            equipment.name.toLowerCase().includes(query) ||
+            equipment.type.toLowerCase().includes(query) ||
+            equipment.location.toLowerCase().includes(query)
+        );
+    }
+
+    onNewsSearch(query: string): void {
+        if (!query) {
+            this.filteredNews = this.newsList;
+            return;
+        }
+        query = query.toLowerCase();
+        this.filteredNews = this.newsList.filter(news => 
+            news.title.toLowerCase().includes(query) ||
+            news.content.toLowerCase().includes(query)
+        );
+    }
+
+    onReportSearch(query: string): void {
+        if (!query) {
+            this.filteredReports = this.reports;
+            return;
+        }
+        query = query.toLowerCase();
+        this.filteredReports = this.reports.filter(report => 
+            report.title.toLowerCase().includes(query) ||
+            report.type.toLowerCase().includes(query)
+        );
+    }
+
+    onCalculationSearch(query: string): void {
+        if (!query) {
+            this.filteredCalculations = this.calculations;
+            return;
+        }
+        query = query.toLowerCase();
+        this.filteredCalculations = this.calculations.filter(calculation => 
+            calculation.name.toLowerCase().includes(query) ||
+            calculation.type.toLowerCase().includes(query)
+        );
+    }
+
+    onReviewSearch(query: string): void {
+        if (!query) {
+            this.filteredReviews = this.reviews;
+            return;
+        }
+        query = query.toLowerCase();
+        this.filteredReviews = this.reviews.filter(review => 
+            review.author.toLowerCase().includes(query) ||
+            review.content.toLowerCase().includes(query)
+        );
+    }
+
+    private calculateStatistics(): void {
+        // Если нет объектов, устанавливаем загрузку в 0%
+        if (this.totalFacilities === 0) {
+            this.averageWorkload = 0;
+            return;
+        }
+        
+        // Среднее количество сотрудников на объект
+        const avgEmployeesPerFacility = this.totalEmployees / this.totalFacilities;
+        
+        // Оптимальное соотношение: 3 сотрудника на объект = 100% загрузки
+        const optimalEmployeesPerFacility = 3;
+        
+        // Расчет процента загрузки (максимум 100%)
+        this.averageWorkload = Math.min(
+            Math.round((avgEmployeesPerFacility / optimalEmployeesPerFacility) * 100),
+            100
+        );
+    }
+
+    // Метод для получения роли на русском языке
+    getRoleInRussian(): string {
+        const currentUser = this.authService.currentUserValue;
+        if (!currentUser) return 'Гость';
+        
+        const roleStr = String(currentUser.role).toLowerCase();
+        switch (roleStr) {
+            case 'admin':
+                return 'Администратор';
+            case 'manager':
+                return 'Менеджер';
+            case 'employee':
+                return 'Сотрудник';
+            case 'guest':
+                return 'Гость';
+            default:
+                return 'Неизвестная роль';
         }
     }
 }

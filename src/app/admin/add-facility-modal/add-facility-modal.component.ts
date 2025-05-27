@@ -1,25 +1,23 @@
-import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FacilityService, Facility } from '../../services/facility.service';
-import { HttpClientModule } from '@angular/common/http';
+import { Facility, FacilityStatus, FacilityType } from '../../services/facility.service';
 
 @Component({
     selector: 'app-add-facility-modal',
     standalone: true,
-    imports: [CommonModule, FormsModule, HttpClientModule],
-    providers: [FacilityService],
+    imports: [CommonModule, FormsModule],
     template: `
         <div class="modal-overlay" (click)="onClose()">
-            <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-content" [class.dark-theme]="isDarkTheme" (click)="$event.stopPropagation()">
                 <div class="modal-header">
-                    <h3>{{isEditing ? 'Редактировать объект' : 'Добавить объект'}}</h3>
+                    <h3>{{facilityToEdit ? 'Редактировать объект' : 'Добавить объект'}}</h3>
                     <button class="close-btn" (click)="onClose()">×</button>
                 </div>
                 <div class="modal-body">
                     <form (ngSubmit)="onSubmit()">
                         <div class="form-group">
-                            <label for="name">Название объекта</label>
+                            <label for="name">Название</label>
                             <input type="text" id="name" [(ngModel)]="facility.name" name="name" required>
                         </div>
                         <div class="form-group">
@@ -27,8 +25,13 @@ import { HttpClientModule } from '@angular/common/http';
                             <input type="text" id="address" [(ngModel)]="facility.address" name="address" required>
                         </div>
                         <div class="form-group">
-                            <label for="type">Тип объекта</label>
-                            <input type="text" id="type" [(ngModel)]="facility.type" name="type" required>
+                            <label for="type">Тип</label>
+                            <select id="type" [(ngModel)]="facility.type" name="type" required>
+                                <option value="Офис">Офис</option>
+                                <option value="Склад">Склад</option>
+                                <option value="Производство">Производство</option>
+                                <option value="Торговля">Торговля</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="status">Статус</label>
@@ -36,15 +39,19 @@ import { HttpClientModule } from '@angular/common/http';
                                 <option value="active">Активен</option>
                                 <option value="inactive">Неактивен</option>
                                 <option value="ready">Готов</option>
+                                <option value="ready_to_rent">Готов к сдаче</option>
+                                <option value="rented">Сдан</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="cost">Стоимость</label>
-                            <input type="number" id="cost" [(ngModel)]="facility.cost" name="cost" required>
+                            <input type="number" id="cost" [(ngModel)]="facility.cost" name="cost" required min="0">
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="cancel-btn" (click)="onClose()">Отмена</button>
-                            <button type="submit" class="submit-btn">{{isEditing ? 'Сохранить' : 'Добавить'}}</button>
+                            <button type="button" class="btn btn-secondary" (click)="onClose()">Отмена</button>
+                            <button type="submit" class="btn btn-primary">
+                                {{facilityToEdit ? 'Сохранить' : 'Добавить'}}
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -63,39 +70,62 @@ import { HttpClientModule } from '@angular/common/http';
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            padding: 20px;
-            box-sizing: border-box;
         }
 
         .modal-content {
-            background-color: #ffffff;
-            border-radius: 4px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
             width: 100%;
             max-width: 500px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            box-sizing: border-box;
             max-height: 90vh;
             overflow-y: auto;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            margin: 20px;
+        }
+
+        .modal-content.dark-theme {
+            background: #2d2d2d;
+            color: #fff;
+        }
+
+        .modal-content.dark-theme input,
+        .modal-content.dark-theme select {
+            background: #3d3d3d;
+            border-color: #4d4d4d;
+            color: #fff;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .modal-content.dark-theme .btn-secondary {
+            background: #4d4d4d;
+            color: #fff;
+            border-color: #5d5d5d;
+        }
+
+        .modal-content.dark-theme .btn-primary {
+            background: #2e7d32;
+        }
+
+        .modal-content.dark-theme label {
+            color: #ddd;
         }
 
         .modal-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid #e0e0e0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #ffffff;
-            position: sticky;
-            top: 0;
-            z-index: 1;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
         }
 
         .modal-header h3 {
             margin: 0;
-            color: #333333;
-            font-size: 18px;
-            font-weight: 500;
+            color: inherit;
         }
 
         .close-btn {
@@ -103,32 +133,20 @@ import { HttpClientModule } from '@angular/common/http';
             border: none;
             font-size: 24px;
             cursor: pointer;
-            color: #999;
+            color: inherit;
             padding: 0;
-            line-height: 1;
-        }
-
-        .close-btn:hover {
-            color: #333;
-        }
-
-        .modal-body {
-            padding: 20px;
-            box-sizing: border-box;
+            margin-left: 10px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             width: 100%;
-            box-sizing: border-box;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: normal;
-            font-size: 14px;
+            margin-bottom: 5px;
+            font-weight: 500;
         }
 
         .form-group input,
@@ -138,15 +156,20 @@ import { HttpClientModule } from '@angular/common/http';
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 14px;
-            color: #333;
-            background-color: #ffffff;
             box-sizing: border-box;
+            transition: all 0.3s ease;
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #4CAF50;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .modal-body {
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .modal-footer {
@@ -154,105 +177,90 @@ import { HttpClientModule } from '@angular/common/http';
             justify-content: flex-end;
             gap: 10px;
             margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        .cancel-btn,
-        .submit-btn {
+        .btn {
             padding: 8px 16px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
-        .cancel-btn {
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            color: #333;
-        }
-
-        .cancel-btn:hover {
-            background-color: #e0e0e0;
-        }
-
-        .submit-btn {
-            background-color: #4CAF50;
-            border: none;
+        .btn-primary {
+            background-color: #007bff;
             color: white;
+            border: none;
         }
 
-        .submit-btn:hover {
-            background-color: #45a049;
+        .btn-primary:hover {
+            background-color: #0056b3;
         }
 
-        @media (max-width: 640px) {
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        @media (max-width: 576px) {
             .modal-content {
-                margin: 0;
-                max-width: 100%;
-                height: auto;
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 6px 10px;
+            }
+
+            .btn {
+                padding: 6px 12px;
             }
         }
     `]
 })
 export class AddFacilityModalComponent implements OnInit {
     @Input() facilityToEdit: Facility | null = null;
+    @Input() isDarkTheme: boolean = false;
     @Output() close = new EventEmitter<void>();
     @Output() facilityAdded = new EventEmitter<Facility>();
     @Output() facilityUpdated = new EventEmitter<Facility>();
 
-    facility: Omit<Facility, 'id'> = {
+    facility: Facility = {
+        id: 0,
         name: '',
         address: '',
-        type: '',
+        type: 'Офис',
         status: 'active',
         cost: 0
     };
 
-    isEditing: boolean = false;
-
-    constructor(private facilityService: FacilityService) {}
-
-    ngOnInit(): void {
+    ngOnInit() {
         if (this.facilityToEdit) {
-            this.isEditing = true;
-            this.facility = {
-                name: this.facilityToEdit.name,
-                address: this.facilityToEdit.address,
-                type: this.facilityToEdit.type,
-                status: this.facilityToEdit.status,
-                cost: this.facilityToEdit.cost
-            };
+            this.facility = { ...this.facilityToEdit };
         }
     }
 
-    onClose(): void {
-        this.close.emit();
-    }
-
-    onSubmit(): void {
-        if (this.isEditing && this.facilityToEdit) {
-            const updatedFacility: Facility = {
-                ...this.facility,
-                id: this.facilityToEdit.id
-            };
-            this.facilityService.updateFacility(updatedFacility).subscribe(
-                (updatedFacility: Facility) => {
-                    this.facilityUpdated.emit(updatedFacility);
-                    this.onClose();
-                },
-                (error: Error) => {
-                    console.error('Ошибка при обновлении объекта:', error);
-                }
-            );
+    onSubmit() {
+        if (this.facilityToEdit) {
+            this.facilityUpdated.emit(this.facility);
         } else {
-            this.facilityService.addFacility(this.facility).subscribe(
-                (newFacility: Facility) => {
-                    this.facilityAdded.emit(newFacility);
-                    this.onClose();
-                },
-                (error: Error) => {
-                    console.error('Ошибка при добавлении объекта:', error);
-                }
-            );
+            this.facilityAdded.emit(this.facility);
         }
+    }
+
+    onClose() {
+        this.close.emit();
     }
 } 

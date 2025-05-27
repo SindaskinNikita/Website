@@ -443,9 +443,126 @@ nav i {
     margin-bottom: 1rem;
 }
 
-.table-header h3 {
-    margin: 0;
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-box i {
+    position: absolute;
+    left: 12px;
+    color: var(--secondary-text);
+}
+
+.search-box input {
+    padding: 8px 12px 8px 35px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    width: 300px;
+    background-color: var(--secondary-bg);
     color: var(--primary-text);
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--sidemenu-active);
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+}
+
+.dark-theme .search-box input {
+    background-color: var(--primary-bg);
+    border-color: var(--border-color);
+}
+
+.no-data {
+    text-align: center;
+    padding: 2rem;
+    color: var(--secondary-text);
+}
+
+.no-data i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--border-color);
+}
+
+.facility-type {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.facility-type.офис {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.facility-type.склад {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.facility-type.производство {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.facility-type.торговля {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.status.ready-to-rent {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    border: 2px solid #1976d2;
+    box-shadow: 0 0 5px rgba(25, 118, 210, 0.4);
+}
+
+.status.rented {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+}
+
+.action-btn.view {
+    color: var(--secondary-text);
+}
+
+.action-btn.view:hover {
+    color: var(--primary-text);
+}
+
+/* Обновляем стили для темной темы */
+.dark-theme .facility-type.офис {
+    background-color: rgba(25, 118, 210, 0.2);
+}
+
+.dark-theme .facility-type.склад {
+    background-color: rgba(245, 124, 0, 0.2);
+}
+
+.dark-theme .facility-type.производство {
+    background-color: rgba(46, 125, 50, 0.2);
+}
+
+.dark-theme .facility-type.торговля {
+    background-color: rgba(123, 31, 162, 0.2);
+}
+
+.dark-theme .status.ready-to-rent {
+    background-color: rgba(25, 118, 210, 0.2);
+    border-color: #1976d2;
 }
 
 .add-btn {
@@ -508,6 +625,13 @@ th {
 
 .action-btn.delete:hover {
     color: var(--status-inactive-text);
+}
+
+/* Стили для колонки с датой */
+td:nth-child(5) {
+    font-family: monospace;
+    white-space: nowrap;
+    color: var(--secondary-text);
 }
 
 /* Статусы */

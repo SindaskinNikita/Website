@@ -8,10 +8,9 @@ import { HttpClientModule } from '@angular/common/http';
     selector: 'app-add-employee-modal',
     standalone: true,
     imports: [CommonModule, FormsModule, HttpClientModule],
-    providers: [EmployeeService],
     template: `
         <div class="modal-overlay" (click)="onClose()">
-            <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-content" [class.dark-theme]="isDarkTheme" (click)="$event.stopPropagation()">
                 <div class="modal-header">
                     <h3>{{isEditing ? 'Редактировать сотрудника' : 'Добавить сотрудника'}}</h3>
                     <button class="close-btn" (click)="onClose()">×</button>
@@ -27,15 +26,13 @@ import { HttpClientModule } from '@angular/common/http';
                             <input type="text" id="position" [(ngModel)]="employee.position" name="position" required>
                         </div>
                         <div class="form-group">
-                            <label for="location">Объект</label>
-                            <input type="text" id="location" [(ngModel)]="employee.location" name="location" required>
+                            <label for="email">Email</label>
+                            <input type="email" id="email" [(ngModel)]="employee.email" name="email" required>
+                            <div class="error-message" *ngIf="errorMessage">{{errorMessage}}</div>
                         </div>
                         <div class="form-group">
-                            <label for="status">Статус</label>
-                            <select id="status" [(ngModel)]="employee.status" name="status" required>
-                                <option value="active">Активен</option>
-                                <option value="inactive">Неактивен</option>
-                            </select>
+                            <label for="phone">Телефон</label>
+                            <input type="tel" id="phone" [(ngModel)]="employee.phone" name="phone" required>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="cancel-btn" (click)="onClose()">Отмена</button>
@@ -58,39 +55,84 @@ import { HttpClientModule } from '@angular/common/http';
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            padding: 20px;
-            box-sizing: border-box;
         }
 
         .modal-content {
-            background-color: #ffffff;
-            border-radius: 4px;
-            width: 100%;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
             max-width: 500px;
+            transition: all 0.3s ease;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
             box-sizing: border-box;
-            max-height: 90vh;
-            overflow-y: auto;
+            margin: 20px;
+        }
+
+        .modal-content.dark-theme {
+            background: #2d2d2d;
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content.dark-theme input,
+        .modal-content.dark-theme select {
+            background: #3d3d3d;
+            border-color: #4d4d4d;
+            color: #fff;
+        }
+
+        .modal-content.dark-theme input:focus,
+        .modal-content.dark-theme select:focus {
+            border-color: #6d6d6d;
+            box-shadow: 0 0 0 2px rgba(109, 109, 109, 0.25);
+        }
+
+        .modal-content.dark-theme .cancel-btn {
+            background: #4d4d4d;
+            color: #fff;
+            border-color: #5d5d5d;
+        }
+
+        .modal-content.dark-theme .cancel-btn:hover {
+            background: #5d5d5d;
+        }
+
+        .modal-content.dark-theme .submit-btn {
+            background: #2e7d32;
+        }
+
+        .modal-content.dark-theme .submit-btn:hover {
+            background: #1b5e20;
+        }
+
+        .modal-content.dark-theme .close-btn {
+            color: #fff;
+        }
+
+        .modal-content.dark-theme .close-btn:hover {
+            color: #ddd;
+        }
+
+        .modal-content.dark-theme label {
+            color: #ddd;
+        }
+
+        .modal-content.dark-theme .error-message {
+            color: #ff6b6b;
         }
 
         .modal-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid #e0e0e0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #ffffff;
-            position: sticky;
-            top: 0;
-            z-index: 1;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
         }
 
-        .modal-header h3 {
-            margin: 0;
-            color: #333333;
-            font-size: 18px;
-            font-weight: 500;
+        .modal-content.dark-theme .modal-header {
+            border-bottom-color: #4d4d4d;
         }
 
         .close-btn {
@@ -98,50 +140,46 @@ import { HttpClientModule } from '@angular/common/http';
             border: none;
             font-size: 24px;
             cursor: pointer;
-            color: #999;
-            padding: 0;
-            line-height: 1;
+            color: inherit;
+            transition: color 0.3s ease;
         }
 
         .close-btn:hover {
-            color: #333;
-        }
-
-        .modal-body {
-            padding: 20px;
-            box-sizing: border-box;
+            color: #666;
         }
 
         .form-group {
-            margin-bottom: 20px;
-            width: 100%;
-            box-sizing: border-box;
+            margin-bottom: 15px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #333;
-            font-weight: normal;
-            font-size: 14px;
+            font-weight: 500;
         }
 
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 8px 12px;
+            padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 14px;
-            color: #333;
-            background-color: #ffffff;
+            transition: all 0.3s ease;
             box-sizing: border-box;
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #4CAF50;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
         }
 
         .modal-footer {
@@ -149,59 +187,61 @@ import { HttpClientModule } from '@angular/common/http';
             justify-content: flex-end;
             gap: 10px;
             margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .modal-content.dark-theme .modal-footer {
+            border-top-color: #4d4d4d;
         }
 
         .cancel-btn,
         .submit-btn {
-            padding: 8px 16px;
+            padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
         .cancel-btn {
-            background-color: #f5f5f5;
+            background: #f5f5f5;
             border: 1px solid #ddd;
             color: #333;
         }
 
         .cancel-btn:hover {
-            background-color: #e0e0e0;
+            background: #e5e5e5;
         }
 
         .submit-btn {
-            background-color: #4CAF50;
-            border: none;
+            background: #4CAF50;
             color: white;
+            border: none;
         }
 
         .submit-btn:hover {
-            background-color: #45a049;
-        }
-
-        @media (max-width: 640px) {
-            .modal-content {
-                margin: 0;
-                max-width: 100%;
-                height: auto;
-            }
+            background: #45a049;
         }
     `]
 })
 export class AddEmployeeModalComponent implements OnInit {
     @Input() employeeToEdit: Employee | null = null;
+    @Input() isDarkTheme: boolean = false;
     @Output() close = new EventEmitter<void>();
     @Output() employeeAdded = new EventEmitter<Employee>();
     @Output() employeeUpdated = new EventEmitter<Employee>();
 
-    employee: Omit<Employee, 'id'> = {
+    employee: Omit<Employee, 'id' | 'created_at'> = {
         name: '',
         position: '',
-        location: '',
-        status: 'active'
+        email: '',
+        phone: ''
     };
 
     isEditing: boolean = false;
+    errorMessage: string = '';
 
     constructor(private employeeService: EmployeeService) {}
 
@@ -211,17 +251,15 @@ export class AddEmployeeModalComponent implements OnInit {
             this.employee = {
                 name: this.employeeToEdit.name,
                 position: this.employeeToEdit.position,
-                location: this.employeeToEdit.location,
-                status: this.employeeToEdit.status
+                email: this.employeeToEdit.email,
+                phone: this.employeeToEdit.phone
             };
         }
     }
 
-    onClose(): void {
-        this.close.emit();
-    }
-
     onSubmit(): void {
+        this.errorMessage = '';
+        
         if (this.isEditing && this.employeeToEdit) {
             this.employeeService.updateEmployee(this.employeeToEdit.id, this.employee).subscribe(
                 (updatedEmployee: Employee) => {
@@ -229,6 +267,7 @@ export class AddEmployeeModalComponent implements OnInit {
                     this.onClose();
                 },
                 (error: Error) => {
+                    this.errorMessage = error.message;
                     console.error('Ошибка при обновлении сотрудника:', error);
                 }
             );
@@ -239,9 +278,14 @@ export class AddEmployeeModalComponent implements OnInit {
                     this.onClose();
                 },
                 (error: Error) => {
+                    this.errorMessage = error.message;
                     console.error('Ошибка при добавлении сотрудника:', error);
                 }
             );
         }
+    }
+
+    onClose(): void {
+        this.close.emit();
     }
 } 

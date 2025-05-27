@@ -29,6 +29,7 @@ export class EquipmentService {
     }
 
     getEquipment(): Observable<Equipment[]> {
+
         return this.equipmentSubject.asObservable();
     }
 
@@ -76,6 +77,11 @@ export class EquipmentService {
     }
 
     addEquipment(equipment: Omit<Equipment, 'id'>): Observable<Equipment> {
+        return this.http.get<Equipment[]>(this.apiUrl);
+    }
+
+    addEquipment(equipment: Equipment): Observable<Equipment> {
+
         return this.http.post<Equipment>(this.apiUrl, equipment);
     }
 

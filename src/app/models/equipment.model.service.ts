@@ -18,19 +18,31 @@ export class EquipmentService {
                     id: 1,
                     name: 'Кондиционер',
                     type: 'Климатическое оборудование',
-                    facility: 'Главный офис',
-                    status: 'active',
-                    lastMaintenance: new Date('2024-02-15'),
-                    nextMaintenance: new Date('2024-05-15')
+                    location: 'Главный офис',
+                    status: 'Исправно',
+                    inventory_number: 'INV-001',
+                    last_maintenance_date: new Date('2024-02-15'),
+                    next_maintenance_date: new Date('2024-05-15'),
+                    description: 'Кондиционер для офиса',
+                    company_id: 1,
+                    purchase_date: new Date('2023-01-15'),
+                    created_at: new Date('2023-01-15'),
+                    responsible_person: 'Иванов И.И.'
                 },
                 {
                     id: 2,
                     name: 'Сервер',
                     type: 'IT оборудование',
-                    facility: 'Дата-центр',
-                    status: 'active',
-                    lastMaintenance: new Date('2024-01-20'),
-                    nextMaintenance: new Date('2024-04-20')
+                    location: 'Дата-центр',
+                    status: 'Исправно',
+                    inventory_number: 'INV-002',
+                    last_maintenance_date: new Date('2024-01-20'),
+                    next_maintenance_date: new Date('2024-04-20'),
+                    description: 'Сервер для хранения данных',
+                    company_id: 1,
+                    purchase_date: new Date('2023-02-10'),
+                    created_at: new Date('2023-02-10'),
+                    responsible_person: 'Петров П.П.'
                 }
             ]);
             observer.complete();

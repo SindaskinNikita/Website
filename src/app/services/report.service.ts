@@ -1,46 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Report } from '../models/report.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ReportService {
-    private apiUrl = 'api/reports';
+    private apiUrl = 'http://localhost:3000/api/reports';
 
     constructor(private http: HttpClient) {}
 
     getReports(): Observable<Report[]> {
-        return of([
-            {
-                id: 1,
-                title: 'Ежемесячный отчет',
-                type: 'financial',
-                date: new Date('2024-02-01'),
-                status: 'published',
-                author: 'Иван Петров'
-            },
-            {
-                id: 2,
-                title: 'Отчет по обслуживанию',
-                type: 'operational',
-                date: new Date('2024-02-15'),
-                status: 'draft',
-                author: 'Мария Сидорова'
-            }
-        ]);
+        return this.http.get<Report[]>(this.apiUrl);
     }
 
     addReport(report: Report): Observable<Report> {
-        return of(report);
+        return this.http.post<Report>(this.apiUrl, report);
     }
 
     updateReport(report: Report): Observable<Report> {
-        return of(report);
+        return this.http.put<Report>(`${this.apiUrl}/${report.id}`, report);
     }
 
     deleteReport(id: number): Observable<void> {
-        return of(void 0);
+        return this.http.delete<void>(`${this.apiUrl}/${id}`);
     }
 }

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест API</title>
+</head>
+<body>
+    <h1>Тест API сотрудников</h1>
+    <button onclick="testAPI()">Загрузить сотрудников</button>
+    <div id="result"></div>
+
+    <script>
+        async function testAPI() {
+            console.log('🔄 Тестируем API...');
+            const resultDiv = document.getElementById('result');
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/employees');
+                console.log('📊 Статус ответа:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const employees = await response.json();
+                console.log('✅ Получены сотрудники:', employees);
+                
+                resultDiv.innerHTML = `
+                    <h2>Результат (${employees.length} сотрудников):</h2>
+                    <pre>${JSON.stringify(employees, null, 2)}</pre>
+                `;
+            } catch (error) {
+                console.error('❌ Ошибка:', error);
+                resultDiv.innerHTML = `<p style="color: red;">Ошибка: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html> 

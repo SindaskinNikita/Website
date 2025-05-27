@@ -11,61 +11,80 @@
         
         <nav>
             <ul>
-                <li [class.active]="currentSection === 'dashboard'">
+                <!-- Дашборд (доступен всем ролям) -->
+                <li [class.active]="currentSection === 'dashboard'" *ngIf="hasAccessToSection('dashboard')">
                     <a routerLink="/admin" routerLinkActive="active" (click)="switchToSection('dashboard')">
                         <i class="fas fa-chart-line"></i>
                         <span>Дашборд</span>
                     </a>
                 </li>
-                <li [class.active]="currentSection === 'employees'">
+                
+                <!-- Сотрудники (только для ADMIN и MANAGER) -->
+                <li [class.active]="currentSection === 'employees'" *ngIf="hasAccessToSection('employees')">
                     <a routerLink="/admin/employees" routerLinkActive="active" (click)="switchToSection('employees')">
                         <i class="fas fa-users"></i>
                         <span>Сотрудники</span>
                     </a>
                 </li>
-                <li [class.active]="currentSection === 'facilities'">
+                
+                <!-- Объекты (только для ADMIN и MANAGER) -->
+                <li [class.active]="currentSection === 'facilities'" *ngIf="hasAccessToSection('facilities')">
                     <a routerLink="/admin/facilities" routerLinkActive="active" (click)="switchToSection('facilities')">
                         <i class="fas fa-building"></i>
                         <span>Объекты</span>
                     </a>
                 </li>
-                <li [class.active]="currentSection === 'equipment'">
+                
+                <!-- Оборудование (для ADMIN, MANAGER, EMPLOYEE) -->
+                <li [class.active]="currentSection === 'equipment'" *ngIf="hasAccessToSection('equipment')">
                     <a routerLink="/admin/equipment" routerLinkActive="active" (click)="switchToSection('equipment')">
                         <i class="fas fa-tools"></i>
                         <span>Оборудование</span>
                     </a>
                 </li>
-                <li [class.active]="currentSection === 'news'">
+                
+                <!-- Новости (доступно для всех авторизованных пользователей) -->
+                <li [class.active]="currentSection === 'news'" *ngIf="hasAccessToSection('news')">
                     <a routerLink="/admin/news" routerLinkActive="active" (click)="switchToSection('news')">
                         <i class="fas fa-pen"></i>
                         <span>Новости</span>
                     </a>
                 </li>
-                <li [class.active]="currentSection === 'reports'">
+                
+                <!-- Отчеты (только для ADMIN и MANAGER) -->
+                <li [class.active]="currentSection === 'reports'" *ngIf="hasAccessToSection('reports')">
                     <a routerLink="/admin/reports" routerLinkActive="active" (click)="switchToSection('reports')">
                         <i class="fas fa-file-alt"></i>
                         <span>Отчеты</span>
                     </a>
                 </li>
-                <li [class.active]="currentSection === 'calculations'">
+                
+                <!-- Расчеты (для ADMIN, MANAGER, EMPLOYEE) -->
+                <li [class.active]="currentSection === 'calculations'" *ngIf="hasAccessToSection('calculations')">
                     <a routerLink="/admin/calculations" routerLinkActive="active" (click)="switchToSection('calculations')">
                         <i class="fas fa-calculator"></i>
                         <span>Расчеты</span>
                     </a>
                 </li>
-                <li [class.active]="currentSection === 'reviews'">
+                
+                <!-- Отзывы (для ADMIN, MANAGER, EMPLOYEE) -->
+                <li [class.active]="currentSection === 'reviews'" *ngIf="hasAccessToSection('reviews')">
                     <a routerLink="/admin/reviews" routerLinkActive="active" (click)="switchToSection('reviews')">
                         <i class="fas fa-comments"></i>
                         <span>Отзывы</span>
                     </a>
                 </li>
-                <li [class.active]="currentSection === 'feedback'">
+                
+                <!-- Обратная связь (для ADMIN, MANAGER) -->
+                <li [class.active]="currentSection === 'feedback'" *ngIf="hasAccessToSection('feedback')">
                     <a routerLink="/admin/feedback" routerLinkActive="active" (click)="switchToSection('feedback')">
                         <i class="fas fa-headset"></i>
                         <span>Обратная связь</span>
                     </a>
                 </li>
-                <li [class.active]="currentSection === 'settings'">
+                
+                <!-- Настройки (только для ADMIN) -->
+                <li [class.active]="currentSection === 'settings'" *ngIf="hasAccessToSection('settings')">
                     <a routerLink="/admin/settings" routerLinkActive="active" (click)="switchToSection('settings')">
                         <i class="fas fa-cog"></i>
                         <span>Настройки</span>
@@ -78,11 +97,11 @@
             <div class="user-info">
                 <i class="fas fa-user-circle"></i>
                 <div class="user-details">
-                    <span class="user-name">Администратор</span>
-                    <span class="user-role">Системный администратор</span>
+                    <span class="user-name">{{userName || 'Пользователь'}}</span>
+                    <span class="user-role">{{getRoleInRussian()}}</span>
                 </div>
             </div>
-            <button class="logout-btn">
+            <button class="logout-btn" (click)="logout()">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Выйти</span>
             </button>
@@ -154,24 +173,38 @@
         <div *ngIf="currentSection === 'employees'">
             <section class="data-table">
                 <div class="table-header">
-                    <h3>Сотрудники</h3>
+                    <div class="header-left">
+                        <h3>Сотрудники</h3>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" 
+                                   [(ngModel)]="employeeSearchQuery" 
+                                   (ngModelChange)="onEmployeeSearch($any($event))"
+                                   placeholder="Поиск по имени, должности или email...">
+                        </div>
+                    </div>
                     <button class="add-btn" (click)="onAddEmployee()">
                         <i class="fas fa-plus"></i>
                         <span>Добавить сотрудника</span>
                     </button>
                 </div>
-                <table>
+                <div *ngIf="!filteredEmployees || filteredEmployees.length === 0" class="no-data">
+                    <i class="fas fa-search"></i>
+                    <p>{{employeeSearchQuery ? 'Ничего не найдено' : 'Нет данных о сотрудниках'}}</p>
+                </div>
+                <table *ngIf="filteredEmployees && filteredEmployees.length > 0">
                     <thead>
                         <tr>
                             <th>Сотрудник</th>
                             <th>Должность</th>
-                            <th>Объект</th>
-                            <th>Статус</th>
+                            <th>Email</th>
+                            <th>Телефон</th>
+                            <th>Дата добавления</th>
                             <th>Действия</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let employee of employees">
+                        <tr *ngFor="let employee of filteredEmployees">
                             <td>
                                 <div class="employee-info">
                                     <i class="fas fa-user"></i>
@@ -179,17 +212,9 @@
                                 </div>
                             </td>
                             <td>{{employee.position}}</td>
-                            <td>{{employee.location}}</td>
-                            <td>
-                                <span class="status" 
-                                    [class.active]="employee.status === 'active'"
-                                    [class.inactive]="employee.status === 'inactive'">
-                                    <ng-container [ngSwitch]="employee.status">
-                                        <ng-container *ngSwitchCase="'active'">Активен</ng-container>
-                                        <ng-container *ngSwitchCase="'inactive'">Неактивен</ng-container>
-                                    </ng-container>
-                                </span>
-                            </td>
+                            <td>{{employee.email}}</td>
+                            <td>{{employee.phone}}</td>
+                            <td>{{employee.created_at | date:'dd.MM.yyyy HH:mm'}}</td>
                             <td>
                                 <div class="action-buttons">
                                     <button class="action-btn edit" (click)="onEditEmployee(employee)">
@@ -210,13 +235,28 @@
         <div *ngIf="currentSection === 'facilities'">
             <section class="data-table">
                 <div class="table-header">
-                    <h3>Объекты</h3>
+                    <div class="header-left">
+                        <h3>Объекты</h3>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" 
+                                   [(ngModel)]="facilitySearchQuery" 
+                                   (ngModelChange)="onFacilitySearch($any($event))"
+                                   placeholder="Поиск по названию, адресу или типу...">
+                        </div>
+                    </div>
                     <button class="add-btn" (click)="onAddFacility()">
                         <i class="fas fa-plus"></i>
                         <span>Добавить объект</span>
                     </button>
                 </div>
-                <table>
+
+                <div *ngIf="!filteredFacilities || filteredFacilities.length === 0" class="no-data">
+                    <i class="fas fa-search"></i>
+                    <p>{{facilitySearchQuery ? 'Ничего не найдено' : 'Нет данных об объектах'}}</p>
+                </div>
+
+                <table *ngIf="filteredFacilities && filteredFacilities.length > 0">
                     <thead>
                         <tr>
                             <th>Объект</th>
@@ -228,34 +268,50 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let facility of facilities">
+                        <tr *ngFor="let facility of filteredFacilities">
                             <td>
                                 <div class="facility-info">
-                                    <i class="fas fa-building"></i>
+                                    <i class="fas" [ngClass]="{
+                                        'fa-building': facility.type === 'Офис',
+                                        'fa-warehouse': facility.type === 'Склад',
+                                        'fa-industry': facility.type === 'Производство',
+                                        'fa-store': facility.type === 'Торговля'
+                                    }"></i>
                                     <span>{{facility.name}}</span>
                                 </div>
                             </td>
                             <td>{{facility.address}}</td>
-                            <td>{{facility.type}}</td>
+                            <td>
+                                <span class="facility-type" [ngClass]="facility.type.toLowerCase()">
+                                    {{facility.type}}
+                                </span>
+                            </td>
                             <td>{{facility.cost | currency:'RUB':'₽':'1.0-0'}}</td>
                             <td>
                                 <span class="status" 
                                     [class.active]="facility.status === 'active'"
                                     [class.inactive]="facility.status === 'inactive'"
-                                    [class.ready]="facility.status === 'ready'">
+                                    [class.ready]="facility.status === 'ready'"
+                                    [class.ready-to-rent]="facility.status === 'ready_to_rent'"
+                                    [class.rented]="facility.status === 'rented'">
                                     <ng-container [ngSwitch]="facility.status">
                                         <ng-container *ngSwitchCase="'active'">Активен</ng-container>
                                         <ng-container *ngSwitchCase="'inactive'">Неактивен</ng-container>
                                         <ng-container *ngSwitchCase="'ready'">Готов</ng-container>
+                                        <ng-container *ngSwitchCase="'ready_to_rent'">Готов к сдаче</ng-container>
+                                        <ng-container *ngSwitchCase="'rented'">Сдан</ng-container>
                                     </ng-container>
                                 </span>
                             </td>
                             <td>
                                 <div class="action-buttons">
-                                    <button class="action-btn edit" (click)="onEditFacility(facility)">
+                                    <button class="action-btn view" (click)="onViewFacility(facility)" title="Просмотр">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn edit" (click)="onEditFacility(facility)" title="Редактировать">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="action-btn delete" (click)="onDeleteFacility(facility)">
+                                    <button class="action-btn delete" (click)="onDeleteFacility(facility)" title="Удалить">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -270,47 +326,57 @@
         <div *ngIf="currentSection === 'equipment'">
             <section class="data-table">
                 <div class="table-header">
-                    <h3>Оборудование</h3>
-                    <button class="add-btn" (click)="onAddEquipment()">
+                    <div class="header-left">
+                        <h3>Оборудование</h3>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" 
+                                   [(ngModel)]="equipmentSearchQuery" 
+                                   (ngModelChange)="onEquipmentSearch($any($event))"
+                                   placeholder="Поиск по названию, типу или местоположению...">
+                        </div>
+                    </div>
+                    <button class="add-btn" (click)="onShowAddEquipmentModal()">
                         <i class="fas fa-plus"></i>
                         <span>Добавить оборудование</span>
                     </button>
                 </div>
-                <table>
+                <div *ngIf="!filteredEquipments || filteredEquipments.length === 0" class="no-data">
+                    <i class="fas fa-search"></i>
+                    <p>{{equipmentSearchQuery ? 'Ничего не найдено' : 'Нет данных об оборудовании'}}</p>
+                </div>
+                <table *ngIf="filteredEquipments && filteredEquipments.length > 0">
                     <thead>
                         <tr>
                             <th>Оборудование</th>
                             <th>Тип</th>
-                            <th>Объект</th>
+                            <th>Инв. номер</th>
+                            <th>Местоположение</th>
                             <th>Статус</th>
-                            <th>Последнее обслуживание</th>
-                            <th>Следующее обслуживание</th>
+                            <th>Последнее ТО</th>
+                            <th>Следующее ТО</th>
                             <th>Действия</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let equipment of equipments">
+                        <tr *ngFor="let item of equipments">
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.type }}</td>
+                            <td>{{ item.location }}</td>
                             <td>
-                                <div class="equipment-info">
-                                    <i class="fas fa-tools"></i>
-                                    <span>{{equipment.name}}</span>
-                                </div>
-                            </td>
-                            <td>{{equipment.type}}</td>
-                            <td>{{equipment.facility}}</td>
-                            <td>
-                                <span class="status" [class.active]="equipment.status === 'active'">
-                                    {{equipment.status === 'active' ? 'Исправно' : 'Требует ремонта'}}
+                                <span class="status" [class.active]="item.status === 'Исправно'">
+                                    {{item.status}}
                                 </span>
                             </td>
-                            <td>{{equipment.lastMaintenance | date:'dd.MM.yyyy'}}</td>
-                            <td>{{equipment.nextMaintenance | date:'dd.MM.yyyy'}}</td>
+                            <td>{{item.last_maintenance_date | date:'dd.MM.yyyy'}}</td>
+                            <td>{{item.next_maintenance_date | date:'dd.MM.yyyy'}}</td>
                             <td>
                                 <div class="action-buttons">
-                                    <button class="action-btn edit" (click)="onEditEquipment(equipment)">
+                                    <button class="action-btn edit" (click)="onEditEquipment(item)">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="action-btn delete" (click)="onDeleteEquipment(equipment)">
+                                    <button class="action-btn delete" (click)="onDeleteEquipment(item)">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -325,13 +391,26 @@
         <div *ngIf="currentSection === 'news'">
             <section class="data-table">
                 <div class="table-header">
-                    <h3>Новости</h3>
+                    <div class="header-left">
+                        <h3>Новости</h3>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" 
+                                   [(ngModel)]="newsSearchQuery" 
+                                   (ngModelChange)="onNewsSearch($any($event))"
+                                   placeholder="Поиск по заголовку или содержанию...">
+                        </div>
+                    </div>
                     <button class="add-btn" (click)="onAddNews()">
                         <i class="fas fa-plus"></i>
                         <span>Добавить новость</span>
                     </button>
                 </div>
-                <table>
+                <div *ngIf="!filteredNews || filteredNews.length === 0" class="no-data">
+                    <i class="fas fa-search"></i>
+                    <p>{{newsSearchQuery ? 'Ничего не найдено' : 'Нет данных о новостях'}}</p>
+                </div>
+                <table *ngIf="filteredNews && filteredNews.length > 0">
                     <thead>
                         <tr>
                             <th>Заголовок</th>
@@ -342,7 +421,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let news of newsList">
+                        <tr *ngFor="let news of filteredNews">
                             <td>{{news.title}}</td>
                             <td>{{news.content}}</td>
                             <td>{{news.date | date:'d MMMM yyyy'}}</td>
@@ -367,13 +446,26 @@
         <div *ngIf="currentSection === 'reports'">
             <section class="data-table">
                 <div class="table-header">
-                    <h3>Отчеты</h3>
+                    <div class="header-left">
+                        <h3>Отчеты</h3>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" 
+                                   [(ngModel)]="reportSearchQuery" 
+                                   (ngModelChange)="onReportSearch($any($event))"
+                                   placeholder="Поиск по названию или типу...">
+                        </div>
+                    </div>
                     <button class="add-btn" (click)="onAddReport()">
                         <i class="fas fa-plus"></i>
                         <span>Создать отчет</span>
                     </button>
                 </div>
-                <table>
+                <div *ngIf="!filteredReports || filteredReports.length === 0" class="no-data">
+                    <i class="fas fa-search"></i>
+                    <p>{{reportSearchQuery ? 'Ничего не найдено' : 'Нет данных об отчетах'}}</p>
+                </div>
+                <table *ngIf="filteredReports && filteredReports.length > 0">
                     <thead>
                         <tr>
                             <th>Название</th>
@@ -385,7 +477,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let report of reports">
+                        <tr *ngFor="let report of filteredReports">
                             <td>{{report.title}}</td>
                             <td>
                                 <span class="badge" [ngClass]="report.type">
@@ -423,13 +515,26 @@
         <div *ngIf="currentSection === 'calculations'">
             <section class="data-table">
                 <div class="table-header">
-                    <h3>Расчеты</h3>
+                    <div class="header-left">
+                        <h3>Расчеты</h3>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" 
+                                   [(ngModel)]="calculationSearchQuery" 
+                                   (ngModelChange)="onCalculationSearch($any($event))"
+                                   placeholder="Поиск по названию или типу...">
+                        </div>
+                    </div>
                     <button class="add-btn" (click)="onAddCalculation()">
                         <i class="fas fa-plus"></i>
                         <span>Новый расчет</span>
                     </button>
                 </div>
-                <table>
+                <div *ngIf="!filteredCalculations || filteredCalculations.length === 0" class="no-data">
+                    <i class="fas fa-search"></i>
+                    <p>{{calculationSearchQuery ? 'Ничего не найдено' : 'Нет данных о расчетах'}}</p>
+                </div>
+                <table *ngIf="filteredCalculations && filteredCalculations.length > 0">
                     <thead>
                         <tr>
                             <th>Название</th>
@@ -440,7 +545,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let calculation of calculations">
+                        <tr *ngFor="let calculation of filteredCalculations">
                             <td>{{calculation.name}}</td>
                             <td>
                                 <span class="badge" [ngClass]="calculation.type">
@@ -478,9 +583,22 @@
         <div *ngIf="currentSection === 'reviews'">
             <section class="data-table">
                 <div class="table-header">
-                    <h3>Модерация отзывов</h3>
+                    <div class="header-left">
+                        <h3>Модерация отзывов</h3>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" 
+                                   [(ngModel)]="reviewSearchQuery" 
+                                   (ngModelChange)="onReviewSearch($any($event))"
+                                   placeholder="Поиск по автору или содержанию...">
+                        </div>
+                    </div>
                 </div>
-                <table>
+                <div *ngIf="!filteredReviews || filteredReviews.length === 0" class="no-data">
+                    <i class="fas fa-search"></i>
+                    <p>{{reviewSearchQuery ? 'Ничего не найдено' : 'Нет отзывов для модерации'}}</p>
+                </div>
+                <table *ngIf="filteredReviews && filteredReviews.length > 0">
                     <thead>
                         <tr>
                             <th>Автор</th>
@@ -493,7 +611,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let review of reviews">
+                        <tr *ngFor="let review of filteredReviews">
                             <td>{{review.author}}</td>
                             <td>{{review.facility}}</td>
                             <td>
@@ -662,35 +780,40 @@
         <app-add-employee-modal
             *ngIf="showAddEmployeeModal"
             [employeeToEdit]="selectedEmployee"
+            [isDarkTheme]="isDarkTheme"
             (close)="onCloseAddEmployeeModal()"
-            (employeeAdded)="onEmployeeAdded($event)"
-            (employeeUpdated)="onEmployeeUpdated($event)">
+            (employeeAdded)="onEmployeeAdded($any($event))"
+            (employeeUpdated)="onEmployeeUpdated($any($event))">
         </app-add-employee-modal>
 
         <!-- Модальное окно добавления/редактирования объекта -->
         <app-add-facility-modal 
             *ngIf="showAddFacilityModal" 
             [facilityToEdit]="selectedFacility"
+            [isDarkTheme]="isDarkTheme"
             (close)="onCloseAddFacilityModal()"
-            (facilityAdded)="onFacilityAdded($event)"
-            (facilityUpdated)="onFacilityUpdated($event)">
+            (facilityAdded)="onFacilityAdded($any($event))"
+            (facilityUpdated)="onFacilityUpdated($any($event))">
         </app-add-facility-modal>
 
+        <!-- Модальное окно добавления/редактирования новостей -->
         <app-add-news-modal
             *ngIf="showAddNewsModal"
             [newsToEdit]="selectedNews"
+            [isDarkTheme]="isDarkTheme"
             (close)="onCloseAddNewsModal()"
-            (newsAdded)="onNewsAdded($event)"
-            (newsUpdated)="onNewsUpdated($event)">
+            (newsAdded)="onNewsAdded($any($event))"
+            (newsUpdated)="onNewsUpdated($any($event))">
         </app-add-news-modal>
 
         <!-- Модальное окно добавления/редактирования оборудования -->
         <app-add-equipment-modal
             *ngIf="showAddEquipmentModal"
             [equipmentToEdit]="selectedEquipment"
+            [isDarkTheme]="isDarkTheme"
             (close)="onCloseAddEquipmentModal()"
-            (equipmentAdded)="onEquipmentAdded($event)"
-            (equipmentUpdated)="onEquipmentUpdated($event)">
+            (equipmentAdded)="onEquipmentAdded($any($event))"
+            (equipmentUpdated)="onEquipmentUpdated($any($event))">
         </app-add-equipment-modal>
     </main>
 </div>

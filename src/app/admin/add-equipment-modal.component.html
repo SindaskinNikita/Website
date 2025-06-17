@@ -1,7 +1,9 @@
-
 <div class="modal-overlay" (click)="onClose()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-        <h2>{{ equipmentToEdit ? 'Редактировать оборудование' : 'Добавить оборудование' }}</h2>
+    <div class="modal-content" [class.dark-theme]="isDarkTheme" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h2>{{ equipmentToEdit ? 'Редактировать оборудование' : 'Добавить оборудование' }}</h2>
+            <button class="close-btn" (click)="onClose()">&times;</button>
+        </div>
         
         <form (ngSubmit)="onSubmit()" #equipmentForm="ngForm">
             <div class="form-group">
@@ -30,6 +32,11 @@
             </div>
 
             <div class="form-group">
+                <label for="location">Местоположение:</label>
+                <input type="text" id="location" name="location" [(ngModel)]="equipment.location" required>
+            </div>
+
+            <div class="form-group">
                 <label for="status">Статус:</label>
                 <select id="status" name="status" [(ngModel)]="equipment.status" required>
                     <option *ngFor="let status of statuses" [value]="status">
@@ -42,13 +49,15 @@
             <div class="form-group">
                 <label for="lastMaintenance">Последнее обслуживание:</label>
                 <input type="date" id="lastMaintenance" name="lastMaintenance" 
-                       [(ngModel)]="equipment.lastMaintenance" required>
+                       [ngModel]="equipment.lastMaintenance | date:'yyyy-MM-dd'" 
+                       (ngModelChange)="equipment.lastMaintenance = $event" required>
             </div>
 
             <div class="form-group">
                 <label for="nextMaintenance">Следующее обслуживание:</label>
                 <input type="date" id="nextMaintenance" name="nextMaintenance" 
-                       [(ngModel)]="equipment.nextMaintenance" required>
+                       [ngModel]="equipment.nextMaintenance | date:'yyyy-MM-dd'"
+                       (ngModelChange)="equipment.nextMaintenance = $event" required>
             </div>
 
             <div class="form-group">
@@ -64,7 +73,7 @@
 
             <div class="form-group">
                 <label for="price">Цена:</label>
-                <input type="number" id="price" name="price" [(ngModel)]="equipment.price">
+                <input type="number" id="price" name="price" [(ngModel)]="equipment.price" min="0" step="0.01">
             </div>
 
             <div class="form-group">
@@ -72,74 +81,22 @@
                 <div class="features-list">
                     <div *ngFor="let feature of equipment.features; let i = index" class="feature-item">
                         <span>{{feature}}</span>
-                        <button type="button" (click)="removeFeature(i)">Удалить</button>
+                        <button type="button" class="remove-feature-btn" (click)="removeFeature(i)">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
                 </div>
-                <button type="button" (click)="addFeature()">Добавить характеристику</button>
+                <button type="button" class="add-feature-btn" (click)="addFeature()">
+                    <i class="fas fa-plus"></i> Добавить характеристику
+                </button>
             </div>
 
             <div class="form-actions">
-                <button type="button" (click)="onClose()">Отмена</button>
-                <button type="submit" [disabled]="!equipmentForm.form.valid">
+                <button type="button" class="cancel-btn" (click)="onClose()">Отмена</button>
+                <button type="submit" class="submit-btn" [disabled]="!equipmentForm.form.valid">
                     {{ equipmentToEdit ? 'Сохранить' : 'Добавить' }}
                 </button>
             </div>
         </form>
-=======
-<div class="modal-overlay">
-    <div class="modal-content" [class.dark-theme]="isDarkTheme">
-        <div class="modal-header">
-            <h3>{{equipmentToEdit ? 'Редактировать оборудование' : 'Добавить оборудование'}}</h3>
-            <button class="close-btn" (click)="onClose()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <form (ngSubmit)="onSubmit()">
-                <div class="form-group">
-                    <label for="name">Название</label>
-                    <input type="text" id="name" [(ngModel)]="equipment.name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="type">Тип</label>
-                    <input type="text" id="type" [(ngModel)]="equipment.type" name="type" required>
-                </div>
-                <div class="form-group">
-                    <label for="inventory_number">Инвентарный номер</label>
-                    <input type="text" id="inventory_number" [(ngModel)]="equipment.inventory_number" name="inventory_number" required>
-                </div>
-                <div class="form-group">
-                    <label for="status">Статус</label>
-                    <select id="status" [(ngModel)]="equipment.status" name="status" required>
-                        <option value="Исправно">Исправно</option>
-                        <option value="Требует обслуживания">Требует обслуживания</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="location">Местоположение</label>
-                    <input type="text" id="location" [(ngModel)]="equipment.location" name="location" required>
-                </div>
-                <div class="form-group">
-                    <label for="responsible_person">Ответственное лицо</label>
-                    <input type="text" id="responsible_person" [(ngModel)]="equipment.responsible_person" name="responsible_person" required>
-                </div>
-                <div class="form-group">
-                    <label for="purchase_date">Дата покупки</label>
-                    <input type="date" id="purchase_date" [(ngModel)]="equipment.purchase_date" name="purchase_date" required>
-                </div>
-                <div class="form-group">
-                    <label for="last_maintenance_date">Последнее обслуживание</label>
-                    <input type="date" id="last_maintenance_date" [(ngModel)]="equipment.last_maintenance_date" name="last_maintenance_date" required>
-                </div>
-                <div class="form-group">
-                    <label for="next_maintenance_date">Следующее обслуживание</label>
-                    <input type="date" id="next_maintenance_date" [(ngModel)]="equipment.next_maintenance_date" name="next_maintenance_date" required>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="onClose()">Отмена</button>
-                    <button type="submit" class="btn btn-primary">
-                        {{equipmentToEdit ? 'Сохранить' : 'Добавить'}}
-                    </button>
-                </div>
-            </form>
-        </div>
     </div>
 </div> 

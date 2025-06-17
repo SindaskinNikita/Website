@@ -161,7 +161,7 @@
                             <i class="fas fa-tools"></i>
                         </div>
                         <div class="stat-info">
-                            <span class="number">{{equipments.length}}</span>
+                            <span class="number">{{equipment.length}}</span>
                             <span class="trend">Всего оборудования</span>
                         </div>
                     </div>
@@ -341,16 +341,16 @@
                         <span>Добавить оборудование</span>
                     </button>
                 </div>
-                <div *ngIf="!filteredEquipments || filteredEquipments.length === 0" class="no-data">
+                <div *ngIf="!filteredEquipment || filteredEquipment.length === 0" class="no-data">
                     <i class="fas fa-search"></i>
                     <p>{{equipmentSearchQuery ? 'Ничего не найдено' : 'Нет данных об оборудовании'}}</p>
                 </div>
-                <table *ngIf="filteredEquipments && filteredEquipments.length > 0">
+                <table *ngIf="filteredEquipment && filteredEquipment.length > 0">
                     <thead>
                         <tr>
-                            <th>Оборудование</th>
+                            <th>ID</th>
+                            <th>Название</th>
                             <th>Тип</th>
-                            <th>Инв. номер</th>
                             <th>Местоположение</th>
                             <th>Статус</th>
                             <th>Последнее ТО</th>
@@ -359,18 +359,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of equipments">
+                        <tr *ngFor="let item of filteredEquipment">
                             <td>{{ item.id }}</td>
                             <td>{{ item.name }}</td>
                             <td>{{ item.type }}</td>
                             <td>{{ item.location }}</td>
                             <td>
-                                <span class="status" [class.active]="item.status === 'Исправно'">
-                                    {{item.status}}
+                                <span class="status" [class.active]="item.status === 'active'">
+                                    {{item.status === 'active' ? 'Активно' : 
+                                      item.status === 'inactive' ? 'Неактивно' : 'На обслуживании'}}
                                 </span>
                             </td>
-                            <td>{{item.last_maintenance_date | date:'dd.MM.yyyy'}}</td>
-                            <td>{{item.next_maintenance_date | date:'dd.MM.yyyy'}}</td>
+                            <td>{{item.lastMaintenance | date:'dd.MM.yyyy'}}</td>
+                            <td>{{item.nextMaintenance | date:'dd.MM.yyyy'}}</td>
                             <td>
                                 <div class="action-buttons">
                                     <button class="action-btn edit" (click)="onEditEquipment(item)">

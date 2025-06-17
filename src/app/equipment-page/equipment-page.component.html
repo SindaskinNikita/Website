@@ -53,27 +53,43 @@
         </div>
 
         <!-- Сетка товаров -->
-        <div class="products-grid">
-            <div *ngFor="let item of equipment" class="product-card">
+        <div class="products-grid" *ngIf="filteredEquipment.length > 0">
+            <div *ngFor="let item of filteredEquipment" class="product-card">
                 <div class="product-image">
-                    <img [src]="item.image" [alt]="item.name">
+                    <img [src]="item.image || 'assets/images/camera.jpg'" 
+                         [alt]="item.name"
+                         (error)="onImageError($event)">
+                    <span class="product-status" [class.active]="item.status === 'active'" 
+                          [class.inactive]="item.status === 'inactive'"
+                          [class.maintenance]="item.status === 'maintenance'">
+                        {{item.status === 'active' ? 'В наличии' : 
+                          item.status === 'inactive' ? 'Недоступно' : 'На обслуживании'}}
+                    </span>
                 </div>
                 <div class="product-info">
                     <h3 class="product-title">{{item.name}}</h3>
+                    <p class="product-type">{{item.type}}</p>
                     <ul class="product-features">
-                        <li *ngFor="let feature of item.features">{{feature}}</li>
+                        <li *ngFor="let feature of item.features.slice(0, 3)">{{feature}}</li>
                     </ul>
-                    <div class="product-price">{{item.price | number:'1.0-0'}} ₽</div>
+                    <div class="product-price">{{item.price | currency:'RUB':'symbol':'1.0-0'}}</div>
                     <div class="product-buttons">
                         <button class="details-button">Подробнее</button>
-                        <button class="order-button">Заказать</button>
+                        <button class="order-button" [disabled]="item.status !== 'active'">Заказать</button>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Сообщение, если нет оборудования -->
+        <div class="no-equipment" *ngIf="filteredEquipment.length === 0">
+            <i class="fas fa-box-open"></i>
+            <h3>Оборудование не найдено</h3>
+            <p>Попробуйте изменить параметры поиска или выбрать другую категорию</p>
+        </div>
+
         <!-- Пагинация -->
-        <div class="pagination" *ngIf="equipment.length > 0">
+        <div class="pagination" *ngIf="filteredEquipment.length > 6">
             <button class="pagination-button active">1</button>
             <button class="pagination-button">2</button>
             <button class="pagination-button">3</button>

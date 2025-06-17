@@ -4,6 +4,7 @@ export interface Equipment {
     type: string;
     category: string;
     facility: string;
+    location: string;
     status: 'active' | 'inactive' | 'maintenance';
     lastMaintenance: Date;
     nextMaintenance: Date;

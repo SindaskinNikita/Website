@@ -68,7 +68,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     facilities: Facility[] = [];
     filteredFacilities: Facility[] = [];
     facilitySearchQuery: string = '';
-    equipments: Equipment[] = [];
+    equipment: Equipment[] = [];
     totalEmployees: number = 0;
     totalFacilities: number = 0;
     averageWorkload: number = 0;
@@ -115,7 +115,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
     // Поиск для оборудования
     equipmentSearchQuery: string = '';
-    filteredEquipments: Equipment[] = [];
+    filteredEquipment: Equipment[] = [];
 
     // Поиск для новостей
     newsSearchQuery: string = '';
@@ -423,8 +423,8 @@ export class AdminComponent implements OnInit, OnDestroy {
 
     loadEquipment(): void {
         this.equipmentService.getEquipment().subscribe(equipment => {
-            this.equipments = equipment;
-            this.filteredEquipments = equipment;
+            this.equipment = equipment;
+            this.filteredEquipment = equipment;
         });
     }
 
@@ -867,11 +867,11 @@ export class AdminComponent implements OnInit, OnDestroy {
 
     onEquipmentSearch(query: string): void {
         if (!query) {
-            this.filteredEquipments = this.equipments;
+            this.filteredEquipment = this.equipment;
             return;
         }
         query = query.toLowerCase();
-        this.filteredEquipments = this.equipments.filter(equipment => 
+        this.filteredEquipment = this.equipment.filter(equipment => 
             equipment.name.toLowerCase().includes(query) ||
             equipment.type.toLowerCase().includes(query) ||
             equipment.location.toLowerCase().includes(query)

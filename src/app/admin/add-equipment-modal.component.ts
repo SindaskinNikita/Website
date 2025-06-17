@@ -20,13 +20,34 @@ export class AddEquipmentModalComponent implements OnInit {
     equipment: Partial<Equipment> = {
         name: '',
         type: '',
+        category: '',
+        facility: '',
+        location: '',
+        status: 'active',
+        lastMaintenance: new Date(),
+        nextMaintenance: new Date(),
+        description: '',
+        features: [],
+        image: '',
+        price: 0
+    };
 
+    categories: string[] = [
+        'Медицинское оборудование',
+        'Лабораторное оборудование',
+        'Диагностическое оборудование',
+        'Хирургическое оборудование',
+        'Реабилитационное оборудование'
+    ];
+
+    statuses: Array<'active' | 'inactive' | 'maintenance'> = ['active', 'inactive', 'maintenance'];
+
+    ngOnInit(): void {
         if (this.equipmentToEdit) {
             this.equipment = {
                 ...this.equipmentToEdit,
-                purchase_date: new Date(this.equipmentToEdit.purchase_date),
-                last_maintenance_date: new Date(this.equipmentToEdit.last_maintenance_date),
-                next_maintenance_date: new Date(this.equipmentToEdit.next_maintenance_date)
+                lastMaintenance: new Date(this.equipmentToEdit.lastMaintenance),
+                nextMaintenance: new Date(this.equipmentToEdit.nextMaintenance)
             };
         }
     }
@@ -38,7 +59,22 @@ export class AddEquipmentModalComponent implements OnInit {
                 ...this.equipment
             } as Equipment);
         } else {
-
+            const newEquipment: Equipment = {
+                id: Date.now(), // Временный ID, должен генерироваться на сервере
+                name: this.equipment.name || '',
+                type: this.equipment.type || '',
+                category: this.equipment.category || '',
+                facility: this.equipment.facility || '',
+                location: this.equipment.location || '',
+                status: this.equipment.status || 'active',
+                lastMaintenance: this.equipment.lastMaintenance || new Date(),
+                nextMaintenance: this.equipment.nextMaintenance || new Date(),
+                description: this.equipment.description || '',
+                features: this.equipment.features || [],
+                image: this.equipment.image || '',
+                price: this.equipment.price || 0
+            };
+            this.equipmentAdded.emit(newEquipment);
         }
         this.onClose();
     }
@@ -47,14 +83,19 @@ export class AddEquipmentModalComponent implements OnInit {
         this.close.emit();
     }
 
-    addFeature() {
+    addFeature(): void {
         const feature = prompt('Введите характеристику оборудования:');
-        if (feature) {
-            this.equipment.features = [...this.equipment.features, feature];
+        if (feature && feature.trim()) {
+            if (!this.equipment.features) {
+                this.equipment.features = [];
+            }
+            this.equipment.features = [...this.equipment.features, feature.trim()];
         }
     }
 
-    removeFeature(index: number) {
-        this.equipment.features = this.equipment.features.filter((_, i) => i !== index);
+    removeFeature(index: number): void {
+        if (this.equipment.features) {
+            this.equipment.features = this.equipment.features.filter((_, i) => i !== index);
+        }
     }
 } 
